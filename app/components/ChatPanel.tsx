@@ -20,7 +20,10 @@ const SUGGESTIONS = ["Make day 2 more relaxed", "Remove Elephanta", "We are vege
 function Thread({ messages, busy, onSend, onAnswer }: { messages: ChatMessage[]; busy: boolean; onSend: (t: string) => void; onAnswer: (m: ChatMessage, q: ClarifyingQuestion, option: string) => void }) {
   const [text, setText] = useState("");
   const end = useRef<HTMLDivElement>(null);
-  useEffect(() => end.current?.scrollIntoView({ behavior: "smooth", block: "end" }), [messages.length, busy]);
+  // Braces matter: newer browsers return a Promise from scrollIntoView, and an effect may only return a cleanup function.
+  useEffect(() => {
+    end.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [messages.length, busy]);
   const send = (t: string) => {
     if (!t.trim() || busy) return;
     onSend(t.trim());
