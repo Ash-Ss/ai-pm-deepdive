@@ -83,6 +83,23 @@ async function main() {
   console.log(`  budget: est ${inr(b.estimatedINR)} vs mid-tier benchmark ${inr(b.tierBenchmarkINR)} (×${b.ratio})`);
   console.log(`  pace: ${validation.soft.pace.map((p) => `d${p.dayNumber} ${p.majorItems}/${p.maxMajorItems}`).join(", ")}`);
 
+  console.log(`  restaurant repeats across days: ${validation.soft.restaurantRepeats.map((r) => `${r.restaurantId} (days ${r.days.join(", ")})`).join("; ") || "none"}`);
+
+  console.log("\nTRADEOFF NOTES");
+  for (const day of plan.legs.flatMap((l) => l.days)) {
+    for (const it of day.items) for (const note of it.tradeoffs) console.log(`  day ${day.dayNumber} · ${it.title}: ${note}`);
+  }
+
+  console.log("\nCONSTRAINT CHIPS (rejectable planner suggestions)");
+  for (const c of plan.constraints.filter((x) => x.source === "default")) console.log(`  [${c.id}] ${c.scope} ${JSON.stringify(c.params)} — ${c.sourceText}`);
+
+  const assignTrace = plan.traces.find((t) => t.stage === "sanitizeAssignment");
+  const assignerNotes = assignTrace?.decisions.filter((d) => d.what === "assigner note").map((d) => d.why) ?? [];
+  if (assignerNotes.length) {
+    console.log("\nASSIGNER NOTES");
+    for (const n of assignerNotes) console.log(`  - ${n}`);
+  }
+
   const repair = plan.traces.find((t) => t.stage === "repairPlan");
   console.log(`\nREPAIRS: ${(repair?.outputs.actions as string[] | undefined)?.join(" | ") || "none needed"}`);
   console.log("\nWARNINGS");
@@ -104,7 +121,13 @@ async function main() {
     console.log(`  start ${pad(wd, 10)} Ajanta: ${pad(aj.join(",") || "not scheduled", 16)} Ellora: ${pad(el.join(",") || "not scheduled", 16)} hard violations: ${r.validation.hard.length} ${bad ? "✗ FAIL" : "✓"}`);
   }
   console.log(failures ? `\n✗ ${failures} closure failure(s)` : "\n✓ Ajanta never on Monday, Ellora never on Tuesday");
-  if (failures) process.exit(1);
+
+  const dayOf = (id: string) => plan.legs.flatMap((l) => l.days).find((d) => d.items.some((i) => i.refId === id))?.dayNumber;
+  const sameDay = dayOf("ellora-caves") !== undefined && dayOf("ellora-caves") === dayOf("grishneshwar-temple");
+  console.log(sameDay ? `✓ Grishneshwar is on the same day as Ellora (day ${dayOf("ellora-caves")})` : `✗ Ellora day ${dayOf("ellora-caves")}, Grishneshwar day ${dayOf("grishneshwar-temple")}`);
+  const gateway = dayOf("gateway-of-india");
+  console.log(gateway ? `✓ Gateway of India kept (day ${gateway})` : "✗ Gateway of India missing");
+  if (failures || !sameDay || !gateway) process.exit(1);
 }
 
 main().catch((e) => {

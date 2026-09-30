@@ -24,8 +24,8 @@ function presetFor(c: Constraint): PresetName | null {
   }
 }
 
-/** Numeric view of a lever value so "max"/"min" work for times too (later = bigger). */
-const num = (v: unknown) => (typeof v === "string" ? toMin(v) : (v as number));
+/** Numeric view of a lever value so "max"/"min" work for times (later = bigger) and booleans (true = 1). */
+const num = (v: unknown) => (typeof v === "string" ? toMin(v) : typeof v === "boolean" ? Number(v) : (v as number));
 
 function intersect(windows: TimeWindow[]): TimeWindow | null {
   const start = Math.max(...windows.map((w) => toMin(w.start)));

@@ -2,12 +2,16 @@
  * Stage 6 — turn a day's assigned places into a timed itinerary.
  *
  * Each candidate ordering is fully simulated (travel, opening hours, fixed start
- * times, lunch, rest breaks, evening and dinner) and costed as
- *   travel minutes + weighted soft penalties.
- * Lunch is itself a stop in the ordering, so the search can choose between e.g.
- * "lunch first" and "late lunch after the caves". With ≤ 7 places we try every
- * ordering (≤ 8! = 40,320 simulations — a few ms each); beyond that, greedy
- * nearest-neighbour.
+ * times, lunch, rest breaks, evening, dinner and return to the hotel) and costed
+ * as travel minutes + weighted soft penalties + large penalties for anything
+ * that would fail validation. Lunch is itself a stop in the ordering, so the
+ * search can choose between e.g. "lunch first" and "late lunch after the caves".
+ * With ≤ 7 places we try every ordering (≤ 8! = 40,320 simulations — a few ms
+ * each); beyond that, greedy nearest-neighbour.
+ *
+ * scheduleDayBest adds one more option for long day-trip days: starting earlier
+ * than dayStart (never before EARLIEST_OVERRIDE_START) when the normal start
+ * would mean a late lunch, a late return or a dropped sight.
  */
 import type { Item, ItemType, Levers, StageResult, Tier } from "../types";
 import { haversineKm, type LatLng, localLeg, round1, taxiMinutes } from "./geo";
@@ -19,9 +23,15 @@ const MAX_PERMUTE = 7;
 const REST_MIN = 15;
 const MEAL_FALLBACK_MIN = 60;
 const MAX_RESTAURANT_KM = 5; // further than this, suggest "somewhere local" instead
+const REPEAT_RESTAURANT_KM = 3; // each earlier visit makes a restaurant count as this much further away
 const MIN_GAP_ITEM = 10; // gaps shorter than this aren't worth showing
 const TAXI_INR_PER_KM = 20;
 const MEAL_INR_PER_PERSON: Record<Tier, number> = { budget: 250, mid: 600, premium: 1500 };
+const EARLY_START_STEP_MIN = 30;
+/** A hard meal window still tolerates starting this late (nobody minds lunch at 14:31). */
+export const MEAL_GRACE_MIN = 15;
+/** Time from leaving the hotel to take-off / departure, used to suggest what to book. */
+const PRE_DEPARTURE_MIN: Record<string, number> = { flight: 120, train: 45, road: 0 };
 
 /** Soft penalty weights (in "minutes of travel" equivalents). */
 const W = {
@@ -32,28 +42,29 @@ const W = {
   crowded: 20,
   lateMealPerMin: 1,
   freeTimeShortPerMin: 0.5,
+  walkingPerKm: 60, // only when minimising walking (repair "reorder")
   skipped: 1000,
+  hard: 500, // anything the validator would reject: hard meal windows, late return
 };
 
 type Loc = LatLng & { name: string };
-type Stop =
-  | {
-      kind: "activity";
-      refId: string;
-      title: string;
-      loc: Loc;
-      durationMin: number;
-      openRanges: [number, number][];
-      fixedStarts: number[] | null; // experiences run at set times
-      bestTimeOfDay: string;
-      avoid: [number, number][];
-      walkM: number;
-      flat: boolean;
-      priceINR: number;
-      crowded: boolean;
-      variantName: string | null;
-    }
-  | { kind: "lunch" };
+type ActivityStop = {
+  kind: "activity";
+  refId: string;
+  title: string;
+  loc: Loc;
+  durationMin: number;
+  openRanges: [number, number][];
+  fixedStarts: number[] | null; // experiences run at set times
+  bestTimeOfDay: string;
+  avoid: [number, number][];
+  walkM: number;
+  flat: boolean;
+  priceINR: number;
+  crowded: boolean;
+  variantName: string | null;
+};
+type Stop = ActivityStop | { kind: "lunch" };
 
 type Ev = {
   type: ItemType;
@@ -70,7 +81,7 @@ type Ev = {
 
 type SimResult = { evs: Ev[]; cost: number; penalties: Record<string, number>; dropped: { refId: string; reason: string }[] };
 
-export function scheduleDay(args: {
+export type ScheduleArgs = {
   frame: DayFrame;
   itemIds: string[];
   pool: CandidatePool;
@@ -78,37 +89,47 @@ export function scheduleDay(args: {
   hotel: HotelBase;
   ctx: PlannerContext;
   forceTaxi?: boolean;
+  /** Repair "reorder": weigh walking heavily when choosing the order. */
+  minimizeWalking?: boolean;
   /** POIs to do as their lighter variant (set by repair). */
   variantIds?: Set<string>;
+  /** How often each restaurant is already used on other days (for variety). */
+  restaurantUse?: Map<string, number>;
   reasons?: Record<string, string[]>;
   tradeoffs?: Record<string, string[]>;
   source?: Item["source"];
-}): StageResult<ScheduledDay> {
+};
+
+export function scheduleDay(args: ScheduleArgs): StageResult<ScheduledDay> {
   const { frame, itemIds, pool, levers, hotel, ctx } = args;
-  const t = startTrace(`scheduleDay:${frame.dayNumber}`, { date: frame.date, weekday: frame.weekday, itemIds, forceTaxi: !!args.forceTaxi });
+  const t = startTrace(`scheduleDay:${frame.dayNumber}`, {
+    date: frame.date, weekday: frame.weekday, start: fromMin(frame.startMin), itemIds,
+    forceTaxi: !!args.forceTaxi, minimizeWalking: !!args.minimizeWalking,
+  });
   const cityId = frame.cityId;
   const hotelLoc: Loc = { lat: hotel.area.lat, lng: hotel.area.lng, name: `hotel (${hotel.area.name})` };
   const cars = Math.ceil(ctx.pax / 4);
   const rooms = Math.ceil(ctx.pax / 2);
   const lunch = { start: toMin(levers.lunchWindow.start), end: toMin(levers.lunchWindow.end) };
   const dinner = { start: toMin(levers.dinnerWindow.start), end: toMin(levers.dinnerWindow.end) };
+  const returnBy = toMin(levers.returnByLatest);
   const restEvery = levers.restBreakEveryMin;
+  const use = args.restaurantUse ?? new Map<string, number>();
 
   // ---- build stops
-  const stops: Stop[] = [];
+  const stops: ActivityStop[] = [];
   for (const id of itemIds) {
     const p = pool.pois.find((x) => x.id === id);
     if (p) {
       const forced = args.variantIds?.has(id) && !p.variant ? p.poi.variants?.[0] ?? null : null;
       const variant = forced ?? p.variant;
-      const duration = forced ? Math.round(forced.durationMin.typical * levers.durationMultiplier) : p.durationMin;
       const acc = forced ? { ...p.accessibility, ...forced.accessibility } : p.accessibility;
       stops.push({
         kind: "activity",
         refId: id,
         title: variant ? `${p.poi.name} — ${variant.name.replace(/^.*?–\s*/, "")}` : p.poi.name,
         loc: { lat: p.poi.lat, lng: p.poi.lng, name: p.poi.name },
-        durationMin: duration,
+        durationMin: forced ? Math.round(forced.durationMin.typical * levers.durationMultiplier) : p.durationMin,
         openRanges: p.poi.openingHours[frame.weekday as keyof typeof p.poi.openingHours].map(([o, c]) => [toMin(o), toMin(c)]),
         fixedStarts: null,
         bestTimeOfDay: p.poi.bestTimeOfDay,
@@ -125,7 +146,8 @@ export function scheduleDay(args: {
     if (x) {
       const operates = x.experience.daysOperating.includes(frame.weekday as never);
       const linked = pool.pois.find((pp) => x.experience.linkedPoiIds.includes(pp.id))?.poi;
-      const loc = linked ? { lat: linked.lat, lng: linked.lng, name: x.experience.name } : { ...hotelLoc, name: x.experience.name };
+      // Tours with transport pick you up at the hotel.
+      const loc = x.experience.includesTransport || !linked ? { ...hotelLoc, name: x.experience.name } : { lat: linked.lat, lng: linked.lng, name: x.experience.name };
       stops.push({
         kind: "activity",
         refId: id,
@@ -151,16 +173,19 @@ export function scheduleDay(args: {
   const allStops: Stop[] = needsLunch ? [...stops, { kind: "lunch" }] : stops;
 
   // ---- helpers
-  const nearestRestaurant = (from: LatLng, meal: "lunch" | "dinner") => {
+  /** Nearest suitable restaurant, nudged away from ones used on other days; never one already used today. */
+  const pickRestaurant = (from: LatLng, meal: "lunch" | "dinner", usedToday: Set<string>) => {
+    const effKm = (r: { id: string }, km: number) => km + REPEAT_RESTAURANT_KM * (use.get(r.id) ?? 0);
     const options = pool.restaurants
-      .filter((r) => r.mealTypes.includes(meal))
+      .filter((r) => r.mealTypes.includes(meal) && !usedToday.has(r.id))
       .map((r) => ({ r, km: haversineKm(from, r) }))
-      .sort((a, b) => a.km - b.km);
-    return options[0] && options[0].km <= MAX_RESTAURANT_KM ? options[0].r : null;
+      .filter((o) => o.km <= MAX_RESTAURANT_KM)
+      .sort((a, b) => effKm(a.r, a.km) - effKm(b.r, b.km));
+    return options[0]?.r ?? null;
   };
   const mealCost = (band: Tier) => MEAL_INR_PER_PERSON[band] * ctx.pax;
 
-  function earliestStart(s: Extract<Stop, { kind: "activity" }>, arrive: number): number | null {
+  function earliestStart(s: ActivityStop, arrive: number): number | null {
     if (s.fixedStarts) return s.fixedStarts.find((st) => st >= arrive) ?? null;
     for (const [o, c] of s.openRanges) {
       const start = Math.max(arrive, o);
@@ -180,11 +205,16 @@ export function scheduleDay(args: {
   // ---- simulate one ordering
   function simulate(order: Stop[]): SimResult {
     const evs: Ev[] = [];
-    const pen: Record<string, number> = { travel: 0, waiting: 0, timeOfDay: 0, avoidTimes: 0, crowd: 0, lateMeal: 0, freeTimeShort: 0, skipped: 0 };
+    const pen: Record<string, number> = {
+      travel: 0, waiting: 0, timeOfDay: 0, avoidTimes: 0, crowd: 0, lateMeal: 0, freeTimeShort: 0,
+      walking: 0, skipped: 0, hardMeal: 0, lateReturn: 0,
+    };
     const dropped: SimResult["dropped"] = [];
+    const usedToday = new Set<string>();
     let time = frame.startMin;
     let pos: Loc = hotelLoc;
     let sinceRest = 0;
+    let pendingBuffer = 0; // slack after a visit; a meal absorbs it
     let lastActivity = "";
 
     const go = (to: Loc, flat: boolean, at: number) => {
@@ -199,20 +229,29 @@ export function scheduleDay(args: {
           walkKm: taxi ? 0 : leg.km, transitMin: taxi ? leg.minutes : 0, tradeoffs: [],
         });
         pen.travel += leg.minutes;
+        if (!taxi && args.minimizeWalking) pen.walking += leg.km * W.walkingPerKm;
       }
       pos = to;
       return at + leg.minutes;
     };
 
+    const eatAt = (meal: "lunch" | "dinner", from: LatLng) => {
+      const r = pickRestaurant(from, meal, usedToday);
+      if (r) usedToday.add(r.id);
+      return r;
+    };
+
     for (const s of order) {
       if (s.kind === "lunch") {
-        const r = nearestRestaurant(pos, "lunch");
+        pendingBuffer = 0;
+        const r = eatAt("lunch", pos);
         const loc: Loc = r ? { lat: r.lat, lng: r.lng, name: r.name } : pos;
         const leg = localLeg(pos, loc, cityId, levers, { flatTerrain: true, forceTaxi: args.forceTaxi });
         const start = Math.max(time + leg.minutes, lunch.start);
         const tradeoffs: string[] = [];
         if (start > lunch.end) {
           pen.lateMeal += (start - lunch.end) * W.lateMealPerMin;
+          if (levers.mealWindowsHard && start > lunch.end + MEAL_GRACE_MIN) pen.hardMeal += W.hard;
           tradeoffs.push(`Late lunch${lastActivity ? ` so ${lastActivity} fits its opening hours` : ""}`);
         }
         pen.waiting += (start - time - leg.minutes) * W.lunchWaitPerMin;
@@ -228,6 +267,8 @@ export function scheduleDay(args: {
         continue;
       }
 
+      time += pendingBuffer;
+      pendingBuffer = 0;
       if (sinceRest >= restEvery) {
         evs.push({ type: "rest", start: time, end: time + REST_MIN, title: "Rest / chai break", refId: null, cost: 0, walkKm: 0, transitMin: 0, tradeoffs: [] });
         time += REST_MIN;
@@ -255,7 +296,8 @@ export function scheduleDay(args: {
       });
       sinceRest += s.durationMin + (leg.mode === "walk" ? leg.minutes : 0);
       lastActivity = s.title;
-      time = end + Math.round(levers.bufferPct * s.durationMin); // buffer shows up as a gap
+      time = end;
+      pendingBuffer = Math.round(levers.bufferPct * s.durationMin);
     }
 
     // ---- end of day
@@ -264,11 +306,14 @@ export function scheduleDay(args: {
       evs.push({ type: "transfer", start: time, end: time, title: `Collect bags and depart ${cityId}`, refId: null, cost: 0, walkKm: 0, transitMin: 0, tradeoffs: [] });
     } else {
       const atHotel = go(hotelLoc, true, time);
-      const r = nearestRestaurant(hotelLoc, "dinner");
+      const r = eatAt("dinner", hotelLoc);
       const dLoc: Loc = r ? { lat: r.lat, lng: r.lng, name: r.name } : hotelLoc;
       const legMin = localLeg(hotelLoc, dLoc, cityId, levers, { flatTerrain: true, forceTaxi: args.forceTaxi }).minutes;
+      const dur = r?.avgMealMin ?? MEAL_FALLBACK_MIN;
+      // Ideal: full free time, dinner in its window, back by returnByLatest.
       let dinnerStart = Math.max(dinner.start, atHotel + levers.freeTimeMin + legMin);
-      if (dinnerStart > dinner.end) dinnerStart = Math.max(dinner.end, atHotel + legMin);
+      dinnerStart = Math.min(dinnerStart, dinner.end, returnBy - dur - legMin);
+      dinnerStart = Math.max(dinnerStart, atHotel + legMin); // can't eat before getting there
       const leave = dinnerStart - legMin;
       const free = leave - atHotel;
       if (free < levers.freeTimeMin) pen.freeTimeShort += (levers.freeTimeMin - free) * W.freeTimeShortPerMin;
@@ -276,10 +321,10 @@ export function scheduleDay(args: {
         evs.push({ type: "free_time", start: atHotel, end: leave, title: "Free time / rest at hotel", refId: null, cost: 0, walkKm: 0, transitMin: 0, tradeoffs: [] });
       }
       go(dLoc, true, leave);
-      const dur = r?.avgMealMin ?? MEAL_FALLBACK_MIN;
       const dinnerTradeoffs: string[] = [];
       if (dinnerStart > dinner.end) {
         pen.lateMeal += (dinnerStart - dinner.end) * W.lateMealPerMin;
+        if (levers.mealWindowsHard && dinnerStart > dinner.end + MEAL_GRACE_MIN) pen.hardMeal += W.hard;
         dinnerTradeoffs.push("Later dinner than you'd like, because of the long day");
       }
       evs.push({
@@ -288,6 +333,7 @@ export function scheduleDay(args: {
         cost: mealCost(r?.priceBand ?? ctx.budgetTier), walkKm: 0, transitMin: 0,
       });
       const back = go(hotelLoc, true, dinnerStart + dur);
+      if (back > returnBy) pen.lateReturn += W.hard + (back - returnBy);
       evs.push({
         type: "hotel", start: back, end: back, title: `Overnight at ${hotel.area.name}`, refId: hotel.area.id,
         cost: hotel.area.hotelPriceBand[ctx.budgetTier] * rooms, walkKm: 0, transitMin: 0, tradeoffs: [],
@@ -324,12 +370,17 @@ export function scheduleDay(args: {
   if (frame.transfer) {
     const { hop } = frame.transfer;
     const mid = (hop.edge.fareBandINR.min + hop.edge.fareBandINR.max) / 2;
+    const notes: string[] = [];
+    const lead = PRE_DEPARTURE_MIN[hop.edge.mode] ?? 0;
+    if (lead) notes.push(`Leave the hotel ~${fromMin(frame.transfer.startMin)} (your usual start): book a ${hop.edge.mode} departing around ${fromMin(frame.transfer.startMin + lead)}`);
+    if (frame.transfer.endMin > frame.endMin) notes.push(`Arrives after your usual day end (${levers.dayEnd}); an earlier departure would help`);
+    if (hop.alternatives.length) notes.push(`Alternatives: ${hop.alternatives.join(", ")}`);
     prefix.push({
       type: "transfer", start: frame.transfer.startMin, end: frame.transfer.endMin,
       title: `${cap(hop.edge.mode)} ${hop.from} → ${hop.to} (door to door)`, refId: null,
       transfer: { mode: hop.edge.mode, distanceKm: 0 },
       cost: Math.round(mid * (hop.edge.mode === "road" ? cars : ctx.pax)), walkKm: 0, transitMin: 0,
-      tradeoffs: hop.alternatives.length ? [`Alternatives: ${hop.alternatives.join(", ")}`] : [],
+      tradeoffs: notes,
     });
     prefix.push({ type: "hotel", start: frame.transfer.endMin, end: frame.startMin, title: `Check in at ${hotel.area.name}`, refId: hotel.area.id, cost: 0, walkKm: 0, transitMin: 0, tradeoffs: [] });
   } else if (frame.isArrival) {
@@ -369,7 +420,7 @@ export function scheduleDay(args: {
     return p ? p.scoreParts.filter((s) => s.value > 0).map((s) => s.label) : [];
   }
 
-  // Requested far day trips get a transit allowance so the validator doesn't reject what the user asked for.
+  // Requested day trips get a transit allowance so the validator doesn't reject what the user asked for.
   let dayTripTransitAllowanceMin = 0;
   for (const id of itemIds) {
     const p = pool.pois.find((x) => x.id === id);
@@ -384,14 +435,52 @@ export function scheduleDay(args: {
     costINR: withGaps.reduce((s, e) => s + e.cost, 0),
   };
   return t.finish(
-    { frame, items, dropped: sim.dropped, penalties: roundAll(sim.penalties), totals, dayTripTransitAllowanceMin },
+    { frame, items, dropped: sim.dropped, penalties: roundAll(sim.penalties), totals, dayTripTransitAllowanceMin, startOverride: null },
     { items: items.length, dropped: sim.dropped.map((d) => d.refId), totals },
   );
 }
 
+/** How bad the timing is: dropped sights ≫ validator failures (hard meals, late return) ≫ soft late meals. */
+const timingSeverity = (d: ScheduledDay) =>
+  d.dropped.length * 1e6 + ((d.penalties.hardMeal ?? 0) + (d.penalties.lateReturn ?? 0)) * 1e3 + (d.penalties.lateMeal ?? 0);
+const hasTimingProblems = (d: ScheduledDay) => timingSeverity(d) > 0;
+
+/**
+ * Schedule a day; if it holds a day trip and the normal start causes timing
+ * problems, try starting earlier in 30-minute steps (down to the frame's
+ * earliestStartMin) and keep the latest start that fixes them.
+ */
+export function scheduleDayBest(args: ScheduleArgs): StageResult<ScheduledDay> {
+  const base = scheduleDay(args);
+  const { frame, pool } = args;
+  const hasDayTrip = args.itemIds.some((id) => pool.pois.find((p) => p.id === id)?.isDayTrip);
+  if (!hasDayTrip || frame.earliestStartMin >= frame.startMin || !hasTimingProblems(base.result)) return base;
+
+  let best = base;
+  for (let start = frame.startMin - EARLY_START_STEP_MIN; start >= frame.earliestStartMin; start -= EARLY_START_STEP_MIN) {
+    const earlier = scheduleDay({ ...args, frame: { ...frame, startMin: start, capacityMin: frame.capacityMin + (frame.startMin - start) } });
+    if (!hasTimingProblems(earlier.result)) { best = earlier; break; }
+    // Nothing fully clean yet: keep the least-bad start (later start wins ties).
+    if (timingSeverity(earlier.result) < timingSeverity(best.result)) best = earlier;
+  }
+  if (best === base) {
+    base.trace.decisions.push({ what: "kept normal start", why: `starting as early as ${fromMin(frame.earliestStartMin)} doesn't help` });
+    return base;
+  }
+
+  const from = frame.startMin;
+  const to = best.result.frame.startMin;
+  const note = `Starts at ${fromMin(to)} instead of ${fromMin(from)} so lunch and return aren't late`;
+  const first = best.result.items.find((i) => i.type !== "hotel") ?? best.result.items[0];
+  if (first) first.tradeoffs.unshift(note);
+  best.result.startOverride = { fromMin: from, toMin: to };
+  best.trace.decisions.unshift({ what: `early start ${fromMin(to)}`, why: `normal ${fromMin(from)} start caused late meals/return or a dropped sight` });
+  return best;
+}
+
 function greedyOrder(stops: Stop[], start: LatLng): Stop[] {
   // Nearest-neighbour from the hotel; lunch goes in after roughly half the places.
-  const acts = stops.filter((s): s is Extract<Stop, { kind: "activity" }> => s.kind === "activity");
+  const acts = stops.filter((s): s is ActivityStop => s.kind === "activity");
   const out: Stop[] = [];
   let pos = start;
   while (acts.length) {

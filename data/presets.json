@@ -1,6 +1,6 @@
 {
   "combine": {
-    "doc": "Start from `default`, then apply every selected preset. When more than one preset sets the same lever, the strictest value wins, per the rule below: later dayStart (max), earlier dayEnd (min), fewer major items (min), more buffer / free time (max), less walking and transit (min), longer stays per base (max), slower durations (max), taxi sooner (min), rest breaks more often (min). Meal windows use 'intersect': the overlap of all windows given; if they don't overlap, keep the default window and log it in the trace. Presets apply in any order; the result is the same.",
+    "doc": "Start from `default`, then apply every selected preset. When more than one preset sets the same lever, the strictest value wins, per the rule below: later dayStart (max), earlier dayEnd (min), fewer major items (min), more buffer / free time (max), less walking and transit (min), longer stays per base (max), slower durations (max), taxi sooner (min), rest breaks more often (min), back at the hotel earlier (returnByLatest: min), and hard meal windows if any preset asks for them (mealWindowsHard: max, true beats false). Meal windows use 'intersect': the overlap of all windows given; if they don't overlap, keep the default window and log it in the trace. Presets apply in any order; the result is the same.",
     "rules": {
       "dayStart": "max",
       "dayEnd": "min",
@@ -15,7 +15,9 @@
       "preferTaxiAboveWalkMin": "min",
       "lunchWindow": "intersect",
       "dinnerWindow": "intersect",
-      "restBreakEveryMin": "min"
+      "restBreakEveryMin": "min",
+      "mealWindowsHard": "max",
+      "returnByLatest": "min"
     }
   },
   "presets": {
@@ -31,8 +33,16 @@
       "minNightsPerBase": 1,
       "durationMultiplier": 1.0,
       "preferTaxiAboveWalkMin": 20,
-      "lunchWindow": { "start": "12:30", "end": "14:30" },
-      "dinnerWindow": { "start": "19:30", "end": "21:30" },
+      "lunchWindow": {
+        "start": "12:30",
+        "end": "14:30"
+      },
+      "dinnerWindow": {
+        "start": "19:30",
+        "end": "21:30"
+      },
+      "mealWindowsHard": false,
+      "returnByLatest": "21:30",
       "restBreakEveryMin": 180
     },
     "relaxed": {
@@ -61,13 +71,22 @@
     },
     "late_riser": {
       "dayStart": "10:30",
-      "lunchWindow": { "start": "13:30", "end": "15:00" }
+      "lunchWindow": {
+        "start": "13:30",
+        "end": "15:00"
+      }
     },
     "early_bird": {
       "dayStart": "07:00",
       "dayEnd": "19:30",
-      "lunchWindow": { "start": "12:00", "end": "13:30" },
-      "dinnerWindow": { "start": "19:00", "end": "20:30" }
+      "lunchWindow": {
+        "start": "12:00",
+        "end": "13:30"
+      },
+      "dinnerWindow": {
+        "start": "19:00",
+        "end": "20:30"
+      }
     },
     "short_walks": {
       "maxWalkKmPerDay": 4,
@@ -94,8 +113,17 @@
       "minNightsPerBase": 2,
       "durationMultiplier": 1.25,
       "preferTaxiAboveWalkMin": 8,
-      "dinnerWindow": { "start": "19:00", "end": "20:30" },
-      "restBreakEveryMin": 90
+      "dinnerWindow": {
+        "start": "19:00",
+        "end": "21:00"
+      },
+      "restBreakEveryMin": 90,
+      "lunchWindow": {
+        "start": "12:30",
+        "end": "14:30"
+      },
+      "mealWindowsHard": true,
+      "returnByLatest": "20:30"
     },
     "family_kids": {
       "dayEnd": "20:00",
@@ -107,15 +135,28 @@
       "maxTransitMinPerDay": 180,
       "durationMultiplier": 1.1,
       "preferTaxiAboveWalkMin": 12,
-      "lunchWindow": { "start": "12:30", "end": "14:00" },
-      "dinnerWindow": { "start": "19:00", "end": "20:30" },
-      "restBreakEveryMin": 120
+      "lunchWindow": {
+        "start": "12:30",
+        "end": "14:30"
+      },
+      "dinnerWindow": {
+        "start": "19:00",
+        "end": "21:00"
+      },
+      "restBreakEveryMin": 120,
+      "mealWindowsHard": true
     },
     "foodie": {
       "maxMajorItemsPerDay": 3,
       "freeTimeMin": 45,
-      "lunchWindow": { "start": "12:30", "end": "15:00" },
-      "dinnerWindow": { "start": "19:30", "end": "22:00" }
+      "lunchWindow": {
+        "start": "12:30",
+        "end": "15:00"
+      },
+      "dinnerWindow": {
+        "start": "19:30",
+        "end": "22:00"
+      }
     }
   }
 }

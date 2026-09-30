@@ -120,9 +120,37 @@ function rank(poi: Poi, variant: PoiVariant | null, dates: string[], constraints
 
 // ---------------------------------------------------------------------------
 
-export function isOpenOn(poi: Poi, date: string, closedByEvent: Set<string>): boolean {
+export function isOpenOn(poi: Poi, date: string, closedByEvent: Set<string> = new Set()): boolean {
   const wd = weekdayOf(date);
   return !poi.weeklyOff.includes(wd) && poi.openingHours[wd].length > 0 && !closedByEvent.has(`${poi.id}|${date}`);
+}
+
+/**
+ * All hard filters in one place, used by the pool (step by step, for the funnel)
+ * and by allocateNights (so demand only counts places this group can actually visit).
+ */
+export function hardFilterFailure(
+  poi: Poi,
+  f: { dates: string[]; rules: MobilityRules; priceCap: number; constraints: Constraint[]; closedByEvent?: Set<string> },
+): { step: "not excluded" | "open on a leg date" | "mobility" | "budget"; reason: string } | null {
+  const excluded = excludedReason(poi, f.constraints);
+  if (excluded) return { step: "not excluded", reason: excluded };
+  if (!f.dates.some((d) => isOpenOn(poi, d, f.closedByEvent))) {
+    return { step: "open on a leg date", reason: `closed on all of ${[...new Set(f.dates.map(weekdayOf))].join(", ")}` };
+  }
+  const v = accessibleVersion(poi, f.rules);
+  if (!v.ok) return { step: "mobility", reason: v.reason };
+  if (poi.priceINR > f.priceCap) return { step: "budget", reason: `₹${poi.priceINR} > ₹${Math.round(f.priceCap)} per person cap` };
+  return null;
+}
+
+/** For a must-see that fails mobility, say whether a lighter version exists and why it doesn't help. */
+function variantNote(poi: Poi, step: string, rules: MobilityRules): string | null {
+  if (!poi.variants?.length) return step === "mobility" ? "No lighter version available." : null;
+  if (step !== "mobility") return null;
+  return poi.variants
+    .map((v) => `Lighter version "${v.name}" also fails (${accessibilityFails(applyVariant(poi, v), rules)}).`)
+    .join(" ");
 }
 
 export function buildCandidatePool(args: {
@@ -142,13 +170,16 @@ export function buildCandidatePool(args: {
   const t = startTrace("buildCandidatePool", { cityId, dates, budgetTier: ctx.budgetTier });
   const city = args.cities.find((c) => c.id === cityId)!;
   const funnel: FunnelStep[] = [];
-  const step = <T extends { id: string }>(label: string, items: T[], keep: (x: T) => string | null): T[] => {
+  const excludedMustSees: CandidatePool["excludedMustSees"] = [];
+  const rules = mobilityRules(levers, constraints);
+  const step = (label: string, items: Poi[], keep: (x: Poi) => string | null): Poi[] => {
     const removed: string[] = [];
     const kept = items.filter((x) => {
       const why = keep(x);
       if (why === null) return true;
       removed.push(`${x.id}: ${why}`);
       if (ctx.requestedPoiIds.has(x.id)) t.decide(`requested ${x.id} removed`, why);
+      if (x.tier === "must_see") excludedMustSees.push({ id: x.id, name: x.name, reason: why, variantNote: variantNote(x, label, rules) });
       return false;
     });
     funnel.push({ step: label, remaining: kept.length, removed });
@@ -164,22 +195,24 @@ export function buildCandidatePool(args: {
   let pois = args.pois.filter((p) => p.cityId === cityId || p.isDayTripFrom === cityId);
   funnel.push({ step: "in city (incl. day trips)", remaining: pois.length, removed: [] });
 
-  pois = step("not excluded", pois, (p) => excludedReason(p, constraints));
-  pois = step("open on a leg date", pois, (p) => (dates.some((d) => isOpenOn(p, d, closedByEvent)) ? null : `closed on all of ${dates.map(weekdayOf).join(", ")}`));
-
-  const rules = mobilityRules(levers, constraints);
   t.decide("mobility rules", rules.why.join("; "), rules);
-  const variantOf = new Map<string, PoiVariant | null>();
-  pois = step("mobility", pois, (p) => {
-    const v = accessibleVersion(p, rules);
-    if (!v.ok) return v.reason;
-    variantOf.set(p.id, v.variant);
-    if (v.variant) t.decide(`${p.id} → variant "${v.variant.name}"`, `full visit fails mobility: ${accessibilityFails(p.accessibility, rules)}`);
-    return null;
-  });
-
   const priceCap = priceCapPerPerson(city, ctx.budgetTier, constraints, dates.length, ctx.pax);
-  pois = step("budget", pois, (p) => (p.priceINR > priceCap ? `₹${p.priceINR} > ₹${Math.round(priceCap)} per person cap` : null));
+  const filters = { dates, rules, priceCap, constraints, closedByEvent };
+  // Same checks as hardFilterFailure, applied one step at a time so the funnel shows where things drop out.
+  for (const label of ["not excluded", "open on a leg date", "mobility", "budget"] as const) {
+    pois = step(label, pois, (p) => {
+      const fail = hardFilterFailure(p, filters);
+      return fail?.step === label ? fail.reason : null;
+    });
+  }
+  const variantOf = new Map<string, PoiVariant | null>();
+  for (const p of pois) {
+    const v = accessibleVersion(p, rules);
+    if (v.ok && v.variant) {
+      variantOf.set(p.id, v.variant);
+      t.decide(`${p.id} → variant "${v.variant.name}"`, `full visit fails mobility: ${accessibilityFails(p.accessibility, rules)}`);
+    }
+  }
 
   const ranked: PoolPoi[] = pois.map((poi) => {
     const variant = variantOf.get(poi.id) ?? null;
@@ -212,8 +245,14 @@ export function buildCandidatePool(args: {
     return true;
   });
 
+  const excludedExperiences: CandidatePool["excludedExperiences"] = [];
   const experiences = args.experiences
-    .filter((x) => x.cityId === cityId && !accessibilityFails(x.accessibility, rules) && x.priceINR <= priceCap * 2)
+    .filter((x) => {
+      if (x.cityId !== cityId) return false;
+      const why = accessibilityFails(x.accessibility, rules) ?? (x.priceINR > priceCap * 2 ? `₹${x.priceINR} over budget` : null);
+      if (why) excludedExperiences.push({ id: x.id, reason: why, linkedPoiIds: x.linkedPoiIds });
+      return !why;
+    })
     .map((experience) => ({
       id: experience.id,
       experience,
@@ -222,7 +261,8 @@ export function buildCandidatePool(args: {
     }))
     .filter((x) => x.operatingDates.length > 0);
 
-  return t.finish({ cityId, pois: top, restaurants, experiences, funnel }, {
+  for (const x of excludedExperiences) t.decide(`experience ${x.id} left out`, x.reason);
+  return t.finish({ cityId, pois: top, restaurants, experiences, funnel, excludedMustSees, excludedExperiences }, {
     funnel: funnel.map((f) => `${f.step}: ${f.remaining}`),
     top10: top.slice(0, 10).map((p) => `${p.id} (${p.score}${p.variant ? `, variant: ${p.variant.name}` : ""})`),
     restaurants: restaurants.length,

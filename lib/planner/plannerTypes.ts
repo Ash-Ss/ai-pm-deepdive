@@ -34,12 +34,17 @@ export type PoolExperience = { id: string; experience: Experience; score: number
 
 export type FunnelStep = { step: string; remaining: number; removed: string[] };
 
+export type ExcludedMustSee = { id: string; name: string; reason: string; variantNote: string | null };
+
 export type CandidatePool = {
   cityId: string;
   pois: PoolPoi[];
   restaurants: Restaurant[];
   experiences: PoolExperience[];
   funnel: FunnelStep[];
+  excludedMustSees: ExcludedMustSee[];
+  /** Experiences left out, with why (shown in traces; e.g. too much walking). */
+  excludedExperiences: { id: string; reason: string; linkedPoiIds: string[] }[];
 };
 
 export type LegAlloc = {
@@ -65,6 +70,10 @@ export type DayFrame = {
   /** Sightseeing window, minutes since midnight. */
   startMin: number;
   endMin: number;
+  /** How early the scheduler may start instead, for long day-trip days (= startMin if not allowed). */
+  earliestStartMin: number;
+  /** Arrival/travel day for a relaxed or elderly group: only light items near the hotel. */
+  lightOnly: boolean;
   capacityMin: number;
   maxMajorItems: number;
   /** 1 = full energy; lower after travel. */
@@ -92,4 +101,6 @@ export type ScheduledDay = {
   totals: { walkKm: number; transitMin: number; costINR: number };
   /** Transit allowance above levers for explicitly requested far day trips. */
   dayTripTransitAllowanceMin: number;
+  /** Set when the day was started earlier than dayStart to make a day trip work. */
+  startOverride: { fromMin: number; toMin: number } | null;
 };

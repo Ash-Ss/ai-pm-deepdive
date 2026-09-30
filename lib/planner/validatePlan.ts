@@ -6,22 +6,28 @@
  * interest mix) and are reported, not enforced.
  *
  * Repair works on day *states* (assigned IDs + options) and re-runs the
- * scheduler, trying in order: walk→taxi, lighter variant, move an item to a
+ * scheduler, trying in order: walk→taxi and reorder (walking problems only),
+ * lighter variant, move an item to a
  * day with room, drop the lowest-priority item. Max 2 passes.
  */
 import type { City, Constraint, Levers, StageResult, Tier } from "../types";
 import { interestTags, ofType } from "./constraints";
 import type { CandidatePool, DayFrame, PlannerContext, ScheduledDay } from "./plannerTypes";
+import { MEAL_GRACE_MIN } from "./scheduleDay";
 import { toMin } from "./time";
 import { startTrace } from "./trace";
 
-export type ViolationRule = "closed" | "overlap" | "outside_window" | "walk_km" | "transit" | "duplicate" | "anchor" | "unscheduled";
+export type ViolationRule =
+  | "closed" | "overlap" | "outside_window" | "walk_km" | "transit" | "duplicate" | "anchor" | "unscheduled"
+  | "late_return" | "meal_window" | "restaurant_repeat";
 export type Violation = { dayNumber: number; rule: ViolationRule; refId?: string; detail: string };
 export type ValidationReport = {
   ok: boolean;
   hard: Violation[];
   soft: {
     pace: { dayNumber: number; majorItems: number; maxMajorItems: number; overLimit: boolean }[];
+    /** Restaurants used on more than one day (allowed, but less varied). */
+    restaurantRepeats: { restaurantId: string; days: number[] }[];
     budget: { estimatedINR: number; tierBenchmarkINR: number; ratio: number; capINR: number | null; overCap: boolean };
     interestMix: { matched: number; total: number; share: number };
   };
@@ -73,6 +79,27 @@ export function validatePlan(days: ScheduledDay[], v: ValidateCtx): StageResult<
       else seen.set(id, f.dayNumber);
     }
 
+    // Back at the hotel in time (the zero-length "Overnight" marker is the return time).
+    const overnight = day.items.find((i) => i.type === "hotel" && i.title.startsWith("Overnight"));
+    if (overnight && toMin(overnight.startTime) > toMin(levers.returnByLatest)) {
+      hard.push({ dayNumber: f.dayNumber, rule: "late_return", detail: `back at hotel ${overnight.startTime}, after ${levers.returnByLatest}` });
+    }
+
+    // Meals: never the same place twice in a day; inside their windows when those are hard.
+    const meals = day.items.filter((i) => i.type === "meal");
+    const mealIds = meals.map((m) => m.refId).filter((id): id is string => !!id);
+    if (new Set(mealIds).size < mealIds.length) {
+      hard.push({ dayNumber: f.dayNumber, rule: "restaurant_repeat", detail: "lunch and dinner at the same restaurant" });
+    }
+    if (levers.mealWindowsHard) {
+      for (const m of meals) {
+        const w = m.title.startsWith("Lunch") ? levers.lunchWindow : levers.dinnerWindow;
+        if (toMin(m.startTime) < toMin(w.start) || toMin(m.startTime) > toMin(w.end) + MEAL_GRACE_MIN) {
+          hard.push({ dayNumber: f.dayNumber, rule: "meal_window", detail: `${m.title} at ${m.startTime}, outside ${w.start}–${w.end}` });
+        }
+      }
+    }
+
     if (day.totals.walkKm > levers.maxWalkKmPerDay) {
       hard.push({ dayNumber: f.dayNumber, rule: "walk_km", detail: `${day.totals.walkKm} km walking > ${levers.maxWalkKmPerDay} km` });
     }
@@ -113,11 +140,20 @@ export function validatePlan(days: ScheduledDay[], v: ValidateCtx): StageResult<
     return p && [...p.poi.interestTags, p.poi.category].some((tag) => liked.has(tag));
   }).length;
 
+  const restaurantDays = new Map<string, number[]>();
+  for (const d of days) {
+    for (const m of d.items.filter((i) => i.type === "meal" && i.refId)) {
+      restaurantDays.set(m.refId!, [...new Set([...(restaurantDays.get(m.refId!) ?? []), d.frame.dayNumber])]);
+    }
+  }
+  const restaurantRepeats = [...restaurantDays].filter(([, ds]) => ds.length > 1).map(([restaurantId, ds]) => ({ restaurantId, days: ds }));
+
   const report: ValidationReport = {
     ok: hard.length === 0,
     hard,
     soft: {
       pace,
+      restaurantRepeats,
       budget: { estimatedINR, tierBenchmarkINR, ratio: round2(estimatedINR / Math.max(1, tierBenchmarkINR)), capINR: cap, overCap: cap !== null && estimatedINR > cap },
       interestMix: { matched, total: allActs.length, share: allActs.length ? round2(matched / allActs.length) : 0 },
     },
@@ -137,11 +173,12 @@ export type DayState = {
   frame: DayFrame;
   itemIds: string[];
   forceTaxi: boolean;
+  minimizeWalking: boolean;
   variantIds: Set<string>;
   reasons: Record<string, string[]>;
   tradeoffs: Record<string, string[]>;
 };
-export type RepairAction = { pass: number; dayNumber: number; strategy: "walk_to_taxi" | "variant" | "move" | "drop"; refId?: string; detail: string; accepted: boolean };
+export type RepairAction = { pass: number; dayNumber: number; strategy: "walk_to_taxi" | "reorder" | "variant" | "move" | "drop"; refId?: string; detail: string; accepted: boolean };
 
 const MAX_PASSES = 2;
 
@@ -150,6 +187,8 @@ export function repairPlan(args: {
   schedule: (s: DayState) => ScheduledDay;
   validate: (days: ScheduledDay[]) => ValidationReport;
   pools: Map<string, CandidatePool>;
+  /** Extra placement rule for moves (e.g. only light items onto light travel days). */
+  canPlace?: (refId: string, target: DayState) => boolean;
 }): StageResult<{ states: DayState[]; days: ScheduledDay[]; report: ValidationReport; actions: RepairAction[]; warnings: string[] }> {
   const t = startTrace("repairPlan", { days: args.states.length });
   let states = args.states.map(clone);
@@ -185,27 +224,43 @@ export function repairPlan(args: {
       const violations = () => report.hard.filter((h) => h.dayNumber === dayNumber);
       if (violations().length === 0) continue;
 
-      // Target: the item a violation names, else the lowest-priority item on the day.
+      const walkingProblem = () => violations().some((v) => v.rule === "walk_km");
+      // Target: the item a violation names; for walking, the lowest-priority item that
+      // actually involves walking; otherwise the lowest-priority item on the day.
       const target = (): string | undefined => {
         const named = violations().find((v) => v.refId && states[idx].itemIds.includes(v.refId))?.refId;
         if (named) return named;
         return [...states[idx].itemIds]
           .map((id) => ({ id, p: pool.pois.find((x) => x.id === id) }))
-          .filter((x) => !x.p?.requested)
+          .filter((x) => !x.p?.requested && (!walkingProblem() || (x.p?.accessibility.walkingRequiredM ?? 0) > 0))
           .sort((a, b) => (a.p?.score ?? 0) - (b.p?.score ?? 0))[0]?.id;
       };
 
-      // 1. walk → taxi
-      if (violations().some((v) => v.rule === "walk_km") && !states[idx].forceTaxi) {
-        attempt(pass, dayNumber, "walk_to_taxi", undefined, "take autos/taxis instead of walking between stops", (s) => {
-          s[idx].forceTaxi = true;
-          return [dayNumber];
-        });
+      if (walkingProblem()) {
+        // 1. walk → taxi for the legs between stops (short hops next door stay on foot)
+        if (!states[idx].forceTaxi) {
+          attempt(pass, dayNumber, "walk_to_taxi", undefined, "take autos/taxis between stops instead of walking", (s) => {
+            s[idx].forceTaxi = true;
+            return [dayNumber];
+          });
+        }
+        // 2. reorder the day to minimise walking
+        if (walkingProblem() && !states[idx].minimizeWalking) {
+          attempt(pass, dayNumber, "reorder", undefined, "reorder stops to minimise walking", (s) => {
+            s[idx].minimizeWalking = true;
+            return [dayNumber];
+          });
+        }
       }
       if (violations().length === 0) continue;
 
-      // 2. lighter variant
-      const vId = target();
+      // 3. lighter variant (for walking: the stop with the most walking that has one)
+      const vId = walkingProblem()
+        ? states[idx].itemIds
+            .map((id) => pool.pois.find((p) => p.id === id))
+            .filter((p) => p && !p.variant && p.poi.variants?.length && !states[idx].variantIds.has(p.id))
+            .sort((a, b) => b!.accessibility.walkingRequiredM - a!.accessibility.walkingRequiredM)[0]?.id
+        : target();
       const vPoi = vId ? pool.pois.find((p) => p.id === vId) : undefined;
       if (vId && vPoi && !vPoi.variant && vPoi.poi.variants?.length && !states[idx].variantIds.has(vId)) {
         attempt(pass, dayNumber, "variant", vId, `switch ${vPoi.poi.name} to "${vPoi.poi.variants[0].name}"`, (s) => {
@@ -215,12 +270,13 @@ export function repairPlan(args: {
       }
       if (violations().length === 0) continue;
 
-      // 3. move to another day in the same leg with room
+      // 4. move to another day in the same leg with room
       const mId = target();
       if (mId) {
         const others = states
           .map((s, i) => ({ s, i }))
           .filter(({ s, i }) => i !== idx && s.frame.cityId === states[idx].frame.cityId && !s.frame.closedPoiIds.includes(mId) && s.itemIds.length < s.frame.maxMajorItems)
+          .filter(({ s }) => args.canPlace?.(mId, s) ?? !s.frame.lightOnly)
           .sort((a, b) => b.s.frame.capacityMin - a.s.frame.capacityMin);
         let moved = false;
         for (const { s: other, i: oi } of others) {
@@ -236,7 +292,7 @@ export function repairPlan(args: {
         if (moved && violations().length === 0) continue;
       }
 
-      // 4. drop the lowest-priority item (never one the user explicitly asked for)
+      // 5. drop the lowest-priority item (never one the user explicitly asked for)
       const dId = target();
       const dPoi = dId ? pool.pois.find((p) => p.id === dId) : undefined;
       if (dId && !dPoi?.requested) {

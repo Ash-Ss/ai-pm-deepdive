@@ -11,7 +11,7 @@
 import { type Catalogue, loadCatalogue } from "../catalogue";
 import type { Constraint, Day, Item, Leg, Plan, Trace, TripInput } from "../types";
 import { allocateNights } from "./allocateNights";
-import { type AssignFn, type AssignInput, sanitizeAssignment } from "./assignDays";
+import { type AssignFn, type AssignInput, isLightItem, sanitizeAssignment } from "./assignDays";
 import { chooseBaseArea } from "./baseArea";
 import { buildCandidatePool } from "./candidatePool";
 import { constraintsFromInput, dedupe, ofType } from "./constraints";
@@ -19,7 +19,9 @@ import { buildDayFrames } from "./dayFrames";
 import type { CandidatePool, HotelBase, PlannerContext, ScheduledDay } from "./plannerTypes";
 import { type ResolvedLevers, resolveLevers } from "./resolveLevers";
 import { classifyPlaces, routeOrder, type RouteResult } from "./routeOrder";
-import { scheduleDay } from "./scheduleDay";
+import { scheduleDayBest } from "./scheduleDay";
+import { fromMin, toMin } from "./time";
+import { isFarDayTrip } from "./geo";
 import { type DayState, repairPlan, type ValidationReport, validatePlan } from "./validatePlan";
 
 export type PipelineResult = {
@@ -105,6 +107,11 @@ export async function runPipeline(
         warnings.push(`You asked for ${poi.name}, but it can't be included (${why?.split(": ").slice(1).join(": ") ?? "filtered out"}).`);
       }
     }
+    // Every must-see we filter out gets explained, with any lighter version.
+    for (const m of pool.excludedMustSees) {
+      if (ctx.requestedPoiIds.has(m.id)) continue; // already explained above
+      warnings.push(`Skipped must-see ${m.name}: ${m.reason}.${m.variantNote ? ` ${m.variantNote}` : ""}`);
+    }
     const hotel = take(chooseBaseArea(city, pool, walkingLimited));
     const frames = take(buildDayFrames({ leg, levers, events: catalogue.events, constraints, pool }));
     pools.set(leg.cityId, pool);
@@ -119,31 +126,84 @@ export async function runPipeline(
   const states: DayState[] = assignInput.legs.flatMap((leg) =>
     leg.frames.map((frame) => {
       const a = assigned.days.find((d) => d.dayNumber === frame.dayNumber);
-      return { frame, itemIds: a?.itemIds ?? [], forceTaxi: false, variantIds: new Set<string>(), reasons: a?.reasons ?? {}, tradeoffs: {} };
+      return { frame, itemIds: a?.itemIds ?? [], forceTaxi: false, minimizeWalking: false, variantIds: new Set<string>(), reasons: a?.reasons ?? {}, tradeoffs: {} };
     }),
   );
-  const schedule = (s: DayState) =>
-    scheduleDay({
+  // Restaurant variety needs to know what other days already use, so remember the latest schedule of each day.
+  const latest = new Map<number, ScheduledDay>();
+  const restaurantUseExcept = (dayNumber: number) => {
+    const use = new Map<string, number>();
+    for (const [n, d] of latest) {
+      if (n === dayNumber) continue;
+      for (const m of d.items) if (m.type === "meal" && m.refId) use.set(m.refId, (use.get(m.refId) ?? 0) + 1);
+    }
+    return use;
+  };
+  const scheduleWithTrace = (s: DayState) => {
+    const r = scheduleDayBest({
       frame: s.frame, itemIds: s.itemIds, pool: pools.get(s.frame.cityId)!, levers, hotel: hotels.get(s.frame.cityId)!, ctx,
-      forceTaxi: s.forceTaxi, variantIds: s.variantIds, reasons: s.reasons, tradeoffs: s.tradeoffs, source: assigned.source,
-    }).result;
+      forceTaxi: s.forceTaxi, minimizeWalking: s.minimizeWalking, variantIds: s.variantIds, reasons: s.reasons, tradeoffs: s.tradeoffs,
+      restaurantUse: restaurantUseExcept(s.frame.dayNumber), source: assigned.source,
+    });
+    latest.set(s.frame.dayNumber, r.result);
+    return r;
+  };
+  const schedule = (s: DayState) => scheduleWithTrace(s).result;
   const validateCtx = { levers, constraints, pools, ctx, cities: catalogue.cities };
 
   // Keep one scheduling trace per day (from the initial pass) for the behind-the-scenes view.
-  for (const s of states) {
-    traces.push(scheduleDay({
-      frame: s.frame, itemIds: s.itemIds, pool: pools.get(s.frame.cityId)!, levers, hotel: hotels.get(s.frame.cityId)!, ctx,
-      reasons: s.reasons, source: assigned.source,
-    }).trace);
-  }
-  const initial = validatePlan(states.map(schedule), validateCtx);
+  const initialDays = states.map((s) => {
+    const r = scheduleWithTrace(s);
+    traces.push(r.trace);
+    return r.result;
+  });
+  const initial = validatePlan(initialDays, validateCtx);
   traces.push(initial.trace);
   const repaired = take(repairPlan({
     states, schedule, pools,
+    canPlace: (refId, target) => {
+      if (!target.frame.lightOnly) return true;
+      const p = pools.get(target.frame.cityId)!.pois.find((x) => x.id === refId);
+      return !!p && isLightItem(p, hotels.get(target.frame.cityId)!.area);
+    },
     validate: (days) => validatePlan(days, validateCtx).result,
   }));
   warnings.push(...repaired.warnings);
   const final = take(validatePlan(repaired.days, validateCtx));
+
+  // Early starts become rejectable chips: a soft day_window the UI can show. Rejecting it means sending
+  // back a hard day_window for that day, which stops dayFrames from allowing the override.
+  const chips: Constraint[] = [];
+  for (const d of repaired.days) {
+    if (!d.startOverride) continue;
+    const n = d.frame.dayNumber;
+    chips.push({
+      id: `auto-early-start-day-${n}`, type: "day_window", params: { start: fromMin(d.startOverride.toMin) },
+      strength: "soft", weightLevel: "medium", scope: `day:${n}`, source: "default", confidence: 1,
+      sourceText: `Day ${n} starts at ${fromMin(d.startOverride.toMin)} instead of ${fromMin(d.startOverride.fromMin)} so lunch and return aren't late`,
+    });
+  }
+
+  // Long requested day trips: say how much driving it really is, and offer the overnight alternative.
+  for (const d of repaired.days) {
+    const pool = pools.get(d.frame.cityId)!;
+    const hotel = hotels.get(d.frame.cityId)!.area;
+    for (const it of d.items.filter((i) => i.type === "activity")) {
+      const p = pool.pois.find((x) => x.id === it.refId);
+      if (!p?.isDayTrip || !p.requested) continue;
+      const drive = d.items.filter((i) => i.type === "transfer" && i.transfer?.mode === "auto_taxi").reduce((s, i) => s + (toMin(i.endTime) - toMin(i.startTime)), 0);
+      if (drive > levers.maxTransitMinPerDay) {
+        const carCost = d.items.filter((i) => i.type === "transfer").reduce((s, i) => s + (i.costINR ?? 0), 0);
+        warnings.push(
+          `Day ${d.frame.dayNumber}: ${p.poi.name} means ~${hm(drive)} in a car (your limit is ${hm(levers.maxTransitMinPerDay)}). ` +
+          `Book a private car with driver for the whole day (~₹${Math.round(carCost / 100) * 100}) rather than separate taxis.`,
+        );
+      }
+      if (isFarDayTrip(p.poi, hotel) && p.poi.nearbyStay) {
+        warnings.push(`Alternative for ${p.poi.name}: stay a night in ${p.poi.nearbyStay.name}. ${p.poi.nearbyStay.note}`);
+      }
+    }
+  }
 
   // Anything the user explicitly asked for must be in the plan, or they must be told why not.
   const scheduledIds = new Set(repaired.days.flatMap((d) => d.items.map((i) => i.refId)));
@@ -177,7 +237,7 @@ export async function runPipeline(
     id: `plan-${Date.now().toString(36)}`,
     createdAt: new Date().toISOString(),
     input,
-    constraints,
+    constraints: [...constraints, ...chips],
     levers,
     legs,
     warnings,
@@ -190,6 +250,8 @@ export async function runPipeline(
     debug: { levers: resolved, route, demandDays: alloc.demandDays, pools, hotels, scheduled: repaired.days },
   };
 }
+
+const hm = (min: number) => `${Math.floor(min / 60)}h${min % 60 ? ` ${min % 60}m` : ""}`;
 
 function dayTitle(items: Item[], frame: ScheduledDay["frame"]): string {
   const acts = items.filter((i) => i.type === "activity").map((i) => i.title.split(" — ")[0]);

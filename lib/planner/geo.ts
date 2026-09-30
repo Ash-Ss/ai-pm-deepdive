@@ -71,3 +71,10 @@ export function localLeg(
 }
 
 export const round1 = (n: number) => Math.round(n * 10) / 10;
+
+/** Beyond this distance from the hotel a day trip takes the whole day (Ajanta yes, Ellora no). */
+export const FAR_DAY_TRIP_KM = 60;
+
+export function isFarDayTrip(poi: LatLng & { isDayTripFrom: string | null }, hotel: LatLng): boolean {
+  return poi.isDayTripFrom !== null && haversineKm(hotel, poi) > FAR_DAY_TRIP_KM;
+}

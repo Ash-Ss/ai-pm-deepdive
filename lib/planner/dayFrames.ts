@@ -3,7 +3,7 @@
  * capacity, energy, closures, crowds and fixed commitments.
  */
 import type { Constraint, Event, Levers, StageResult } from "../types";
-import { ofType } from "./constraints";
+import { ofType, travellerProfiles } from "./constraints";
 import type { CandidatePool, DayFrame, LegAlloc } from "./plannerTypes";
 import { fromMin, toMin, weekdayOf } from "./time";
 import { startTrace } from "./trace";
@@ -13,6 +13,8 @@ const DEPARTURE_SHARE = 0.5; // departure day: roughly the first half
 const TRAVEL_DAY_SHARE = 0.6; // a travel day keeps ~60% of normal capacity at most
 const CHECK_IN_MIN = 30;
 const LONG_TRANSFER_MIN = 240;
+/** Long day trips may start this early instead of dayStart (a soft, rejectable override). */
+export const EARLIEST_OVERRIDE_START = "08:30";
 
 export function buildDayFrames(args: {
   leg: LegAlloc;
@@ -27,6 +29,10 @@ export function buildDayFrames(args: {
   const dayEnd = toMin(levers.dayEnd);
   const span = dayEnd - dayStart;
   const anchors = ofType(constraints, "date_anchor");
+  const dayWindows = ofType(constraints, "day_window").filter((c) => c.scope.startsWith("day:"));
+  // Relaxed or elderly groups shouldn't tackle a major site on a day they also travel between cities.
+  const lightTravelDays =
+    ofType(constraints, "pace").some((c) => c.params.pace === "relaxed") || travellerProfiles(constraints).includes("elderly");
 
   const frames: DayFrame[] = leg.dates.map((date, k) => {
     const weekday = weekdayOf(date);
@@ -61,6 +67,16 @@ export function buildDayFrames(args: {
       notes.push("Lighter day after a long transfer");
     }
 
+    // A day-scoped day_window (e.g. an accepted or rejected early-start chip) sets this day's hours.
+    const own = dayWindows.find((c) => c.scope === `day:${leg.dayNumbers[k]}`);
+    if (own?.params.start && !isArrival && !isTravel) startMin = toMin(own.params.start);
+    if (own?.params.end) endMin = toMin(own.params.end);
+    if (own) notes.push(`Day hours set by ${own.id} (${own.params.start ?? ""}–${own.params.end ?? ""})`);
+    // Only full/departure days can start earlier, and not if the user already fixed this day's hours.
+    const earliestStartMin = isArrival || isTravel || own ? startMin : Math.min(startMin, toMin(EARLIEST_OVERRIDE_START));
+    const lightOnly = lightTravelDays && (isArrival || isTravel);
+    if (lightOnly) notes.push("Arrival/travel day: light sights near the hotel only");
+
     let capacityMin = Math.max(0, endMin - startMin);
     if (isTravel) capacityMin = Math.min(capacityMin, Math.round(span * TRAVEL_DAY_SHARE));
 
@@ -86,6 +102,8 @@ export function buildDayFrames(args: {
       isDeparture,
       startMin,
       endMin,
+      earliestStartMin,
+      lightOnly,
       capacityMin,
       maxMajorItems: Math.max(1, Math.round(levers.maxMajorItemsPerDay * energy)),
       energy,

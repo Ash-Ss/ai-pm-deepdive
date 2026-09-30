@@ -6862,6 +6862,10 @@
       "source": "ai_draft",
       "confidence": 0.6
     },
+    "nearbyStay": {
+      "name": "Fardapur (near the Ajanta T-point)",
+      "note": "MTDC resort and small hotels ~5 km from the caves; turns a ~5h round trip into a 15-min hop and allows an early, cool, uncrowded visit."
+    },
     "needsVerification": true
   },
   {
@@ -8078,6 +8082,10 @@
     "provenance": {
       "source": "ai_draft",
       "confidence": 0.6
+    },
+    "nearbyStay": {
+      "name": "Lonar town (crater rim)",
+      "note": "MTDC resort on the crater rim; avoids ~6h of same-day driving."
     }
   },
   {

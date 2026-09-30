@@ -165,6 +165,8 @@ export const Poi = z.object({
   variants: z.array(PoiVariant).optional(),
   shortDescription: z.string(),
   provenance: Provenance,
+  /** Where to stay overnight to avoid a long same-day round trip (far day trips). */
+  nearbyStay: z.object({ name: z.string(), note: z.string() }).optional(),
   /** Set on must_see items until a human has checked hours/prices/access. */
   needsVerification: z.boolean().optional(),
 });
@@ -361,6 +363,10 @@ export const Levers = z.object({
   preferTaxiAboveWalkMin: z.number().int().positive(),
   lunchWindow: TimeWindow,
   dinnerWindow: TimeWindow,
+  /** When true, meals outside their windows fail validation (elderly/kids need regular meals). */
+  mealWindowsHard: z.boolean(),
+  /** Latest time to be back at the hotel for the night. */
+  returnByLatest: TimeHHMM,
   restBreakEveryMin: z.number().int().positive(),
 });
 export type Levers = z.infer<typeof Levers>;
