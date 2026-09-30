@@ -1,0 +1,801 @@
+[
+  {
+    "id": "leopold-cafe",
+    "cityId": "mumbai",
+    "areaId": "colaba-fort",
+    "name": "Leopold Cafe",
+    "lat": 18.9227,
+    "lng": 72.8317,
+    "cuisine": [
+      "multi-cuisine",
+      "continental",
+      "indian"
+    ],
+    "mealTypes": [
+      "breakfast",
+      "lunch",
+      "dinner",
+      "snack"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 60,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "britannia-and-co",
+    "cityId": "mumbai",
+    "areaId": "colaba-fort",
+    "name": "Britannia & Co.",
+    "lat": 18.9344,
+    "lng": 72.8398,
+    "cuisine": [
+      "parsi",
+      "irani"
+    ],
+    "mealTypes": [
+      "lunch"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 60,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "shree-thaker-bhojanalay",
+    "cityId": "mumbai",
+    "areaId": "colaba-fort",
+    "name": "Shree Thaker Bhojanalay",
+    "lat": 18.9505,
+    "lng": 72.8286,
+    "cuisine": [
+      "gujarati",
+      "thali"
+    ],
+    "mealTypes": [
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": true,
+      "nonVeg": false
+    },
+    "avgMealMin": 50,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "swati-snacks",
+    "cityId": "mumbai",
+    "areaId": "lower-parel",
+    "name": "Swati Snacks (Tardeo)",
+    "lat": 18.9713,
+    "lng": 72.8123,
+    "cuisine": [
+      "gujarati",
+      "street-food"
+    ],
+    "mealTypes": [
+      "lunch",
+      "dinner",
+      "snack"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": true,
+      "nonVeg": false
+    },
+    "avgMealMin": 45,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "gajalee",
+    "cityId": "mumbai",
+    "areaId": "juhu",
+    "name": "Gajalee (Vile Parle)",
+    "lat": 19.1027,
+    "lng": 72.8453,
+    "cuisine": [
+      "malvani",
+      "seafood",
+      "coastal"
+    ],
+    "mealTypes": [
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "premium",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 75,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "candies-bandra",
+    "cityId": "mumbai",
+    "areaId": "bandra",
+    "name": "Candies",
+    "lat": 19.0526,
+    "lng": 72.8246,
+    "cuisine": [
+      "cafe",
+      "bakery",
+      "continental"
+    ],
+    "mealTypes": [
+      "breakfast",
+      "lunch",
+      "snack"
+    ],
+    "priceBand": "budget",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 40,
+    "seating": "mixed",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "vaishali-fc-road",
+    "cityId": "pune",
+    "areaId": "deccan-shivajinagar",
+    "name": "Vaishali",
+    "lat": 18.5215,
+    "lng": 73.8415,
+    "cuisine": [
+      "south-indian",
+      "snacks"
+    ],
+    "mealTypes": [
+      "breakfast",
+      "lunch",
+      "dinner",
+      "snack"
+    ],
+    "priceBand": "budget",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": false
+    },
+    "avgMealMin": 40,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "shreyas-deccan",
+    "cityId": "pune",
+    "areaId": "deccan-shivajinagar",
+    "name": "Shreyas",
+    "lat": 18.5157,
+    "lng": 73.8413,
+    "cuisine": [
+      "maharashtrian",
+      "thali"
+    ],
+    "mealTypes": [
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": false
+    },
+    "avgMealMin": 50,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "goodluck-cafe",
+    "cityId": "pune",
+    "areaId": "deccan-shivajinagar",
+    "name": "Good Luck Cafe",
+    "lat": 18.5165,
+    "lng": 73.8412,
+    "cuisine": [
+      "irani",
+      "mughlai"
+    ],
+    "mealTypes": [
+      "breakfast",
+      "lunch",
+      "dinner",
+      "snack"
+    ],
+    "priceBand": "budget",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 45,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "kayani-bakery",
+    "cityId": "pune",
+    "areaId": "camp",
+    "name": "Kayani Bakery",
+    "lat": 18.5166,
+    "lng": 73.8779,
+    "cuisine": [
+      "bakery"
+    ],
+    "mealTypes": [
+      "snack"
+    ],
+    "priceBand": "budget",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": false
+    },
+    "avgMealMin": 15,
+    "seating": "counter",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "dorabjee-and-sons",
+    "cityId": "pune",
+    "areaId": "camp",
+    "name": "Dorabjee & Sons",
+    "lat": 18.5125,
+    "lng": 73.8785,
+    "cuisine": [
+      "parsi",
+      "irani"
+    ],
+    "mealTypes": [
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 60,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "german-bakery-kp",
+    "cityId": "pune",
+    "areaId": "koregaon-park",
+    "name": "German Bakery",
+    "lat": 18.5367,
+    "lng": 73.8937,
+    "cuisine": [
+      "cafe",
+      "bakery",
+      "continental"
+    ],
+    "mealTypes": [
+      "breakfast",
+      "lunch",
+      "snack"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 45,
+    "seating": "mixed",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "ramakrishna-lonavala",
+    "cityId": "lonavala",
+    "areaId": "lonavala-town",
+    "name": "Hotel Rama Krishna",
+    "lat": 18.7541,
+    "lng": 73.4094,
+    "cuisine": [
+      "north-indian",
+      "multi-cuisine"
+    ],
+    "mealTypes": [
+      "breakfast",
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 50,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "chandralok-lonavala",
+    "cityId": "lonavala",
+    "areaId": "lonavala-town",
+    "name": "Hotel Chandralok",
+    "lat": 18.7518,
+    "lng": 73.4046,
+    "cuisine": [
+      "gujarati",
+      "thali"
+    ],
+    "mealTypes": [
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": true,
+      "nonVeg": false
+    },
+    "avgMealMin": 50,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "kinara-village-dhaba",
+    "cityId": "lonavala",
+    "areaId": "karla-malavli",
+    "name": "Kinara Village Dhaba",
+    "lat": 18.769,
+    "lng": 73.44,
+    "cuisine": [
+      "punjabi",
+      "dhaba"
+    ],
+    "mealTypes": [
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 60,
+    "seating": "mixed",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "dukes-retreat-khandala",
+    "cityId": "lonavala",
+    "areaId": "khandala",
+    "name": "Duke's Retreat Restaurant",
+    "lat": 18.7641,
+    "lng": 73.3768,
+    "cuisine": [
+      "multi-cuisine",
+      "continental"
+    ],
+    "mealTypes": [
+      "breakfast",
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "premium",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 75,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "karla-caves-vada-pav-stalls",
+    "cityId": "lonavala",
+    "areaId": "karla-malavli",
+    "name": "Karla Caves Base Snack Stalls",
+    "lat": 18.781,
+    "lng": 73.47,
+    "cuisine": [
+      "street-food",
+      "maharashtrian"
+    ],
+    "mealTypes": [
+      "snack"
+    ],
+    "priceBand": "budget",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": false
+    },
+    "avgMealMin": 20,
+    "seating": "standing",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "mapro-food-court",
+    "cityId": "mahabaleshwar",
+    "areaId": "panchgani",
+    "name": "Mapro Garden Food Court",
+    "lat": 17.918,
+    "lng": 73.742,
+    "cuisine": [
+      "cafe",
+      "fast-food",
+      "desserts"
+    ],
+    "mealTypes": [
+      "lunch",
+      "snack"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": true,
+      "nonVeg": false
+    },
+    "avgMealMin": 45,
+    "seating": "mixed",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "grapevine-mahabaleshwar",
+    "cityId": "mahabaleshwar",
+    "areaId": "mahabaleshwar-market",
+    "name": "The Grapevine",
+    "lat": 17.9245,
+    "lng": 73.6562,
+    "cuisine": [
+      "parsi",
+      "continental",
+      "seafood"
+    ],
+    "mealTypes": [
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "premium",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 75,
+    "seating": "table",
+    "kidFriendly": false,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "meghdoot-mahabaleshwar",
+    "cityId": "mahabaleshwar",
+    "areaId": "mahabaleshwar-market",
+    "name": "Hotel Meghdoot",
+    "lat": 17.9248,
+    "lng": 73.6552,
+    "cuisine": [
+      "maharashtrian",
+      "gujarati",
+      "thali"
+    ],
+    "mealTypes": [
+      "breakfast",
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "budget",
+    "dietary": {
+      "veg": true,
+      "jain": true,
+      "nonVeg": false
+    },
+    "avgMealMin": 45,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "shere-punjab-mahabaleshwar",
+    "cityId": "mahabaleshwar",
+    "areaId": "mahabaleshwar-market",
+    "name": "Shere Punjab",
+    "lat": 17.9243,
+    "lng": 73.6558,
+    "cuisine": [
+      "punjabi",
+      "mughlai"
+    ],
+    "mealTypes": [
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 60,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "bagicha-corner",
+    "cityId": "mahabaleshwar",
+    "areaId": "mahabaleshwar-market",
+    "name": "Bagicha Corner",
+    "lat": 17.9252,
+    "lng": 73.6549,
+    "cuisine": [
+      "street-food",
+      "corn-patties"
+    ],
+    "mealTypes": [
+      "snack"
+    ],
+    "priceBand": "budget",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": false
+    },
+    "avgMealMin": 20,
+    "seating": "standing",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "bhoj-thali",
+    "cityId": "sambhajinagar",
+    "areaId": "jalna-road",
+    "name": "Bhoj Restaurant",
+    "lat": 19.8745,
+    "lng": 75.3525,
+    "cuisine": [
+      "rajasthani",
+      "gujarati",
+      "thali"
+    ],
+    "mealTypes": [
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": true,
+      "nonVeg": false
+    },
+    "avgMealMin": 50,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "naaz-hotel",
+    "cityId": "sambhajinagar",
+    "areaId": "old-city",
+    "name": "Naaz Hotel (Naan Qalia)",
+    "lat": 19.8962,
+    "lng": 75.3228,
+    "cuisine": [
+      "mughlai",
+      "hyderabadi"
+    ],
+    "mealTypes": [
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "budget",
+    "dietary": {
+      "veg": false,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 45,
+    "seating": "table",
+    "kidFriendly": false,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "tandoor-station-road",
+    "cityId": "sambhajinagar",
+    "areaId": "station-road",
+    "name": "Tandoor Restaurant",
+    "lat": 19.8668,
+    "lng": 75.3199,
+    "cuisine": [
+      "north-indian",
+      "tandoori"
+    ],
+    "mealTypes": [
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 60,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "kailas-ellora",
+    "cityId": "sambhajinagar",
+    "areaId": "khuldabad",
+    "name": "Kailas Restaurant (near Ellora)",
+    "lat": 20.0255,
+    "lng": 75.1785,
+    "cuisine": [
+      "multi-cuisine",
+      "maharashtrian"
+    ],
+    "mealTypes": [
+      "breakfast",
+      "lunch"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 50,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "green-leaf-sambhajinagar",
+    "cityId": "sambhajinagar",
+    "areaId": "jalna-road",
+    "name": "Green Leaf Pure Veg",
+    "lat": 19.8765,
+    "lng": 75.3605,
+    "cuisine": [
+      "south-indian",
+      "north-indian"
+    ],
+    "mealTypes": [
+      "breakfast",
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "budget",
+    "dietary": {
+      "veg": true,
+      "jain": true,
+      "nonVeg": false
+    },
+    "avgMealMin": 40,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  }
+]

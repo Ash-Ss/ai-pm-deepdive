@@ -1,0 +1,370 @@
+[
+  {
+    "id": "mumbai-fort-heritage-walk",
+    "cityId": "mumbai",
+    "name": "Fort & Kala Ghoda Heritage Walk",
+    "durationMin": 120,
+    "startTimes": [
+      "07:30",
+      "16:30"
+    ],
+    "daysOperating": [
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+      "sunday"
+    ],
+    "priceINR": 1000,
+    "groupType": "small_group",
+    "includesTransport": false,
+    "suitability": {
+      "kids": 0.4,
+      "elderly": 0.5,
+      "couples": 0.9
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 3000,
+      "seating": false
+    },
+    "linkedPoiIds": [
+      "csmt",
+      "kala-ghoda-art-district",
+      "csmvs-museum",
+      "gateway-of-india"
+    ],
+    "interestTags": [
+      "history",
+      "architecture",
+      "heritage-walk"
+    ],
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "dharavi-community-tour",
+    "cityId": "mumbai",
+    "name": "Dharavi Community & Industry Tour",
+    "durationMin": 150,
+    "startTimes": [
+      "09:30",
+      "14:00"
+    ],
+    "daysOperating": [
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday"
+    ],
+    "priceINR": 1200,
+    "groupType": "small_group",
+    "includesTransport": false,
+    "suitability": {
+      "kids": 0.3,
+      "elderly": 0.3,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "mixed",
+      "walkingRequiredM": 2500,
+      "seating": false
+    },
+    "linkedPoiIds": [],
+    "interestTags": [
+      "local-life",
+      "social-impact",
+      "crafts",
+      "culture"
+    ],
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "mumbai-street-food-tour",
+    "cityId": "mumbai",
+    "name": "South Mumbai Evening Street Food Tour",
+    "durationMin": 180,
+    "startTimes": [
+      "18:00"
+    ],
+    "daysOperating": [
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+      "sunday"
+    ],
+    "priceINR": 2000,
+    "groupType": "small_group",
+    "includesTransport": false,
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.4,
+      "couples": 0.9
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 3000,
+      "seating": false
+    },
+    "linkedPoiIds": [
+      "marine-drive",
+      "crawford-market"
+    ],
+    "interestTags": [
+      "food",
+      "street-food",
+      "local-life"
+    ],
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "pune-heritage-food-trail",
+    "cityId": "pune",
+    "name": "Pune Old City Heritage & Food Trail",
+    "durationMin": 180,
+    "startTimes": [
+      "07:30",
+      "17:00"
+    ],
+    "daysOperating": [
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+      "sunday"
+    ],
+    "priceINR": 1500,
+    "groupType": "small_group",
+    "includesTransport": false,
+    "suitability": {
+      "kids": 0.4,
+      "elderly": 0.5,
+      "couples": 0.9
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 3000,
+      "seating": false
+    },
+    "linkedPoiIds": [
+      "shaniwar-wada",
+      "dagdusheth-ganpati",
+      "tulshibaug-laxmi-road",
+      "vishrambaug-wada"
+    ],
+    "interestTags": [
+      "history",
+      "food",
+      "heritage-walk",
+      "maratha"
+    ],
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "lonavala-guided-cave-trek",
+    "cityId": "lonavala",
+    "name": "Bhaja Caves & Lohagad Guided Trek",
+    "durationMin": 330,
+    "startTimes": [
+      "07:00"
+    ],
+    "daysOperating": [
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+      "sunday"
+    ],
+    "priceINR": 1500,
+    "groupType": "small_group",
+    "includesTransport": false,
+    "suitability": {
+      "kids": 0.3,
+      "elderly": 0,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "high",
+      "terrain": "steep",
+      "walkingRequiredM": 8000,
+      "seating": false
+    },
+    "linkedPoiIds": [
+      "bhaja-caves",
+      "lohagad-fort"
+    ],
+    "interestTags": [
+      "trek",
+      "caves",
+      "forts",
+      "history",
+      "monsoon"
+    ],
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "ellora-guided-tour-car",
+    "cityId": "sambhajinagar",
+    "name": "Ellora, Daulatabad & Grishneshwar Guided Day Tour (with car)",
+    "durationMin": 480,
+    "startTimes": [
+      "08:00"
+    ],
+    "daysOperating": [
+      "monday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+      "sunday"
+    ],
+    "priceINR": 2500,
+    "groupType": "private",
+    "includesTransport": true,
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.5,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "medium",
+      "terrain": "mixed",
+      "walkingRequiredM": 3500,
+      "seating": true
+    },
+    "linkedPoiIds": [
+      "ellora-caves",
+      "daulatabad-fort",
+      "grishneshwar-temple",
+      "bhadra-maruti-temple"
+    ],
+    "interestTags": [
+      "history",
+      "caves",
+      "unesco",
+      "forts"
+    ],
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "ajanta-day-tour-car",
+    "cityId": "sambhajinagar",
+    "name": "Ajanta Caves Guided Day Tour (with car)",
+    "durationMin": 600,
+    "startTimes": [
+      "07:00"
+    ],
+    "daysOperating": [
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+      "sunday"
+    ],
+    "priceINR": 3000,
+    "groupType": "private",
+    "includesTransport": true,
+    "suitability": {
+      "kids": 0.4,
+      "elderly": 0.3,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "medium",
+      "terrain": "mixed",
+      "walkingRequiredM": 2500,
+      "seating": true
+    },
+    "linkedPoiIds": [
+      "ajanta-caves"
+    ],
+    "interestTags": [
+      "history",
+      "caves",
+      "unesco",
+      "painting"
+    ],
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "mahabaleshwar-strawberry-farm",
+    "cityId": "mahabaleshwar",
+    "name": "Strawberry Farm Visit & Picking (Dec–Apr season)",
+    "durationMin": 90,
+    "startTimes": [
+      "09:00",
+      "11:00",
+      "15:00"
+    ],
+    "daysOperating": [
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+      "sunday"
+    ],
+    "priceINR": 300,
+    "groupType": "shared",
+    "includesTransport": false,
+    "suitability": {
+      "kids": 1,
+      "elderly": 0.6,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "mixed",
+      "walkingRequiredM": 800,
+      "seating": false
+    },
+    "linkedPoiIds": [],
+    "interestTags": [
+      "food",
+      "strawberries",
+      "kids",
+      "farm"
+    ],
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  }
+]

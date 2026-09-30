@@ -1,0 +1,104 @@
+[
+  {
+    "id": "ganeshotsav-2026-mumbai",
+    "name": "Ganesh Chaturthi (Ganeshotsav) – Mumbai",
+    "cityId": "mumbai",
+    "startDate": "2026-09-14",
+    "endDate": "2026-09-25",
+    "dailyWindow": null,
+    "type": "festival",
+    "impact": {
+      "level": "high",
+      "kind": "crowds",
+      "affectedPoiIds": [
+        "siddhivinayak-temple",
+        "marine-drive",
+        "juhu-beach"
+      ]
+    },
+    "datesApproximate": true,
+    "note": "11-day festival from Ganesh Chaturthi to Anant Chaturdashi (lunar calendar). Huge crowds and road closures around pandals and immersion beaches (Girgaon Chowpatty, Juhu), especially on days 1.5, 5, 7 and 11. Also a cultural highlight."
+  },
+  {
+    "id": "ganeshotsav-2026-pune",
+    "name": "Ganesh Chaturthi (Ganeshotsav) – Pune",
+    "cityId": "pune",
+    "startDate": "2026-09-14",
+    "endDate": "2026-09-25",
+    "dailyWindow": null,
+    "type": "festival",
+    "impact": {
+      "level": "high",
+      "kind": "crowds",
+      "affectedPoiIds": [
+        "dagdusheth-ganpati",
+        "tulshibaug-laxmi-road",
+        "shaniwar-wada"
+      ]
+    },
+    "datesApproximate": true,
+    "note": "Pune's Ganeshotsav centres on the old-city peths; Laxmi Road closes for the final-day procession that can run 24h+. Lunar-calendar dates."
+  },
+  {
+    "id": "ellora-ajanta-festival-2027",
+    "name": "Ellora-Ajanta International Festival",
+    "cityId": "sambhajinagar",
+    "startDate": "2027-01-15",
+    "endDate": "2027-01-17",
+    "dailyWindow": {
+      "start": "18:00",
+      "end": "22:00"
+    },
+    "type": "cultural",
+    "impact": {
+      "level": "medium",
+      "kind": "opportunity",
+      "affectedPoiIds": [
+        "soneri-mahal"
+      ]
+    },
+    "datesApproximate": true,
+    "note": "Classical music and dance festival organised by MTDC, held at Soneri Mahal. Held irregularly; dates are a placeholder — confirm with MTDC before relying on it."
+  },
+  {
+    "id": "kala-ghoda-arts-festival-2027",
+    "name": "Kala Ghoda Arts Festival",
+    "cityId": "mumbai",
+    "startDate": "2027-01-30",
+    "endDate": "2027-02-07",
+    "dailyWindow": {
+      "start": "10:00",
+      "end": "22:00"
+    },
+    "type": "cultural",
+    "impact": {
+      "level": "medium",
+      "kind": "opportunity",
+      "affectedPoiIds": [
+        "kala-ghoda-art-district",
+        "csmvs-museum"
+      ]
+    },
+    "datesApproximate": true,
+    "note": "Nine-day free arts festival, usually starting the first Saturday of February (or last Saturday of January). Kala Ghoda streets get crowded; many free events."
+  },
+  {
+    "id": "sawai-gandharva-2026",
+    "name": "Sawai Gandharva Bhimsen Mahotsav",
+    "cityId": "pune",
+    "startDate": "2026-12-09",
+    "endDate": "2026-12-13",
+    "dailyWindow": {
+      "start": "16:00",
+      "end": "23:00"
+    },
+    "type": "cultural",
+    "impact": {
+      "level": "low",
+      "kind": "opportunity",
+      "affectedPoiIds": []
+    },
+    "datesApproximate": true,
+    "note": "Hindustani classical music festival, usually in the second week of December at Mukund Nagar/Ramanbaug grounds. Ticketed; dates announced ~Oct."
+  }
+]

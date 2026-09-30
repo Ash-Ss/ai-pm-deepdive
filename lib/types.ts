@@ -165,6 +165,8 @@ export const Poi = z.object({
   variants: z.array(PoiVariant).optional(),
   shortDescription: z.string(),
   provenance: Provenance,
+  /** Set on must_see items until a human has checked hours/prices/access. */
+  needsVerification: z.boolean().optional(),
 });
 export type Poi = z.infer<typeof Poi>;
 
@@ -189,6 +191,7 @@ export const Restaurant = z.object({
   avgMealMin: z.number().int().positive(),
   seating: z.enum(["table", "counter", "standing", "mixed"]),
   kidFriendly: z.boolean(),
+  provenance: Provenance,
 });
 export type Restaurant = z.infer<typeof Restaurant>;
 
@@ -210,6 +213,7 @@ export const Experience = z.object({
   accessibility: Accessibility,
   linkedPoiIds: z.array(Id),
   interestTags: z.array(z.string()),
+  provenance: Provenance,
 });
 export type Experience = z.infer<typeof Experience>;
 
@@ -220,6 +224,10 @@ export type Experience = z.infer<typeof Experience>;
 export const TransportMode = z.enum(["train", "road", "flight"]);
 export type TransportMode = z.infer<typeof TransportMode>;
 
+/**
+ * Undirected: stored once per (city pair, mode) and applies in both directions.
+ * Look up with either order.
+ */
 export const CityEdge = z.object({
   fromCityId: Id,
   toCityId: Id,
@@ -253,6 +261,9 @@ export const Event = z.object({
     kind: z.enum(["crowds", "closure", "traffic", "price_surge", "opportunity"]),
     affectedPoiIds: z.array(Id),
   }),
+  /** True when dates are estimated (e.g. lunar calendar, not yet announced). */
+  datesApproximate: z.boolean(),
+  note: z.string(),
 });
 export type Event = z.infer<typeof Event>;
 

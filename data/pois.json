@@ -1,0 +1,8182 @@
+[
+  {
+    "id": "gateway-of-india",
+    "cityId": "mumbai",
+    "areaId": "colaba-fort",
+    "name": "Gateway of India",
+    "category": "landmark",
+    "lat": 18.922,
+    "lng": 72.8347,
+    "durationMin": {
+      "min": 20,
+      "typical": 30,
+      "max": 60
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "tuesday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "wednesday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "thursday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "friday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "saturday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "sunday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "history",
+      "architecture",
+      "photography",
+      "sea"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.8,
+      "elderly": 0.8,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 300,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.3,
+    "isDayTripFrom": null,
+    "shortDescription": "1924 Indo-Saracenic arch on the harbour; departure point for Elephanta ferries. Best early morning before crowds.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "elephanta-caves",
+    "cityId": "mumbai",
+    "areaId": "colaba-fort",
+    "name": "Elephanta Caves",
+    "category": "cave",
+    "lat": 18.9219,
+    "lng": 72.8351,
+    "durationMin": {
+      "min": 240,
+      "typical": 300,
+      "max": 360
+    },
+    "openingHours": {
+      "monday": [],
+      "tuesday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "wednesday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "thursday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "friday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "saturday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "sunday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ]
+    },
+    "weeklyOff": [
+      "monday"
+    ],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "history",
+      "caves",
+      "unesco",
+      "sculpture",
+      "boat-ride"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.3,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "high",
+      "terrain": "steep",
+      "walkingRequiredM": 1500,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 300,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.7,
+    "isDayTripFrom": null,
+    "variants": [
+      {
+        "name": "Elephanta – main cave (Cave 1) only",
+        "durationMin": {
+          "min": 210,
+          "typical": 240,
+          "max": 270
+        },
+        "accessibility": {
+          "walkingRequiredM": 800
+        }
+      }
+    ],
+    "shortDescription": "UNESCO rock-cut Shiva caves on an island. Coordinates are the ferry jetty at Gateway of India; duration includes ~1h ferry each way. ~120 steps up to the caves. Last ferries leave Gateway early afternoon. Price ≈ ferry return + ASI ticket.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "csmt",
+    "cityId": "mumbai",
+    "areaId": "colaba-fort",
+    "name": "Chhatrapati Shivaji Maharaj Terminus",
+    "category": "landmark",
+    "lat": 18.94,
+    "lng": 72.8353,
+    "durationMin": {
+      "min": 15,
+      "typical": 30,
+      "max": 60
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "tuesday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "wednesday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "thursday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "friday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "saturday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "sunday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "any",
+    "avoidTimes": [],
+    "interestTags": [
+      "history",
+      "architecture",
+      "unesco",
+      "photography"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.6,
+      "elderly": 0.7,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 400,
+      "seating": false
+    },
+    "indoorOutdoor": "mixed",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.6,
+    "isDayTripFrom": null,
+    "shortDescription": "UNESCO-listed Victorian Gothic railway station, still Mumbai's busiest. Exterior viewable any time; heritage gallery tours run on weekday afternoons. Floodlit at night.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "csmvs-museum",
+    "cityId": "mumbai",
+    "areaId": "colaba-fort",
+    "name": "Chhatrapati Shivaji Maharaj Vastu Sangrahalaya",
+    "category": "museum",
+    "lat": 18.9269,
+    "lng": 72.8326,
+    "durationMin": {
+      "min": 60,
+      "typical": 120,
+      "max": 180
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "10:15",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "10:15",
+          "18:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "10:15",
+          "18:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "10:15",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "10:15",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "10:15",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "10:15",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "afternoon",
+    "avoidTimes": [],
+    "interestTags": [
+      "history",
+      "art",
+      "museum",
+      "architecture"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.9,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "flat",
+      "walkingRequiredM": 800,
+      "seating": true
+    },
+    "indoorOutdoor": "indoor",
+    "priceINR": 150,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.5,
+    "isDayTripFrom": null,
+    "shortDescription": "Mumbai's main museum (former Prince of Wales Museum): Indus Valley finds, miniature paintings and sculpture in a domed Indo-Saracenic building. Good heat/rain escape.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "marine-drive",
+    "cityId": "mumbai",
+    "areaId": "colaba-fort",
+    "name": "Marine Drive",
+    "category": "viewpoint",
+    "lat": 18.944,
+    "lng": 72.823,
+    "durationMin": {
+      "min": 30,
+      "typical": 60,
+      "max": 90
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "tuesday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "wednesday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "thursday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "friday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "saturday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "sunday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "sunset",
+    "avoidTimes": [],
+    "interestTags": [
+      "sea",
+      "sunset",
+      "walk",
+      "romance",
+      "local-life"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.7,
+      "elderly": 0.8,
+      "couples": 1
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 1500,
+      "seating": true
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "3.6 km seafront promenade, the 'Queen's Necklace' after dark. Sit on the sea wall at sunset; Girgaon Chowpatty at the north end.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "kala-ghoda-art-district",
+    "cityId": "mumbai",
+    "areaId": "colaba-fort",
+    "name": "Kala Ghoda Art District",
+    "category": "neighbourhood",
+    "lat": 18.929,
+    "lng": 72.832,
+    "durationMin": {
+      "min": 45,
+      "typical": 90,
+      "max": 150
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "friday": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "afternoon",
+    "avoidTimes": [],
+    "interestTags": [
+      "art",
+      "architecture",
+      "cafes",
+      "heritage-walk"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.4,
+      "elderly": 0.7,
+      "couples": 0.9
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 1500,
+      "seating": true
+    },
+    "indoorOutdoor": "mixed",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Compact heritage precinct of galleries (Jehangir Art Gallery), Rhythm House, David Sassoon Library and cafes.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "colaba-causeway",
+    "cityId": "mumbai",
+    "areaId": "colaba-fort",
+    "name": "Colaba Causeway Market",
+    "category": "market",
+    "lat": 18.918,
+    "lng": 72.831,
+    "durationMin": {
+      "min": 30,
+      "typical": 60,
+      "max": 120
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "10:00",
+          "21:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "10:00",
+          "21:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "10:00",
+          "21:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "10:00",
+          "21:00"
+        ]
+      ],
+      "friday": [
+        [
+          "10:00",
+          "21:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "10:00",
+          "21:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "10:00",
+          "21:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "evening",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "shopping",
+      "street",
+      "local-life"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.5,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 1200,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Street stalls for clothes, jewellery and souvenirs; bargain hard. Leopold Cafe is on this stretch.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "crawford-market",
+    "cityId": "mumbai",
+    "areaId": "colaba-fort",
+    "name": "Crawford Market (Mahatma Jyotiba Phule Mandai)",
+    "category": "market",
+    "lat": 18.9477,
+    "lng": 72.8343,
+    "durationMin": {
+      "min": 30,
+      "typical": 60,
+      "max": 90
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "11:00",
+          "20:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "11:00",
+          "20:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "11:00",
+          "20:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "11:00",
+          "20:00"
+        ]
+      ],
+      "friday": [
+        [
+          "11:00",
+          "20:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "11:00",
+          "20:00"
+        ]
+      ],
+      "sunday": []
+    },
+    "weeklyOff": [
+      "sunday"
+    ],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "shopping",
+      "local-life",
+      "architecture",
+      "food"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.4,
+      "elderly": 0.4,
+      "couples": 0.6
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 800,
+      "seating": false
+    },
+    "indoorOutdoor": "mixed",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "1869 market hall with Lockwood Kipling friezes; fruit, spices and dry goods. Gateway to the Kalbadevi bazaars.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "banganga-tank",
+    "cityId": "mumbai",
+    "areaId": "colaba-fort",
+    "name": "Banganga Tank",
+    "category": "landmark",
+    "lat": 18.946,
+    "lng": 72.794,
+    "durationMin": {
+      "min": 20,
+      "typical": 40,
+      "max": 60
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "spiritual",
+      "history",
+      "local-life",
+      "photography"
+    ],
+    "tier": "niche",
+    "suitability": {
+      "kids": 0.4,
+      "elderly": 0.6,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "medium",
+      "terrain": "mixed",
+      "walkingRequiredM": 500,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Ancient temple tank on Malabar Hill ringed by shrines and old houses; a quiet surprise in the city.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "haji-ali-dargah",
+    "cityId": "mumbai",
+    "areaId": "lower-parel",
+    "name": "Haji Ali Dargah",
+    "category": "temple",
+    "lat": 18.9827,
+    "lng": 72.8089,
+    "durationMin": {
+      "min": 30,
+      "typical": 45,
+      "max": 75
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "05:30",
+          "22:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "05:30",
+          "22:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "05:30",
+          "22:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "05:30",
+          "22:00"
+        ]
+      ],
+      "friday": [
+        [
+          "05:30",
+          "22:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "05:30",
+          "22:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "05:30",
+          "22:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "evening",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "spiritual",
+      "architecture",
+      "sea",
+      "photography"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.6,
+      "elderly": 0.5,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 1000,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "15th-century mosque and shrine reached by a 500 m causeway that floods at high tide — check tide times. Modest dress; head covering inside.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "siddhivinayak-temple",
+    "cityId": "mumbai",
+    "areaId": "lower-parel",
+    "name": "Shree Siddhivinayak Temple",
+    "category": "temple",
+    "lat": 19.0169,
+    "lng": 72.8302,
+    "durationMin": {
+      "min": 30,
+      "typical": 60,
+      "max": 120
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "05:30",
+          "21:50"
+        ]
+      ],
+      "tuesday": [
+        [
+          "05:30",
+          "21:50"
+        ]
+      ],
+      "wednesday": [
+        [
+          "05:30",
+          "21:50"
+        ]
+      ],
+      "thursday": [
+        [
+          "05:30",
+          "21:50"
+        ]
+      ],
+      "friday": [
+        [
+          "05:30",
+          "21:50"
+        ]
+      ],
+      "saturday": [
+        [
+          "05:30",
+          "21:50"
+        ]
+      ],
+      "sunday": [
+        [
+          "05:30",
+          "21:50"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "spiritual",
+      "local-life"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.6,
+      "couples": 0.6
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "flat",
+      "walkingRequiredM": 300,
+      "seating": false
+    },
+    "indoorOutdoor": "indoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Mumbai's most-visited Ganesh temple in Prabhadevi. Tuesdays and festival days bring very long queues; phones/bags restricted.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "dhobi-ghat",
+    "cityId": "mumbai",
+    "areaId": "lower-parel",
+    "name": "Mahalaxmi Dhobi Ghat",
+    "category": "neighbourhood",
+    "lat": 18.9827,
+    "lng": 72.8254,
+    "durationMin": {
+      "min": 15,
+      "typical": 20,
+      "max": 45
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "07:00",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "07:00",
+          "18:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "07:00",
+          "18:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "07:00",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "07:00",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "07:00",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "07:00",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "local-life",
+      "photography",
+      "culture"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.8,
+      "couples": 0.6
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "flat",
+      "walkingRequiredM": 200,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.4,
+    "isDayTripFrom": null,
+    "shortDescription": "Open-air laundry with hundreds of washing pens, best seen from the Mahalaxmi station bridge. Guided walks go inside.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "worli-sea-face",
+    "cityId": "mumbai",
+    "areaId": "lower-parel",
+    "name": "Worli Sea Face",
+    "category": "viewpoint",
+    "lat": 19.01,
+    "lng": 72.815,
+    "durationMin": {
+      "min": 20,
+      "typical": 40,
+      "max": 60
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "tuesday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "wednesday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "thursday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "friday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "saturday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "sunday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "sunset",
+    "avoidTimes": [],
+    "interestTags": [
+      "sea",
+      "sunset",
+      "walk",
+      "photography"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.7,
+      "elderly": 0.8,
+      "couples": 0.9
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 1000,
+      "seating": true
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Seafront promenade with views of the Bandra–Worli Sea Link; less crowded than Marine Drive.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "bhau-daji-lad-museum",
+    "cityId": "mumbai",
+    "areaId": "lower-parel",
+    "name": "Dr. Bhau Daji Lad Museum",
+    "category": "museum",
+    "lat": 18.979,
+    "lng": 72.835,
+    "durationMin": {
+      "min": 45,
+      "typical": 75,
+      "max": 120
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "wednesday": [],
+      "thursday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [
+      "wednesday"
+    ],
+    "bestTimeOfDay": "afternoon",
+    "avoidTimes": [],
+    "interestTags": [
+      "history",
+      "museum",
+      "art",
+      "architecture"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.4,
+      "elderly": 0.9,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "flat",
+      "walkingRequiredM": 400,
+      "seating": true
+    },
+    "indoorOutdoor": "indoor",
+    "priceINR": 20,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Mumbai's oldest museum (1872) in Byculla's Jijamata Udyan; ornate Victorian interior and city history dioramas.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "nehru-science-centre",
+    "cityId": "mumbai",
+    "areaId": "lower-parel",
+    "name": "Nehru Science Centre",
+    "category": "museum",
+    "lat": 18.9901,
+    "lng": 72.8177,
+    "durationMin": {
+      "min": 90,
+      "typical": 150,
+      "max": 210
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "afternoon",
+    "avoidTimes": [],
+    "interestTags": [
+      "science",
+      "kids",
+      "museum"
+    ],
+    "tier": "niche",
+    "suitability": {
+      "kids": 1,
+      "elderly": 0.6,
+      "couples": 0.3
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 800,
+      "seating": true
+    },
+    "indoorOutdoor": "indoor",
+    "priceINR": 70,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Hands-on science museum with an outdoor science park; a strong rainy-day or kids option.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "bandra-bandstand",
+    "cityId": "mumbai",
+    "areaId": "bandra",
+    "name": "Bandstand Promenade & Bandra Fort",
+    "category": "viewpoint",
+    "lat": 19.0435,
+    "lng": 72.819,
+    "durationMin": {
+      "min": 30,
+      "typical": 60,
+      "max": 90
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "22:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "22:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "22:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "22:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "22:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "22:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "22:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "sunset",
+    "avoidTimes": [],
+    "interestTags": [
+      "sea",
+      "sunset",
+      "romance",
+      "bollywood",
+      "history"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.6,
+      "elderly": 0.7,
+      "couples": 1
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "mixed",
+      "walkingRequiredM": 1500,
+      "seating": true
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Seafront walk past film-star homes to the 1640 Portuguese Castella de Aguada ruins; classic sunset spot.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "mount-mary-basilica",
+    "cityId": "mumbai",
+    "areaId": "bandra",
+    "name": "Mount Mary Basilica",
+    "category": "temple",
+    "lat": 19.0466,
+    "lng": 72.8225,
+    "durationMin": {
+      "min": 20,
+      "typical": 30,
+      "max": 45
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "07:00",
+          "21:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "07:00",
+          "21:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "07:00",
+          "21:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "07:00",
+          "21:00"
+        ]
+      ],
+      "friday": [
+        [
+          "07:00",
+          "21:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "07:00",
+          "21:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "07:00",
+          "21:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "spiritual",
+      "architecture",
+      "history"
+    ],
+    "tier": "niche",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.6,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "medium",
+      "terrain": "mixed",
+      "walkingRequiredM": 300,
+      "seating": true
+    },
+    "indoorOutdoor": "indoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Hilltop neo-Gothic basilica; large fair in September after Mary's birthday.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "ranwar-chapel-road",
+    "cityId": "mumbai",
+    "areaId": "bandra",
+    "name": "Ranwar Village & Chapel Road Murals",
+    "category": "neighbourhood",
+    "lat": 19.053,
+    "lng": 72.828,
+    "durationMin": {
+      "min": 45,
+      "typical": 75,
+      "max": 120
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "08:00",
+          "19:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "08:00",
+          "19:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "08:00",
+          "19:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "08:00",
+          "19:00"
+        ]
+      ],
+      "friday": [
+        [
+          "08:00",
+          "19:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "08:00",
+          "19:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "08:00",
+          "19:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "street-art",
+      "heritage-walk",
+      "photography",
+      "cafes"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.4,
+      "elderly": 0.5,
+      "couples": 0.9
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 2000,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "East-Indian Catholic village lanes with painted bungalows and Bollywood street murals; pair with cafes on Hill Road.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "juhu-beach",
+    "cityId": "mumbai",
+    "areaId": "juhu",
+    "name": "Juhu Beach",
+    "category": "beach",
+    "lat": 19.099,
+    "lng": 72.8265,
+    "durationMin": {
+      "min": 30,
+      "typical": 60,
+      "max": 120
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "tuesday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "wednesday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "thursday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "friday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "saturday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "sunday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "sunset",
+    "avoidTimes": [],
+    "interestTags": [
+      "beach",
+      "sunset",
+      "street-food",
+      "local-life",
+      "kids"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.9,
+      "elderly": 0.6,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 1000,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Busy city beach — not for swimming — known for evening street food (pav bhaji, gola) and sunsets.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "iskcon-juhu",
+    "cityId": "mumbai",
+    "areaId": "juhu",
+    "name": "ISKCON Temple Juhu",
+    "category": "temple",
+    "lat": 19.113,
+    "lng": 72.827,
+    "durationMin": {
+      "min": 30,
+      "typical": 45,
+      "max": 60
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "04:30",
+          "13:00"
+        ],
+        [
+          "16:15",
+          "21:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "04:30",
+          "13:00"
+        ],
+        [
+          "16:15",
+          "21:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "04:30",
+          "13:00"
+        ],
+        [
+          "16:15",
+          "21:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "04:30",
+          "13:00"
+        ],
+        [
+          "16:15",
+          "21:00"
+        ]
+      ],
+      "friday": [
+        [
+          "04:30",
+          "13:00"
+        ],
+        [
+          "16:15",
+          "21:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "04:30",
+          "13:00"
+        ],
+        [
+          "16:15",
+          "21:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "04:30",
+          "13:00"
+        ],
+        [
+          "16:15",
+          "21:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "evening",
+    "avoidTimes": [],
+    "interestTags": [
+      "spiritual",
+      "music",
+      "culture"
+    ],
+    "tier": "niche",
+    "suitability": {
+      "kids": 0.6,
+      "elderly": 0.7,
+      "couples": 0.6
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "flat",
+      "walkingRequiredM": 200,
+      "seating": true
+    },
+    "indoorOutdoor": "indoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Marble Radha-Krishna temple with evening aarti and kirtan; pure-veg restaurant on site.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "kanheri-caves",
+    "cityId": "mumbai",
+    "areaId": "juhu",
+    "name": "Kanheri Caves (Sanjay Gandhi National Park)",
+    "category": "cave",
+    "lat": 19.2066,
+    "lng": 72.9066,
+    "durationMin": {
+      "min": 120,
+      "typical": 180,
+      "max": 240
+    },
+    "openingHours": {
+      "monday": [],
+      "tuesday": [
+        [
+          "07:30",
+          "17:30"
+        ]
+      ],
+      "wednesday": [
+        [
+          "07:30",
+          "17:30"
+        ]
+      ],
+      "thursday": [
+        [
+          "07:30",
+          "17:30"
+        ]
+      ],
+      "friday": [
+        [
+          "07:30",
+          "17:30"
+        ]
+      ],
+      "saturday": [
+        [
+          "07:30",
+          "17:30"
+        ]
+      ],
+      "sunday": [
+        [
+          "07:30",
+          "17:30"
+        ]
+      ]
+    },
+    "weeklyOff": [
+      "monday"
+    ],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "history",
+      "caves",
+      "nature",
+      "buddhist",
+      "trek"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.6,
+      "elderly": 0.3,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "high",
+      "terrain": "mixed",
+      "walkingRequiredM": 2500,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 100,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "100+ Buddhist rock-cut caves inside a forest national park in the northern suburbs. Park entry + cave ticket; 7 km inside the park by bus/cab.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "shaniwar-wada",
+    "cityId": "pune",
+    "areaId": "peth-old-city",
+    "name": "Shaniwar Wada",
+    "category": "fort",
+    "lat": 18.5195,
+    "lng": 73.8553,
+    "durationMin": {
+      "min": 45,
+      "typical": 75,
+      "max": 120
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "tuesday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "wednesday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "thursday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "friday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "saturday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "sunday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "history",
+      "forts",
+      "architecture",
+      "maratha"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.6,
+      "elderly": 0.7,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "flat",
+      "walkingRequiredM": 1000,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 25,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.6,
+    "isDayTripFrom": null,
+    "shortDescription": "1732 seat of the Peshwas; massive gates and ramparts survive after an 1828 fire. Evening light-and-sound show (separate ticket).",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "aga-khan-palace",
+    "cityId": "pune",
+    "areaId": "koregaon-park",
+    "name": "Aga Khan Palace",
+    "category": "museum",
+    "lat": 18.5524,
+    "lng": 73.9016,
+    "durationMin": {
+      "min": 45,
+      "typical": 75,
+      "max": 105
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "tuesday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "wednesday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "thursday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "friday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "saturday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "sunday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "history",
+      "freedom-struggle",
+      "architecture",
+      "gardens"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.8,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "flat",
+      "walkingRequiredM": 800,
+      "seating": true
+    },
+    "indoorOutdoor": "mixed",
+    "priceINR": 25,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.4,
+    "isDayTripFrom": null,
+    "shortDescription": "Italianate palace where Gandhi, Kasturba and Mahadev Desai were interned in 1942–44; memorials and a small museum in wide lawns.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "dagdusheth-ganpati",
+    "cityId": "pune",
+    "areaId": "peth-old-city",
+    "name": "Shrimant Dagdusheth Halwai Ganpati Temple",
+    "category": "temple",
+    "lat": 18.5164,
+    "lng": 73.8561,
+    "durationMin": {
+      "min": 20,
+      "typical": 30,
+      "max": 60
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "23:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "23:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "23:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "23:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "23:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "23:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "23:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "evening",
+    "avoidTimes": [],
+    "interestTags": [
+      "spiritual",
+      "local-life",
+      "culture"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.6,
+      "elderly": 0.6,
+      "couples": 0.6
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 200,
+      "seating": false
+    },
+    "indoorOutdoor": "indoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Pune's most famous Ganesh temple with a gold-adorned idol; spectacular during Ganeshotsav. Queues on Tuesdays and festivals.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "sinhagad-fort",
+    "cityId": "pune",
+    "areaId": "deccan-shivajinagar",
+    "name": "Sinhagad Fort",
+    "category": "fort",
+    "lat": 18.3664,
+    "lng": 73.7556,
+    "durationMin": {
+      "min": 120,
+      "typical": 180,
+      "max": 240
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "history",
+      "forts",
+      "trek",
+      "views",
+      "maratha",
+      "food"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.6,
+      "elderly": 0.3,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "medium",
+      "terrain": "steep",
+      "walkingRequiredM": 2500,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 50,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Hill fort 35 km south-west, scene of Tanaji's 1670 battle. Road reaches near the top, then uneven uphill paths. Famous for pithla-bhakri and kanda bhaji stalls.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "kelkar-museum",
+    "cityId": "pune",
+    "areaId": "peth-old-city",
+    "name": "Raja Dinkar Kelkar Museum",
+    "category": "museum",
+    "lat": 18.5107,
+    "lng": 73.8545,
+    "durationMin": {
+      "min": 60,
+      "typical": 90,
+      "max": 150
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "10:00",
+          "17:30"
+        ]
+      ],
+      "tuesday": [
+        [
+          "10:00",
+          "17:30"
+        ]
+      ],
+      "wednesday": [
+        [
+          "10:00",
+          "17:30"
+        ]
+      ],
+      "thursday": [
+        [
+          "10:00",
+          "17:30"
+        ]
+      ],
+      "friday": [
+        [
+          "10:00",
+          "17:30"
+        ]
+      ],
+      "saturday": [
+        [
+          "10:00",
+          "17:30"
+        ]
+      ],
+      "sunday": [
+        [
+          "10:00",
+          "17:30"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "afternoon",
+    "avoidTimes": [],
+    "interestTags": [
+      "museum",
+      "art",
+      "history",
+      "crafts"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.4,
+      "elderly": 0.8,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "medium",
+      "terrain": "flat",
+      "walkingRequiredM": 600,
+      "seating": true
+    },
+    "indoorOutdoor": "indoor",
+    "priceINR": 100,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "One man's collection of 20,000+ everyday objects: lamps, nutcrackers, musical instruments, a reconstructed Mastani Mahal.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "pataleshwar-cave-temple",
+    "cityId": "pune",
+    "areaId": "deccan-shivajinagar",
+    "name": "Pataleshwar Cave Temple",
+    "category": "cave",
+    "lat": 18.5268,
+    "lng": 73.8497,
+    "durationMin": {
+      "min": 20,
+      "typical": 30,
+      "max": 45
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "history",
+      "caves",
+      "spiritual"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.8,
+      "couples": 0.6
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "flat",
+      "walkingRequiredM": 200,
+      "seating": false
+    },
+    "indoorOutdoor": "mixed",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "8th-century rock-cut Shiva temple in the middle of the city on Jangli Maharaj Road; a quick, calm stop.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "parvati-hill",
+    "cityId": "pune",
+    "areaId": "peth-old-city",
+    "name": "Parvati Hill Temples",
+    "category": "temple",
+    "lat": 18.4971,
+    "lng": 73.8466,
+    "durationMin": {
+      "min": 45,
+      "typical": 75,
+      "max": 105
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "05:00",
+          "20:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "05:00",
+          "20:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "05:00",
+          "20:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "05:00",
+          "20:00"
+        ]
+      ],
+      "friday": [
+        [
+          "05:00",
+          "20:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "05:00",
+          "20:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "05:00",
+          "20:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "spiritual",
+      "views",
+      "history",
+      "sunrise"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.1,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "high",
+      "terrain": "steep",
+      "walkingRequiredM": 800,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Peshwa-era temple complex atop a hill, reached by ~100 stone steps; panoramic city view at sunrise.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "saras-baug",
+    "cityId": "pune",
+    "areaId": "peth-old-city",
+    "name": "Saras Baug & Talyatla Ganpati",
+    "category": "park",
+    "lat": 18.501,
+    "lng": 73.852,
+    "durationMin": {
+      "min": 30,
+      "typical": 45,
+      "max": 75
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "evening",
+    "avoidTimes": [],
+    "interestTags": [
+      "gardens",
+      "spiritual",
+      "local-life",
+      "kids"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.9,
+      "elderly": 0.9,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 800,
+      "seating": true
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Garden with an island Ganesh temple; lively evening hangout with snack stalls at the gate.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "vishrambaug-wada",
+    "cityId": "pune",
+    "areaId": "peth-old-city",
+    "name": "Vishrambaug Wada",
+    "category": "landmark",
+    "lat": 18.514,
+    "lng": 73.854,
+    "durationMin": {
+      "min": 20,
+      "typical": 40,
+      "max": 60
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "10:00",
+          "17:30"
+        ]
+      ],
+      "tuesday": [
+        [
+          "10:00",
+          "17:30"
+        ]
+      ],
+      "wednesday": [
+        [
+          "10:00",
+          "17:30"
+        ]
+      ],
+      "thursday": [
+        [
+          "10:00",
+          "17:30"
+        ]
+      ],
+      "friday": [
+        [
+          "10:00",
+          "17:30"
+        ]
+      ],
+      "saturday": [
+        [
+          "10:00",
+          "17:30"
+        ]
+      ],
+      "sunday": [
+        [
+          "10:00",
+          "17:30"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "afternoon",
+    "avoidTimes": [],
+    "interestTags": [
+      "history",
+      "architecture",
+      "maratha"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.3,
+      "elderly": 0.7,
+      "couples": 0.6
+    },
+    "accessibility": {
+      "stairsLevel": "medium",
+      "terrain": "flat",
+      "walkingRequiredM": 300,
+      "seating": false
+    },
+    "indoorOutdoor": "indoor",
+    "priceINR": 20,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Early-1800s Peshwa mansion with a carved teak facade and a small Pune history gallery.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "lal-mahal",
+    "cityId": "pune",
+    "areaId": "peth-old-city",
+    "name": "Lal Mahal",
+    "category": "landmark",
+    "lat": 18.5188,
+    "lng": 73.8566,
+    "durationMin": {
+      "min": 15,
+      "typical": 30,
+      "max": 45
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "09:30",
+          "12:00"
+        ],
+        [
+          "14:30",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "09:30",
+          "12:00"
+        ],
+        [
+          "14:30",
+          "18:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "09:30",
+          "12:00"
+        ],
+        [
+          "14:30",
+          "18:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "09:30",
+          "12:00"
+        ],
+        [
+          "14:30",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "09:30",
+          "12:00"
+        ],
+        [
+          "14:30",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "09:30",
+          "12:00"
+        ],
+        [
+          "14:30",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "09:30",
+          "12:00"
+        ],
+        [
+          "14:30",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "history",
+      "maratha"
+    ],
+    "tier": "niche",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.7,
+      "couples": 0.5
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 200,
+      "seating": false
+    },
+    "indoorOutdoor": "mixed",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Reconstruction of Shivaji's childhood home, next to Shaniwar Wada.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "tulshibaug-laxmi-road",
+    "cityId": "pune",
+    "areaId": "peth-old-city",
+    "name": "Tulshibaug & Laxmi Road Markets",
+    "category": "market",
+    "lat": 18.5143,
+    "lng": 73.8547,
+    "durationMin": {
+      "min": 45,
+      "typical": 75,
+      "max": 120
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "10:00",
+          "21:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "10:00",
+          "21:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "10:00",
+          "21:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "10:00",
+          "21:00"
+        ]
+      ],
+      "friday": [
+        [
+          "10:00",
+          "21:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "10:00",
+          "21:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "10:00",
+          "21:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "evening",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "shopping",
+      "local-life",
+      "textiles",
+      "street-food"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.4,
+      "elderly": 0.4,
+      "couples": 0.6
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 1500,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Dense old-city bazaars for brassware, sarees, Paithani and daily goods. Very crowded before festivals.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "fc-road",
+    "cityId": "pune",
+    "areaId": "deccan-shivajinagar",
+    "name": "FC Road",
+    "category": "neighbourhood",
+    "lat": 18.522,
+    "lng": 73.841,
+    "durationMin": {
+      "min": 45,
+      "typical": 60,
+      "max": 120
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "10:00",
+          "23:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "10:00",
+          "23:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "10:00",
+          "23:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "10:00",
+          "23:00"
+        ]
+      ],
+      "friday": [
+        [
+          "10:00",
+          "23:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "10:00",
+          "23:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "10:00",
+          "23:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "evening",
+    "avoidTimes": [],
+    "interestTags": [
+      "street-food",
+      "shopping",
+      "local-life",
+      "students"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.4,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 1500,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Fergusson College Road: student buzz, street shopping and iconic eateries like Vaishali.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "osho-teerth-park",
+    "cityId": "pune",
+    "areaId": "koregaon-park",
+    "name": "Osho Teerth Park",
+    "category": "park",
+    "lat": 18.538,
+    "lng": 73.887,
+    "durationMin": {
+      "min": 30,
+      "typical": 45,
+      "max": 60
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "09:00"
+        ],
+        [
+          "15:00",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "09:00"
+        ],
+        [
+          "15:00",
+          "18:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "09:00"
+        ],
+        [
+          "15:00",
+          "18:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "09:00"
+        ],
+        [
+          "15:00",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "09:00"
+        ],
+        [
+          "15:00",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "09:00"
+        ],
+        [
+          "15:00",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "09:00"
+        ],
+        [
+          "15:00",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "gardens",
+      "nature",
+      "relaxation"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.6,
+      "elderly": 0.8,
+      "couples": 0.9
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "mixed",
+      "walkingRequiredM": 1000,
+      "seating": true
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Shaded Japanese-style garden with a stream and bamboo groves; restricted morning and evening hours.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "okayama-garden",
+    "cityId": "pune",
+    "areaId": "deccan-shivajinagar",
+    "name": "Pu La Deshpande (Okayama Friendship) Garden",
+    "category": "park",
+    "lat": 18.492,
+    "lng": 73.839,
+    "durationMin": {
+      "min": 30,
+      "typical": 45,
+      "max": 60
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "10:00"
+        ],
+        [
+          "16:00",
+          "20:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "10:00"
+        ],
+        [
+          "16:00",
+          "20:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "10:00"
+        ],
+        [
+          "16:00",
+          "20:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "10:00"
+        ],
+        [
+          "16:00",
+          "20:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "10:00"
+        ],
+        [
+          "16:00",
+          "20:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "10:00"
+        ],
+        [
+          "16:00",
+          "20:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "10:00"
+        ],
+        [
+          "16:00",
+          "20:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "evening",
+    "avoidTimes": [],
+    "interestTags": [
+      "gardens",
+      "relaxation",
+      "kids"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.8,
+      "elderly": 0.9,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 1000,
+      "seating": true
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 10,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Japanese garden modelled on Okayama's Korakuen, built as a sister-city gift.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "katraj-zoo",
+    "cityId": "pune",
+    "areaId": "deccan-shivajinagar",
+    "name": "Rajiv Gandhi Zoological Park (Katraj)",
+    "category": "park",
+    "lat": 18.452,
+    "lng": 73.866,
+    "durationMin": {
+      "min": 90,
+      "typical": 150,
+      "max": 210
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ],
+      "wednesday": [],
+      "thursday": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [
+      "wednesday"
+    ],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "wildlife",
+      "kids",
+      "nature"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 1,
+      "elderly": 0.6,
+      "couples": 0.4
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "mixed",
+      "walkingRequiredM": 3000,
+      "seating": true
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 60,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Large zoo and snake park on the southern edge of the city; battery cars available.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "khadakwasla-dam",
+    "cityId": "pune",
+    "areaId": "deccan-shivajinagar",
+    "name": "Khadakwasla Dam",
+    "category": "lake",
+    "lat": 18.441,
+    "lng": 73.77,
+    "durationMin": {
+      "min": 30,
+      "typical": 45,
+      "max": 75
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "tuesday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "wednesday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "thursday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "friday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "saturday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "sunday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "sunset",
+    "avoidTimes": [],
+    "interestTags": [
+      "lakes",
+      "sunset",
+      "street-food",
+      "views"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.7,
+      "elderly": 0.7,
+      "couples": 0.9
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 500,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Reservoir on the Sinhagad road; popular for sunset and roadside corn/bhaji. Combine with Sinhagad.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "chaturshringi-temple",
+    "cityId": "pune",
+    "areaId": "deccan-shivajinagar",
+    "name": "Chaturshringi Temple",
+    "category": "temple",
+    "lat": 18.539,
+    "lng": 73.829,
+    "durationMin": {
+      "min": 20,
+      "typical": 30,
+      "max": 45
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "spiritual",
+      "views"
+    ],
+    "tier": "niche",
+    "suitability": {
+      "kids": 0.4,
+      "elderly": 0.3,
+      "couples": 0.5
+    },
+    "accessibility": {
+      "stairsLevel": "medium",
+      "terrain": "steep",
+      "walkingRequiredM": 300,
+      "seating": false
+    },
+    "indoorOutdoor": "mixed",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Hillside Devi temple up ~100 steps; big Navratri fair.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "mg-road-camp",
+    "cityId": "pune",
+    "areaId": "camp",
+    "name": "MG Road & Camp Bazaar",
+    "category": "market",
+    "lat": 18.516,
+    "lng": 73.879,
+    "durationMin": {
+      "min": 45,
+      "typical": 75,
+      "max": 120
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "10:30",
+          "21:30"
+        ]
+      ],
+      "tuesday": [
+        [
+          "10:30",
+          "21:30"
+        ]
+      ],
+      "wednesday": [
+        [
+          "10:30",
+          "21:30"
+        ]
+      ],
+      "thursday": [
+        [
+          "10:30",
+          "21:30"
+        ]
+      ],
+      "friday": [
+        [
+          "10:30",
+          "21:30"
+        ]
+      ],
+      "saturday": [
+        [
+          "10:30",
+          "21:30"
+        ]
+      ],
+      "sunday": [
+        [
+          "10:30",
+          "21:30"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "evening",
+    "avoidTimes": [],
+    "interestTags": [
+      "shopping",
+      "food",
+      "bakeries",
+      "colonial"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.5,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 1500,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Cantonment high street: old bakeries (Kayani), Irani cafes, Fashion Street stalls.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "karla-caves",
+    "cityId": "lonavala",
+    "areaId": "karla-malavli",
+    "name": "Karla Caves & Ekvira Temple",
+    "category": "cave",
+    "lat": 18.7836,
+    "lng": 73.4718,
+    "durationMin": {
+      "min": 60,
+      "typical": 90,
+      "max": 120
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "tuesday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "wednesday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "thursday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "friday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "saturday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "sunday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "history",
+      "caves",
+      "buddhist",
+      "spiritual"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.2,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "high",
+      "terrain": "steep",
+      "walkingRequiredM": 1000,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 25,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.6,
+    "isDayTripFrom": null,
+    "shortDescription": "1st-century BCE Buddhist chaitya hall, one of the largest rock-cut prayer halls in India. ~350 steps up; Ekvira Devi temple at the top draws weekend crowds.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "bhaja-caves",
+    "cityId": "lonavala",
+    "areaId": "karla-malavli",
+    "name": "Bhaja Caves",
+    "category": "cave",
+    "lat": 18.7275,
+    "lng": 73.4816,
+    "durationMin": {
+      "min": 60,
+      "typical": 75,
+      "max": 105
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "tuesday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "wednesday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "thursday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "friday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "saturday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "sunday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "history",
+      "caves",
+      "buddhist",
+      "nature"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.2,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "high",
+      "terrain": "steep",
+      "walkingRequiredM": 1000,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 25,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.6,
+    "isDayTripFrom": null,
+    "shortDescription": "22 early Buddhist caves with stupas and some of the oldest reliefs in the Deccan; steep steps up from Bhaje village. Monsoon waterfall alongside.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "lohagad-fort",
+    "cityId": "lonavala",
+    "areaId": "karla-malavli",
+    "name": "Lohagad Fort",
+    "category": "fort",
+    "lat": 18.71,
+    "lng": 73.476,
+    "durationMin": {
+      "min": 150,
+      "typical": 210,
+      "max": 300
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "forts",
+      "trek",
+      "history",
+      "views",
+      "monsoon"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.1,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "high",
+      "terrain": "steep",
+      "walkingRequiredM": 3000,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 25,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Maratha hill fort with the long 'Vinchu Kata' (scorpion tail) ridge. From Gaimukh Khind it's a climb of several hundred steps through four gates; slippery in monsoon.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "visapur-fort",
+    "cityId": "lonavala",
+    "areaId": "karla-malavli",
+    "name": "Visapur Fort",
+    "category": "fort",
+    "lat": 18.72,
+    "lng": 73.487,
+    "durationMin": {
+      "min": 180,
+      "typical": 240,
+      "max": 300
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "forts",
+      "trek",
+      "monsoon",
+      "adventure"
+    ],
+    "tier": "niche",
+    "suitability": {
+      "kids": 0.2,
+      "elderly": 0,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "high",
+      "terrain": "steep",
+      "walkingRequiredM": 5000,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Larger, wilder twin of Lohagad; monsoon trek up a waterfall-staircase route. For fit trekkers only.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "tigers-point",
+    "cityId": "lonavala",
+    "areaId": "lonavala-town",
+    "name": "Tiger's Point (Tiger's Leap)",
+    "category": "viewpoint",
+    "lat": 18.7195,
+    "lng": 73.389,
+    "durationMin": {
+      "min": 30,
+      "typical": 45,
+      "max": 75
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "sunset",
+    "avoidTimes": [],
+    "interestTags": [
+      "views",
+      "monsoon",
+      "photography",
+      "street-food"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.7,
+      "elderly": 0.8,
+      "couples": 0.9
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "mixed",
+      "walkingRequiredM": 300,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Cliff edge with a ~650 m drop into the valley; clouds and waterfalls in monsoon, clear sunsets in winter. Road access; bhutta and chai stalls.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "lions-point",
+    "cityId": "lonavala",
+    "areaId": "lonavala-town",
+    "name": "Lion's Point",
+    "category": "viewpoint",
+    "lat": 18.705,
+    "lng": 73.396,
+    "durationMin": {
+      "min": 20,
+      "typical": 30,
+      "max": 60
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "sunset",
+    "avoidTimes": [],
+    "interestTags": [
+      "views",
+      "monsoon",
+      "sunset"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.7,
+      "elderly": 0.8,
+      "couples": 0.9
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 200,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Roadside valley viewpoint on the Aamby Valley road; pairs with Tiger's Point.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "bhushi-dam",
+    "cityId": "lonavala",
+    "areaId": "lonavala-town",
+    "name": "Bhushi Dam",
+    "category": "lake",
+    "lat": 18.74,
+    "lng": 73.392,
+    "durationMin": {
+      "min": 45,
+      "typical": 60,
+      "max": 90
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "monsoon",
+      "waterfalls",
+      "kids",
+      "street-food"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.7,
+      "elderly": 0.5,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "medium",
+      "terrain": "mixed",
+      "walkingRequiredM": 500,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Monsoon overflow cascading down wide dam steps where visitors sit in the water. Very crowded on weekends; access can be closed after heavy rain for safety.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "rajmachi-fort",
+    "cityId": "lonavala",
+    "areaId": "khandala",
+    "name": "Rajmachi Fort (Shrivardhan & Manaranjan)",
+    "category": "fort",
+    "lat": 18.829,
+    "lng": 73.399,
+    "durationMin": {
+      "min": 240,
+      "typical": 360,
+      "max": 480
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "forts",
+      "trek",
+      "monsoon",
+      "adventure",
+      "fireflies"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.2,
+      "elderly": 0,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "high",
+      "terrain": "steep",
+      "walkingRequiredM": 15000,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "variants": [
+      {
+        "name": "Rajmachi – 4x4 to Udhewadi + short hike",
+        "durationMin": {
+          "min": 180,
+          "typical": 240,
+          "max": 300
+        },
+        "accessibility": {
+          "walkingRequiredM": 3000,
+          "stairsLevel": "medium"
+        }
+      }
+    ],
+    "shortDescription": "Twin-fort plateau reached by a ~15 km trail from Lonavala (or a short hike from Udhewadi via Kondivade by 4x4). Fireflies in late May–June. Full day.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "dukes-nose",
+    "cityId": "lonavala",
+    "areaId": "khandala",
+    "name": "Duke's Nose",
+    "category": "viewpoint",
+    "lat": 18.764,
+    "lng": 73.373,
+    "durationMin": {
+      "min": 120,
+      "typical": 150,
+      "max": 210
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "trek",
+      "views",
+      "adventure",
+      "rock-climbing"
+    ],
+    "tier": "niche",
+    "suitability": {
+      "kids": 0.3,
+      "elderly": 0,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "medium",
+      "terrain": "steep",
+      "walkingRequiredM": 4000,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Beak-shaped cliff above Khandala ghat; short but steep trek with valley views.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "pawna-lake",
+    "cityId": "lonavala",
+    "areaId": "karla-malavli",
+    "name": "Pawna Lake",
+    "category": "lake",
+    "lat": 18.67,
+    "lng": 73.49,
+    "durationMin": {
+      "min": 90,
+      "typical": 180,
+      "max": 720
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "tuesday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "wednesday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "thursday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "friday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "saturday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ],
+      "sunday": [
+        [
+          "00:00",
+          "23:59"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "sunset",
+    "avoidTimes": [],
+    "interestTags": [
+      "lakes",
+      "camping",
+      "sunset",
+      "relaxation",
+      "romance"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.8,
+      "elderly": 0.6,
+      "couples": 1
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "mixed",
+      "walkingRequiredM": 500,
+      "seating": true
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Reservoir ringed by Tung, Tikona and Lohagad forts; lakeside camping with bonfires is the draw (camps charge separately).",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "della-adventure-park",
+    "cityId": "lonavala",
+    "areaId": "khandala",
+    "name": "Della Adventure Park",
+    "category": "experience",
+    "lat": 18.791,
+    "lng": 73.347,
+    "durationMin": {
+      "min": 120,
+      "typical": 240,
+      "max": 360
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ],
+      "friday": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "adventure",
+      "kids",
+      "activities"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.9,
+      "elderly": 0.3,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "mixed",
+      "walkingRequiredM": 1500,
+      "seating": true
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 2500,
+    "bookingRequired": true,
+    "bestMonths": [
+      1,
+      2,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Paid adventure park (zipline, ATVs, swings); packages vary widely — price is an entry-level estimate.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "celebrity-wax-museum",
+    "cityId": "lonavala",
+    "areaId": "lonavala-town",
+    "name": "Sunil's Celebrity Wax Museum",
+    "category": "museum",
+    "lat": 18.769,
+    "lng": 73.412,
+    "durationMin": {
+      "min": 30,
+      "typical": 45,
+      "max": 60
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "09:00",
+          "21:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "09:00",
+          "21:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "09:00",
+          "21:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "09:00",
+          "21:00"
+        ]
+      ],
+      "friday": [
+        [
+          "09:00",
+          "21:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "09:00",
+          "21:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "09:00",
+          "21:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "afternoon",
+    "avoidTimes": [],
+    "interestTags": [
+      "kids",
+      "bollywood",
+      "indoor"
+    ],
+    "tier": "niche",
+    "suitability": {
+      "kids": 0.9,
+      "elderly": 0.7,
+      "couples": 0.5
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "flat",
+      "walkingRequiredM": 300,
+      "seating": false
+    },
+    "indoorOutdoor": "indoor",
+    "priceINR": 400,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Small wax museum of Indian personalities; a rainy-day filler for families.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "lonavala-market",
+    "cityId": "lonavala",
+    "areaId": "lonavala-town",
+    "name": "Lonavala Chikki & Fudge Market",
+    "category": "market",
+    "lat": 18.753,
+    "lng": 73.406,
+    "durationMin": {
+      "min": 30,
+      "typical": 45,
+      "max": 60
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "09:00",
+          "21:30"
+        ]
+      ],
+      "tuesday": [
+        [
+          "09:00",
+          "21:30"
+        ]
+      ],
+      "wednesday": [
+        [
+          "09:00",
+          "21:30"
+        ]
+      ],
+      "thursday": [
+        [
+          "09:00",
+          "21:30"
+        ]
+      ],
+      "friday": [
+        [
+          "09:00",
+          "21:30"
+        ]
+      ],
+      "saturday": [
+        [
+          "09:00",
+          "21:30"
+        ]
+      ],
+      "sunday": [
+        [
+          "09:00",
+          "21:30"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "evening",
+    "avoidTimes": [],
+    "interestTags": [
+      "shopping",
+      "food",
+      "sweets"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.8,
+      "elderly": 0.7,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 800,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Main-road shops selling Lonavala's famous chikki (nut brittle) and fudge — Maganlal, Coopers, National.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "venna-lake",
+    "cityId": "mahabaleshwar",
+    "areaId": "mahabaleshwar-market",
+    "name": "Venna Lake",
+    "category": "lake",
+    "lat": 17.934,
+    "lng": 73.663,
+    "durationMin": {
+      "min": 45,
+      "typical": 60,
+      "max": 90
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "07:00",
+          "20:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "07:00",
+          "20:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "07:00",
+          "20:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "07:00",
+          "20:00"
+        ]
+      ],
+      "friday": [
+        [
+          "07:00",
+          "20:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "07:00",
+          "20:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "07:00",
+          "20:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "evening",
+    "avoidTimes": [],
+    "interestTags": [
+      "lakes",
+      "boating",
+      "kids",
+      "street-food"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 1,
+      "elderly": 0.8,
+      "couples": 0.9
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 800,
+      "seating": true
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Town lake with rowing/pedal boats (separately priced), horse rides and strawberry-cream stalls on the bank.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "arthurs-seat",
+    "cityId": "mahabaleshwar",
+    "areaId": "mahabaleshwar-market",
+    "name": "Arthur's Seat",
+    "category": "viewpoint",
+    "lat": 17.946,
+    "lng": 73.621,
+    "durationMin": {
+      "min": 45,
+      "typical": 60,
+      "max": 90
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "tuesday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "wednesday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "thursday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "friday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "saturday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "sunday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "views",
+      "photography",
+      "nature"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.6,
+      "elderly": 0.6,
+      "couples": 0.9
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "mixed",
+      "walkingRequiredM": 800,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "'Queen of Points': sheer drop to the Savitri valley ~12 km from town, with Echo Point and Tiger Spring on the way. Often fogged in during monsoon.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "elephants-head-point",
+    "cityId": "mahabaleshwar",
+    "areaId": "mahabaleshwar-market",
+    "name": "Elephant's Head (Needle Hole) Point",
+    "category": "viewpoint",
+    "lat": 17.939,
+    "lng": 73.632,
+    "durationMin": {
+      "min": 30,
+      "typical": 45,
+      "max": 60
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "tuesday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "wednesday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "thursday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "friday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "saturday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "sunday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "afternoon",
+    "avoidTimes": [],
+    "interestTags": [
+      "views",
+      "photography"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.6,
+      "elderly": 0.5,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "mixed",
+      "walkingRequiredM": 600,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Rock formation shaped like an elephant's trunk, with a natural hole in the cliff.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "wilson-point",
+    "cityId": "mahabaleshwar",
+    "areaId": "mahabaleshwar-market",
+    "name": "Wilson Point (Sunrise Point)",
+    "category": "viewpoint",
+    "lat": 17.928,
+    "lng": 73.652,
+    "durationMin": {
+      "min": 30,
+      "typical": 45,
+      "max": 60
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "05:30",
+          "19:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "05:30",
+          "19:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "05:30",
+          "19:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "05:30",
+          "19:00"
+        ]
+      ],
+      "friday": [
+        [
+          "05:30",
+          "19:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "05:30",
+          "19:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "05:30",
+          "19:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "views",
+      "sunrise",
+      "photography"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.6,
+      "elderly": 0.7,
+      "couples": 0.9
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "flat",
+      "walkingRequiredM": 300,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Highest point in Mahabaleshwar and the classic sunrise spot, close to the market.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "pratapgad-fort",
+    "cityId": "mahabaleshwar",
+    "areaId": "mahabaleshwar-market",
+    "name": "Pratapgad Fort",
+    "category": "fort",
+    "lat": 17.936,
+    "lng": 73.578,
+    "durationMin": {
+      "min": 120,
+      "typical": 150,
+      "max": 210
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "history",
+      "forts",
+      "maratha",
+      "views"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.2,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "high",
+      "terrain": "steep",
+      "walkingRequiredM": 1500,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.7,
+    "isDayTripFrom": null,
+    "variants": [
+      {
+        "name": "Pratapgad – lower fort & Bhavani temple",
+        "durationMin": {
+          "min": 60,
+          "typical": 75,
+          "max": 90
+        },
+        "accessibility": {
+          "stairsLevel": "medium",
+          "walkingRequiredM": 600
+        }
+      }
+    ],
+    "shortDescription": "1656 Maratha fort 24 km west, site of Shivaji's encounter with Afzal Khan (1659). Many stone steps from the parking to the upper fort.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "old-mahabaleshwar-temple",
+    "cityId": "mahabaleshwar",
+    "areaId": "old-mahabaleshwar",
+    "name": "Mahabaleshwar & Panchganga Temples",
+    "category": "temple",
+    "lat": 17.999,
+    "lng": 73.66,
+    "durationMin": {
+      "min": 30,
+      "typical": 45,
+      "max": 75
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "spiritual",
+      "history",
+      "rivers"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.7,
+      "couples": 0.6
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "flat",
+      "walkingRequiredM": 300,
+      "seating": false
+    },
+    "indoorOutdoor": "mixed",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Old Mahabaleshwar's Shiva temple and the Panchganga temple where five rivers, including the Krishna, are said to originate.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "mapro-garden",
+    "cityId": "mahabaleshwar",
+    "areaId": "panchgani",
+    "name": "Mapro Garden",
+    "category": "experience",
+    "lat": 17.918,
+    "lng": 73.742,
+    "durationMin": {
+      "min": 45,
+      "typical": 75,
+      "max": 120
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "09:30",
+          "21:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "09:30",
+          "21:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "09:30",
+          "21:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "09:30",
+          "21:00"
+        ]
+      ],
+      "friday": [
+        [
+          "09:30",
+          "21:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "09:30",
+          "21:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "09:30",
+          "21:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "afternoon",
+    "avoidTimes": [],
+    "interestTags": [
+      "food",
+      "strawberries",
+      "kids",
+      "shopping"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 1,
+      "elderly": 0.9,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 500,
+      "seating": true
+    },
+    "indoorOutdoor": "mixed",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Fruit-products brand's garden at Gureghar with a food court (strawberry cream, sandwiches, pizza), tasting counter and shop. Strawberry festival around Easter.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "table-land",
+    "cityId": "mahabaleshwar",
+    "areaId": "panchgani",
+    "name": "Table Land, Panchgani",
+    "category": "viewpoint",
+    "lat": 17.918,
+    "lng": 73.804,
+    "durationMin": {
+      "min": 45,
+      "typical": 60,
+      "max": 90
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "tuesday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "wednesday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "thursday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "friday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "saturday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ],
+      "sunday": [
+        [
+          "08:00",
+          "18:30"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "sunset",
+    "avoidTimes": [],
+    "interestTags": [
+      "views",
+      "kids",
+      "horse-rides",
+      "sunset"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.9,
+      "elderly": 0.5,
+      "couples": 0.9
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "mixed",
+      "walkingRequiredM": 1500,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Second-longest volcanic plateau in Asia; horse carts, pony rides and Krishna valley views. Short uphill walk from parking.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "parsi-point",
+    "cityId": "mahabaleshwar",
+    "areaId": "panchgani",
+    "name": "Parsi Point",
+    "category": "viewpoint",
+    "lat": 17.928,
+    "lng": 73.791,
+    "durationMin": {
+      "min": 20,
+      "typical": 30,
+      "max": 45
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "19:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "views",
+      "lakes"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.7,
+      "elderly": 0.9,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 100,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Roadside view over the Dhom dam backwaters on the Mahabaleshwar–Panchgani road.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "lingmala-waterfall",
+    "cityId": "mahabaleshwar",
+    "areaId": "mahabaleshwar-market",
+    "name": "Lingmala Waterfall",
+    "category": "waterfall",
+    "lat": 17.927,
+    "lng": 73.686,
+    "durationMin": {
+      "min": 45,
+      "typical": 60,
+      "max": 90
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "08:00",
+          "17:30"
+        ]
+      ],
+      "tuesday": [
+        [
+          "08:00",
+          "17:30"
+        ]
+      ],
+      "wednesday": [
+        [
+          "08:00",
+          "17:30"
+        ]
+      ],
+      "thursday": [
+        [
+          "08:00",
+          "17:30"
+        ]
+      ],
+      "friday": [
+        [
+          "08:00",
+          "17:30"
+        ]
+      ],
+      "saturday": [
+        [
+          "08:00",
+          "17:30"
+        ]
+      ],
+      "sunday": [
+        [
+          "08:00",
+          "17:30"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "waterfalls",
+      "nature",
+      "monsoon"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.6,
+      "elderly": 0.3,
+      "couples": 0.9
+    },
+    "accessibility": {
+      "stairsLevel": "medium",
+      "terrain": "mixed",
+      "walkingRequiredM": 1200,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 30,
+    "bookingRequired": false,
+    "bestMonths": [
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "~150 m cascade in forest east of town; best just after the monsoon. Uneven steps down to the lower viewpoint.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "kates-point",
+    "cityId": "mahabaleshwar",
+    "areaId": "old-mahabaleshwar",
+    "name": "Kate's Point & Needle Hole",
+    "category": "viewpoint",
+    "lat": 17.957,
+    "lng": 73.697,
+    "durationMin": {
+      "min": 30,
+      "typical": 45,
+      "max": 60
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "07:00",
+          "19:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "07:00",
+          "19:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "07:00",
+          "19:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "07:00",
+          "19:00"
+        ]
+      ],
+      "friday": [
+        [
+          "07:00",
+          "19:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "07:00",
+          "19:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "07:00",
+          "19:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "sunset",
+    "avoidTimes": [],
+    "interestTags": [
+      "views",
+      "sunset",
+      "photography"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.6,
+      "elderly": 0.7,
+      "couples": 0.9
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "flat",
+      "walkingRequiredM": 400,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Views of the Dhom and Balkawadi dams and the Krishna valley; popular at sunset.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "mahabaleshwar-bazaar",
+    "cityId": "mahabaleshwar",
+    "areaId": "mahabaleshwar-market",
+    "name": "Mahabaleshwar Main Bazaar",
+    "category": "market",
+    "lat": 17.9245,
+    "lng": 73.6555,
+    "durationMin": {
+      "min": 30,
+      "typical": 60,
+      "max": 90
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "10:00",
+          "22:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "10:00",
+          "22:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "10:00",
+          "22:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "10:00",
+          "22:00"
+        ]
+      ],
+      "friday": [
+        [
+          "10:00",
+          "22:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "10:00",
+          "22:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "10:00",
+          "22:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "evening",
+    "avoidTimes": [],
+    "interestTags": [
+      "shopping",
+      "food",
+      "strawberries",
+      "local-life"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.8,
+      "elderly": 0.7,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 800,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Pedestrian-friendly market for chikki, fudge, jams, leather chappals and corn patties.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "tapola-lake",
+    "cityId": "mahabaleshwar",
+    "areaId": "mahabaleshwar-market",
+    "name": "Tapola (Shivsagar Lake)",
+    "category": "lake",
+    "lat": 17.835,
+    "lng": 73.64,
+    "durationMin": {
+      "min": 90,
+      "typical": 120,
+      "max": 180
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "afternoon",
+    "avoidTimes": [],
+    "interestTags": [
+      "lakes",
+      "boating",
+      "adventure",
+      "nature"
+    ],
+    "tier": "niche",
+    "suitability": {
+      "kids": 0.7,
+      "elderly": 0.6,
+      "couples": 0.9
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "mixed",
+      "walkingRequiredM": 500,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "'Mini Kashmir' backwaters of the Koyna dam, ~25 km away; boating and kayaking (separately priced).",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "ellora-caves",
+    "cityId": "sambhajinagar",
+    "areaId": "khuldabad",
+    "name": "Ellora Caves",
+    "category": "cave",
+    "lat": 20.0268,
+    "lng": 75.1771,
+    "durationMin": {
+      "min": 180,
+      "typical": 240,
+      "max": 360
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "tuesday": [],
+      "wednesday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [
+      "tuesday"
+    ],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "history",
+      "caves",
+      "unesco",
+      "sculpture",
+      "architecture"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.6,
+      "elderly": 0.5,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "medium",
+      "terrain": "mixed",
+      "walkingRequiredM": 3000,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 40,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.9,
+    "isDayTripFrom": "sambhajinagar",
+    "variants": [
+      {
+        "name": "Ellora – Kailasa (Cave 16) only",
+        "durationMin": {
+          "min": 60,
+          "typical": 90,
+          "max": 120
+        },
+        "accessibility": {
+          "stairsLevel": "low",
+          "walkingRequiredM": 600
+        }
+      }
+    ],
+    "shortDescription": "UNESCO site of 34 Buddhist, Hindu and Jain caves (6th–10th c.); Kailasa (Cave 16) is a whole temple carved top-down from one rock. ~30 km from the city. Battery buses run along the 2 km site.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "ajanta-caves",
+    "cityId": "sambhajinagar",
+    "areaId": "jalna-road",
+    "name": "Ajanta Caves",
+    "category": "cave",
+    "lat": 20.5519,
+    "lng": 75.7033,
+    "durationMin": {
+      "min": 180,
+      "typical": 240,
+      "max": 300
+    },
+    "openingHours": {
+      "monday": [],
+      "tuesday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "wednesday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "thursday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "friday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "saturday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "sunday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ]
+    },
+    "weeklyOff": [
+      "monday"
+    ],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "history",
+      "caves",
+      "unesco",
+      "painting",
+      "buddhist"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.3,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "medium",
+      "terrain": "mixed",
+      "walkingRequiredM": 2500,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 40,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.9,
+    "isDayTripFrom": "sambhajinagar",
+    "variants": [
+      {
+        "name": "Ajanta – highlights (Caves 1, 2, 16, 17, 26)",
+        "durationMin": {
+          "min": 120,
+          "typical": 150,
+          "max": 180
+        },
+        "accessibility": {
+          "walkingRequiredM": 1500
+        }
+      }
+    ],
+    "shortDescription": "UNESCO Buddhist caves (2nd c. BCE–6th c. CE) with India's finest surviving ancient murals. ~100 km (2.5–3 h) each way; mandatory shuttle bus from Fardapur T-point. Steps between caves; dolis available.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "bibi-ka-maqbara",
+    "cityId": "sambhajinagar",
+    "areaId": "old-city",
+    "name": "Bibi Ka Maqbara",
+    "category": "landmark",
+    "lat": 19.9015,
+    "lng": 75.3203,
+    "durationMin": {
+      "min": 45,
+      "typical": 60,
+      "max": 90
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "friday": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "sunset",
+    "avoidTimes": [],
+    "interestTags": [
+      "history",
+      "architecture",
+      "mughal",
+      "gardens",
+      "photography"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.6,
+      "elderly": 0.8,
+      "couples": 1
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "flat",
+      "walkingRequiredM": 800,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 25,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.4,
+    "isDayTripFrom": null,
+    "shortDescription": "1660s mausoleum of Aurangzeb's wife, modelled on the Taj Mahal ('Taj of the Deccan'). Lovely at golden hour.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "daulatabad-fort",
+    "cityId": "sambhajinagar",
+    "areaId": "khuldabad",
+    "name": "Daulatabad Fort",
+    "category": "fort",
+    "lat": 19.943,
+    "lng": 75.213,
+    "durationMin": {
+      "min": 120,
+      "typical": 150,
+      "max": 210
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "history",
+      "forts",
+      "architecture",
+      "adventure"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.1,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "high",
+      "terrain": "steep",
+      "walkingRequiredM": 2500,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 25,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.7,
+    "isDayTripFrom": null,
+    "variants": [
+      {
+        "name": "Daulatabad – lower fort & Chand Minar",
+        "durationMin": {
+          "min": 45,
+          "typical": 60,
+          "max": 90
+        },
+        "accessibility": {
+          "stairsLevel": "low",
+          "terrain": "flat",
+          "walkingRequiredM": 800
+        }
+      }
+    ],
+    "shortDescription": "Hilltop citadel (Devagiri) with a moat, pitch-dark tunnel passage and Chand Minar; on the Ellora road. Several hundred steep steps to the summit — carry a torch.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "panchakki",
+    "cityId": "sambhajinagar",
+    "areaId": "old-city",
+    "name": "Panchakki (Water Mill)",
+    "category": "landmark",
+    "lat": 19.899,
+    "lng": 75.314,
+    "durationMin": {
+      "min": 20,
+      "typical": 30,
+      "max": 45
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "friday": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "afternoon",
+    "avoidTimes": [],
+    "interestTags": [
+      "history",
+      "engineering",
+      "sufi",
+      "gardens"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.7,
+      "elderly": 0.8,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 300,
+      "seating": true
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 20,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "17th-century water mill powered by an underground channel, beside the dargah of Baba Shah Musafir.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "grishneshwar-temple",
+    "cityId": "sambhajinagar",
+    "areaId": "khuldabad",
+    "name": "Grishneshwar Jyotirlinga Temple",
+    "category": "temple",
+    "lat": 20.024,
+    "lng": 75.17,
+    "durationMin": {
+      "min": 30,
+      "typical": 60,
+      "max": 120
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "05:30",
+          "21:30"
+        ]
+      ],
+      "tuesday": [
+        [
+          "05:30",
+          "21:30"
+        ]
+      ],
+      "wednesday": [
+        [
+          "05:30",
+          "21:30"
+        ]
+      ],
+      "thursday": [
+        [
+          "05:30",
+          "21:30"
+        ]
+      ],
+      "friday": [
+        [
+          "05:30",
+          "21:30"
+        ]
+      ],
+      "saturday": [
+        [
+          "05:30",
+          "21:30"
+        ]
+      ],
+      "sunday": [
+        [
+          "05:30",
+          "21:30"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "spiritual",
+      "architecture",
+      "history"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.6,
+      "couples": 0.6
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "flat",
+      "walkingRequiredM": 300,
+      "seating": false
+    },
+    "indoorOutdoor": "mixed",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "One of the 12 Jyotirlinga Shiva temples, 1 km from Ellora; 18th-century red-stone shikhara. Men remove shirts to enter the sanctum; long weekend/Monday queues.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "aurangabad-caves",
+    "cityId": "sambhajinagar",
+    "areaId": "old-city",
+    "name": "Aurangabad Caves",
+    "category": "cave",
+    "lat": 19.916,
+    "lng": 75.304,
+    "durationMin": {
+      "min": 45,
+      "typical": 75,
+      "max": 105
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "tuesday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "wednesday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "thursday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "friday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "saturday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "sunday": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "history",
+      "caves",
+      "buddhist",
+      "views"
+    ],
+    "tier": "must_see",
+    "suitability": {
+      "kids": 0.4,
+      "elderly": 0.3,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "medium",
+      "terrain": "mixed",
+      "walkingRequiredM": 1200,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 25,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Quiet 6th–7th century Buddhist caves on a ridge behind Bibi Ka Maqbara, with fine Tantric-Buddhist sculpture and city views.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    },
+    "needsVerification": true
+  },
+  {
+    "id": "soneri-mahal",
+    "cityId": "sambhajinagar",
+    "areaId": "old-city",
+    "name": "Soneri Mahal",
+    "category": "museum",
+    "lat": 19.913,
+    "lng": 75.31,
+    "durationMin": {
+      "min": 30,
+      "typical": 45,
+      "max": 60
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "10:00",
+          "17:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "10:00",
+          "17:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "10:00",
+          "17:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "10:00",
+          "17:00"
+        ]
+      ],
+      "friday": [
+        [
+          "10:00",
+          "17:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "10:00",
+          "17:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "10:00",
+          "17:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "afternoon",
+    "avoidTimes": [],
+    "interestTags": [
+      "history",
+      "museum",
+      "architecture"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.4,
+      "elderly": 0.7,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "flat",
+      "walkingRequiredM": 400,
+      "seating": true
+    },
+    "indoorOutdoor": "indoor",
+    "priceINR": 20,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "17th-century Bundela palace with a small museum; venue of the Ellora-Ajanta festival.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "himroo-weaving-centre",
+    "cityId": "sambhajinagar",
+    "areaId": "old-city",
+    "name": "Himroo & Paithani Weaving Centre",
+    "category": "market",
+    "lat": 19.895,
+    "lng": 75.323,
+    "durationMin": {
+      "min": 30,
+      "typical": 45,
+      "max": 75
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "friday": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "afternoon",
+    "avoidTimes": [],
+    "interestTags": [
+      "crafts",
+      "textiles",
+      "shopping",
+      "culture"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.3,
+      "elderly": 0.7,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 200,
+      "seating": true
+    },
+    "indoorOutdoor": "indoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Workshop-showrooms demonstrating Himroo (silk-cotton brocade) and Paithani saree weaving on handlooms.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "gul-mandi",
+    "cityId": "sambhajinagar",
+    "areaId": "old-city",
+    "name": "Gul Mandi & Old City Bazaars",
+    "category": "market",
+    "lat": 19.896,
+    "lng": 75.324,
+    "durationMin": {
+      "min": 30,
+      "typical": 60,
+      "max": 90
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "11:00",
+          "21:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "11:00",
+          "21:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "11:00",
+          "21:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "11:00",
+          "21:00"
+        ]
+      ],
+      "friday": [
+        [
+          "11:00",
+          "21:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "11:00",
+          "21:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "11:00",
+          "21:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "evening",
+    "avoidTimes": [],
+    "interestTags": [
+      "shopping",
+      "street-food",
+      "local-life"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.4,
+      "elderly": 0.4,
+      "couples": 0.6
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 1200,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Walled-city market lanes and gates; evening naan-qalia and kebab stalls nearby.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "salim-ali-lake",
+    "cityId": "sambhajinagar",
+    "areaId": "old-city",
+    "name": "Salim Ali Lake",
+    "category": "lake",
+    "lat": 19.901,
+    "lng": 75.336,
+    "durationMin": {
+      "min": 30,
+      "typical": 45,
+      "max": 60
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "20:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "20:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "20:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "20:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "20:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "20:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "20:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "lakes",
+      "birdwatching",
+      "relaxation"
+    ],
+    "tier": "niche",
+    "suitability": {
+      "kids": 0.7,
+      "elderly": 0.8,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 1000,
+      "seating": true
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 10,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Mughal-era lake with a small bird sanctuary and boating; a calm morning stop.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "siddharth-garden-zoo",
+    "cityId": "sambhajinagar",
+    "areaId": "station-road",
+    "name": "Siddharth Garden & Zoo",
+    "category": "park",
+    "lat": 19.877,
+    "lng": 75.323,
+    "durationMin": {
+      "min": 60,
+      "typical": 90,
+      "max": 120
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "kids",
+      "wildlife",
+      "gardens"
+    ],
+    "tier": "niche",
+    "suitability": {
+      "kids": 1,
+      "elderly": 0.6,
+      "couples": 0.4
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 1500,
+      "seating": true
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 50,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "City garden with a small zoo and snake park near the central bus stand.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "bhadra-maruti-temple",
+    "cityId": "sambhajinagar",
+    "areaId": "khuldabad",
+    "name": "Bhadra Maruti Temple",
+    "category": "temple",
+    "lat": 20.008,
+    "lng": 75.191,
+    "durationMin": {
+      "min": 15,
+      "typical": 30,
+      "max": 45
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "05:00",
+          "22:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "05:00",
+          "22:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "05:00",
+          "22:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "05:00",
+          "22:00"
+        ]
+      ],
+      "friday": [
+        [
+          "05:00",
+          "22:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "05:00",
+          "22:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "05:00",
+          "22:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "spiritual"
+    ],
+    "tier": "niche",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.8,
+      "couples": 0.5
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 100,
+      "seating": false
+    },
+    "indoorOutdoor": "indoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": null,
+    "shortDescription": "Temple with a rare reclining Hanuman idol in Khuldabad; an easy add-on to Ellora.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "lonar-crater",
+    "cityId": "sambhajinagar",
+    "areaId": "jalna-road",
+    "name": "Lonar Crater Lake",
+    "category": "lake",
+    "lat": 19.976,
+    "lng": 76.508,
+    "durationMin": {
+      "min": 150,
+      "typical": 180,
+      "max": 240
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "06:00",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [],
+    "interestTags": [
+      "nature",
+      "geology",
+      "trek",
+      "temples"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.5,
+      "elderly": 0.2,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "high",
+      "terrain": "steep",
+      "walkingRequiredM": 4000,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": "sambhajinagar",
+    "shortDescription": "~50,000-year-old meteorite-impact crater with a saline lake and ruined temples on the rim, ~150 km east. Steep path down to the lake.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "paithan",
+    "cityId": "sambhajinagar",
+    "areaId": "jalna-road",
+    "name": "Paithan (Paithani Weaving Centre & Jayakwadi)",
+    "category": "neighbourhood",
+    "lat": 19.48,
+    "lng": 75.38,
+    "durationMin": {
+      "min": 120,
+      "typical": 180,
+      "max": 240
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "friday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "afternoon",
+    "avoidTimes": [],
+    "interestTags": [
+      "crafts",
+      "textiles",
+      "spiritual",
+      "history"
+    ],
+    "tier": "niche",
+    "suitability": {
+      "kids": 0.3,
+      "elderly": 0.6,
+      "couples": 0.7
+    },
+    "accessibility": {
+      "stairsLevel": "low",
+      "terrain": "flat",
+      "walkingRequiredM": 1000,
+      "seating": true
+    },
+    "indoorOutdoor": "mixed",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.2,
+    "isDayTripFrom": "sambhajinagar",
+    "shortDescription": "Ancient town ~55 km south, home of the Paithani silk saree; weaving centre, Sant Eknath samadhi, and Jayakwadi dam gardens.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  }
+]

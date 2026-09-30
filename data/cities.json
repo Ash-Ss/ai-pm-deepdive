@@ -1,0 +1,545 @@
+[
+  {
+    "id": "mumbai",
+    "name": "Mumbai",
+    "lat": 19.076,
+    "lng": 72.8777,
+    "minNights": 1,
+    "saturationNights": 4,
+    "gatewayFor": [
+      "airport",
+      "rail",
+      "bus"
+    ],
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "avgDailyCostByTier": {
+      "budget": 1500,
+      "mid": 3500,
+      "premium": 8000
+    },
+    "areas": [
+      {
+        "id": "colaba-fort",
+        "name": "Colaba & Fort",
+        "lat": 18.922,
+        "lng": 72.833,
+        "vibeTags": [
+          "heritage",
+          "colonial",
+          "touristy",
+          "cafes"
+        ],
+        "walkability": 4,
+        "hotelPriceBand": {
+          "budget": 3500,
+          "mid": 8000,
+          "premium": 22000
+        },
+        "goodFor": [
+          "first-timers",
+          "history",
+          "walking"
+        ]
+      },
+      {
+        "id": "bandra",
+        "name": "Bandra",
+        "lat": 19.0596,
+        "lng": 72.8295,
+        "vibeTags": [
+          "trendy",
+          "cafes",
+          "nightlife",
+          "street-art"
+        ],
+        "walkability": 3,
+        "hotelPriceBand": {
+          "budget": 4000,
+          "mid": 9000,
+          "premium": 20000
+        },
+        "goodFor": [
+          "couples",
+          "food",
+          "nightlife"
+        ]
+      },
+      {
+        "id": "juhu",
+        "name": "Juhu",
+        "lat": 19.1075,
+        "lng": 72.8263,
+        "vibeTags": [
+          "beach",
+          "residential",
+          "bollywood"
+        ],
+        "walkability": 2,
+        "hotelPriceBand": {
+          "budget": 4000,
+          "mid": 8500,
+          "premium": 18000
+        },
+        "goodFor": [
+          "families",
+          "beach",
+          "near-airport"
+        ]
+      },
+      {
+        "id": "lower-parel",
+        "name": "Lower Parel & Worli",
+        "lat": 18.998,
+        "lng": 72.83,
+        "vibeTags": [
+          "business",
+          "malls",
+          "sea-face"
+        ],
+        "walkability": 2,
+        "hotelPriceBand": {
+          "budget": 4500,
+          "mid": 10000,
+          "premium": 24000
+        },
+        "goodFor": [
+          "business",
+          "central-base",
+          "dining"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pune",
+    "name": "Pune",
+    "lat": 18.5204,
+    "lng": 73.8567,
+    "minNights": 1,
+    "saturationNights": 3,
+    "gatewayFor": [
+      "airport",
+      "rail",
+      "bus"
+    ],
+    "bestMonths": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "avgDailyCostByTier": {
+      "budget": 1200,
+      "mid": 2800,
+      "premium": 6500
+    },
+    "areas": [
+      {
+        "id": "koregaon-park",
+        "name": "Koregaon Park",
+        "lat": 18.5362,
+        "lng": 73.894,
+        "vibeTags": [
+          "leafy",
+          "cafes",
+          "nightlife",
+          "upscale"
+        ],
+        "walkability": 3,
+        "hotelPriceBand": {
+          "budget": 3000,
+          "mid": 6500,
+          "premium": 15000
+        },
+        "goodFor": [
+          "couples",
+          "food",
+          "relaxed"
+        ]
+      },
+      {
+        "id": "camp",
+        "name": "Camp (MG Road)",
+        "lat": 18.514,
+        "lng": 73.878,
+        "vibeTags": [
+          "cantonment",
+          "bakeries",
+          "shopping"
+        ],
+        "walkability": 4,
+        "hotelPriceBand": {
+          "budget": 2500,
+          "mid": 5000,
+          "premium": 11000
+        },
+        "goodFor": [
+          "food",
+          "shopping",
+          "central-base"
+        ]
+      },
+      {
+        "id": "deccan-shivajinagar",
+        "name": "Deccan & Shivajinagar",
+        "lat": 18.517,
+        "lng": 73.841,
+        "vibeTags": [
+          "student",
+          "street-food",
+          "busy"
+        ],
+        "walkability": 3,
+        "hotelPriceBand": {
+          "budget": 2200,
+          "mid": 4500,
+          "premium": 9000
+        },
+        "goodFor": [
+          "budget",
+          "food",
+          "near-station"
+        ]
+      },
+      {
+        "id": "peth-old-city",
+        "name": "Old City Peths",
+        "lat": 18.516,
+        "lng": 73.856,
+        "vibeTags": [
+          "heritage",
+          "temples",
+          "markets",
+          "crowded"
+        ],
+        "walkability": 4,
+        "hotelPriceBand": {
+          "budget": 1800,
+          "mid": 3500,
+          "premium": 7000
+        },
+        "goodFor": [
+          "history",
+          "culture",
+          "walking"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "lonavala",
+    "name": "Lonavala",
+    "lat": 18.7546,
+    "lng": 73.4062,
+    "minNights": 1,
+    "saturationNights": 2,
+    "gatewayFor": [
+      "rail"
+    ],
+    "bestMonths": [
+      1,
+      2,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "avgDailyCostByTier": {
+      "budget": 1200,
+      "mid": 3000,
+      "premium": 7000
+    },
+    "areas": [
+      {
+        "id": "lonavala-town",
+        "name": "Lonavala Town",
+        "lat": 18.75,
+        "lng": 73.407,
+        "vibeTags": [
+          "market",
+          "chikki-shops",
+          "busy-weekends"
+        ],
+        "walkability": 3,
+        "hotelPriceBand": {
+          "budget": 2500,
+          "mid": 5500,
+          "premium": 12000
+        },
+        "goodFor": [
+          "budget",
+          "near-station",
+          "food"
+        ]
+      },
+      {
+        "id": "khandala",
+        "name": "Khandala",
+        "lat": 18.759,
+        "lng": 73.377,
+        "vibeTags": [
+          "valley-views",
+          "resorts",
+          "quiet"
+        ],
+        "walkability": 2,
+        "hotelPriceBand": {
+          "budget": 3500,
+          "mid": 7500,
+          "premium": 16000
+        },
+        "goodFor": [
+          "couples",
+          "views",
+          "relaxed"
+        ]
+      },
+      {
+        "id": "karla-malavli",
+        "name": "Karla & Malavli",
+        "lat": 18.76,
+        "lng": 73.47,
+        "vibeTags": [
+          "caves",
+          "treks",
+          "rural"
+        ],
+        "walkability": 1,
+        "hotelPriceBand": {
+          "budget": 2000,
+          "mid": 5000,
+          "premium": 11000
+        },
+        "goodFor": [
+          "trekkers",
+          "history",
+          "nature"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mahabaleshwar",
+    "name": "Mahabaleshwar",
+    "lat": 17.9237,
+    "lng": 73.6586,
+    "minNights": 1,
+    "saturationNights": 3,
+    "gatewayFor": [],
+    "bestMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11,
+      12
+    ],
+    "avgDailyCostByTier": {
+      "budget": 1300,
+      "mid": 3200,
+      "premium": 7500
+    },
+    "areas": [
+      {
+        "id": "mahabaleshwar-market",
+        "name": "Mahabaleshwar Market",
+        "lat": 17.925,
+        "lng": 73.656,
+        "vibeTags": [
+          "bazaar",
+          "busy",
+          "strawberries"
+        ],
+        "walkability": 3,
+        "hotelPriceBand": {
+          "budget": 2500,
+          "mid": 6000,
+          "premium": 14000
+        },
+        "goodFor": [
+          "families",
+          "food",
+          "central-base"
+        ]
+      },
+      {
+        "id": "panchgani",
+        "name": "Panchgani",
+        "lat": 17.925,
+        "lng": 73.8,
+        "vibeTags": [
+          "colonial",
+          "schools",
+          "tablelands"
+        ],
+        "walkability": 3,
+        "hotelPriceBand": {
+          "budget": 2500,
+          "mid": 5500,
+          "premium": 12000
+        },
+        "goodFor": [
+          "families",
+          "views",
+          "relaxed"
+        ]
+      },
+      {
+        "id": "old-mahabaleshwar",
+        "name": "Old Mahabaleshwar",
+        "lat": 17.995,
+        "lng": 73.66,
+        "vibeTags": [
+          "temples",
+          "forest",
+          "quiet"
+        ],
+        "walkability": 2,
+        "hotelPriceBand": {
+          "budget": 2000,
+          "mid": 4500,
+          "premium": 10000
+        },
+        "goodFor": [
+          "spiritual",
+          "nature",
+          "quiet"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sambhajinagar",
+    "name": "Chhatrapati Sambhajinagar (Aurangabad)",
+    "lat": 19.8762,
+    "lng": 75.3433,
+    "minNights": 2,
+    "saturationNights": 4,
+    "gatewayFor": [
+      "airport",
+      "rail",
+      "bus"
+    ],
+    "bestMonths": [
+      1,
+      2,
+      3,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "avgDailyCostByTier": {
+      "budget": 1100,
+      "mid": 2600,
+      "premium": 6000
+    },
+    "areas": [
+      {
+        "id": "jalna-road",
+        "name": "Jalna Road",
+        "lat": 19.874,
+        "lng": 75.36,
+        "vibeTags": [
+          "modern",
+          "hotels",
+          "malls"
+        ],
+        "walkability": 2,
+        "hotelPriceBand": {
+          "budget": 2000,
+          "mid": 4500,
+          "premium": 9000
+        },
+        "goodFor": [
+          "central-base",
+          "near-airport",
+          "day-trips"
+        ]
+      },
+      {
+        "id": "old-city",
+        "name": "Old City",
+        "lat": 19.896,
+        "lng": 75.322,
+        "vibeTags": [
+          "heritage",
+          "bazaars",
+          "mughal"
+        ],
+        "walkability": 3,
+        "hotelPriceBand": {
+          "budget": 1500,
+          "mid": 3000,
+          "premium": 6000
+        },
+        "goodFor": [
+          "history",
+          "shopping",
+          "food"
+        ]
+      },
+      {
+        "id": "station-road",
+        "name": "Station Road & Cantonment",
+        "lat": 19.865,
+        "lng": 75.32,
+        "vibeTags": [
+          "transit",
+          "budget",
+          "quiet"
+        ],
+        "walkability": 2,
+        "hotelPriceBand": {
+          "budget": 1500,
+          "mid": 3500,
+          "premium": 7500
+        },
+        "goodFor": [
+          "budget",
+          "near-station"
+        ]
+      },
+      {
+        "id": "khuldabad",
+        "name": "Khuldabad (near Ellora)",
+        "lat": 20.01,
+        "lng": 75.19,
+        "vibeTags": [
+          "rural",
+          "caves",
+          "shrines"
+        ],
+        "walkability": 2,
+        "hotelPriceBand": {
+          "budget": 2000,
+          "mid": 4500,
+          "premium": 9000
+        },
+        "goodFor": [
+          "ellora-early-start",
+          "history",
+          "quiet"
+        ]
+      }
+    ]
+  }
+]

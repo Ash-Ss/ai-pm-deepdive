@@ -1,0 +1,197 @@
+[
+  {
+    "fromCityId": "mumbai",
+    "toCityId": "pune",
+    "mode": "road",
+    "doorToDoorMin": 210,
+    "fareBandINR": {
+      "min": 2800,
+      "max": 4500
+    },
+    "comfort": 4,
+    "frequencyPerDay": 48,
+    "notes": "Private cab via Mumbai–Pune Expressway; fare is per car. Exits from Mumbai at peak hours add 45–60 min. AC buses cheaper (≈ ₹500–900 pp)."
+  },
+  {
+    "fromCityId": "mumbai",
+    "toCityId": "pune",
+    "mode": "train",
+    "doorToDoorMin": 225,
+    "fareBandINR": {
+      "min": 150,
+      "max": 1200
+    },
+    "comfort": 3,
+    "frequencyPerDay": 12,
+    "notes": "Deccan Queen / Intercity / Vande Bharat from CSMT or Dadar (~3h on board) plus station transfers; per person."
+  },
+  {
+    "fromCityId": "mumbai",
+    "toCityId": "lonavala",
+    "mode": "road",
+    "doorToDoorMin": 150,
+    "fareBandINR": {
+      "min": 2500,
+      "max": 4000
+    },
+    "comfort": 4,
+    "frequencyPerDay": 48,
+    "notes": "Private cab via the Expressway; per car. Weekend traffic at the Khalapur toll/ghat."
+  },
+  {
+    "fromCityId": "mumbai",
+    "toCityId": "lonavala",
+    "mode": "train",
+    "doorToDoorMin": 180,
+    "fareBandINR": {
+      "min": 100,
+      "max": 700
+    },
+    "comfort": 3,
+    "frequencyPerDay": 20,
+    "notes": "Any Pune-bound express stops at Lonavala (~2h from CSMT); per person."
+  },
+  {
+    "fromCityId": "mumbai",
+    "toCityId": "mahabaleshwar",
+    "mode": "road",
+    "doorToDoorMin": 330,
+    "fareBandINR": {
+      "min": 4500,
+      "max": 7000
+    },
+    "comfort": 3,
+    "frequencyPerDay": 24,
+    "notes": "Private cab via Expressway and Wai/Panchgani ghat; per car. No rail link."
+  },
+  {
+    "fromCityId": "mumbai",
+    "toCityId": "sambhajinagar",
+    "mode": "flight",
+    "doorToDoorMin": 180,
+    "fareBandINR": {
+      "min": 3500,
+      "max": 9000
+    },
+    "comfort": 4,
+    "frequencyPerDay": 3,
+    "notes": "~1h flight; door-to-door includes airport transfers and check-in; per person."
+  },
+  {
+    "fromCityId": "mumbai",
+    "toCityId": "sambhajinagar",
+    "mode": "train",
+    "doorToDoorMin": 420,
+    "fareBandINR": {
+      "min": 300,
+      "max": 1800
+    },
+    "comfort": 3,
+    "frequencyPerDay": 5,
+    "notes": "Janshatabdi / Devagiri / Tapovan (~6–7h on board incl. stations); per person."
+  },
+  {
+    "fromCityId": "mumbai",
+    "toCityId": "sambhajinagar",
+    "mode": "road",
+    "doorToDoorMin": 420,
+    "fareBandINR": {
+      "min": 8000,
+      "max": 12000
+    },
+    "comfort": 3,
+    "frequencyPerDay": 24,
+    "notes": "Via Samruddhi Mahamarg; per car. Long day in a vehicle."
+  },
+  {
+    "fromCityId": "pune",
+    "toCityId": "lonavala",
+    "mode": "road",
+    "doorToDoorMin": 90,
+    "fareBandINR": {
+      "min": 1500,
+      "max": 2500
+    },
+    "comfort": 4,
+    "frequencyPerDay": 48,
+    "notes": "Private cab via Expressway or old NH48; per car."
+  },
+  {
+    "fromCityId": "pune",
+    "toCityId": "lonavala",
+    "mode": "train",
+    "doorToDoorMin": 105,
+    "fareBandINR": {
+      "min": 20,
+      "max": 300
+    },
+    "comfort": 3,
+    "frequencyPerDay": 30,
+    "notes": "Pune–Lonavala suburban locals (~1h15) or express trains; per person."
+  },
+  {
+    "fromCityId": "pune",
+    "toCityId": "mahabaleshwar",
+    "mode": "road",
+    "doorToDoorMin": 210,
+    "fareBandINR": {
+      "min": 3000,
+      "max": 4500
+    },
+    "comfort": 3,
+    "frequencyPerDay": 24,
+    "notes": "Private cab via NH48 and Wai/Panchgani ghat; per car. Ghat section slow in fog/monsoon."
+  },
+  {
+    "fromCityId": "pune",
+    "toCityId": "sambhajinagar",
+    "mode": "road",
+    "doorToDoorMin": 330,
+    "fareBandINR": {
+      "min": 4500,
+      "max": 7000
+    },
+    "comfort": 3,
+    "frequencyPerDay": 24,
+    "notes": "Private cab via Ahmednagar; per car. MSRTC Shivneri buses ≈ ₹600–800 pp."
+  },
+  {
+    "fromCityId": "lonavala",
+    "toCityId": "mahabaleshwar",
+    "mode": "road",
+    "doorToDoorMin": 240,
+    "fareBandINR": {
+      "min": 3500,
+      "max": 5000
+    },
+    "comfort": 3,
+    "frequencyPerDay": 24,
+    "notes": "Private cab via Pune bypass and Wai; per car."
+  },
+  {
+    "fromCityId": "lonavala",
+    "toCityId": "sambhajinagar",
+    "mode": "road",
+    "doorToDoorMin": 390,
+    "fareBandINR": {
+      "min": 6000,
+      "max": 8500
+    },
+    "comfort": 3,
+    "frequencyPerDay": 24,
+    "notes": "Private cab via Pune/Ahmednagar or Samruddhi; per car. Usually better to break the journey in Pune."
+  },
+  {
+    "fromCityId": "mahabaleshwar",
+    "toCityId": "sambhajinagar",
+    "mode": "road",
+    "doorToDoorMin": 450,
+    "fareBandINR": {
+      "min": 7000,
+      "max": 10000
+    },
+    "comfort": 2,
+    "frequencyPerDay": 24,
+    "notes": "Private cab via Pune and Ahmednagar; per car. Long and tiring — consider an overnight in Pune."
+  }
+]
