@@ -1,0 +1,121 @@
+{
+  "combine": {
+    "doc": "Start from `default`, then apply every selected preset. When more than one preset sets the same lever, the strictest value wins, per the rule below: later dayStart (max), earlier dayEnd (min), fewer major items (min), more buffer / free time (max), less walking and transit (min), longer stays per base (max), slower durations (max), taxi sooner (min), rest breaks more often (min). Meal windows use 'intersect': the overlap of all windows given; if they don't overlap, keep the default window and log it in the trace. Presets apply in any order; the result is the same.",
+    "rules": {
+      "dayStart": "max",
+      "dayEnd": "min",
+      "maxMajorItemsPerDay": "min",
+      "bufferPct": "max",
+      "freeTimeMin": "max",
+      "maxWalkKmPerDay": "min",
+      "maxContinuousWalkMin": "min",
+      "maxTransitMinPerDay": "min",
+      "minNightsPerBase": "max",
+      "durationMultiplier": "max",
+      "preferTaxiAboveWalkMin": "min",
+      "lunchWindow": "intersect",
+      "dinnerWindow": "intersect",
+      "restBreakEveryMin": "min"
+    }
+  },
+  "presets": {
+    "default": {
+      "dayStart": "09:00",
+      "dayEnd": "20:30",
+      "maxMajorItemsPerDay": 4,
+      "bufferPct": 0.15,
+      "freeTimeMin": 30,
+      "maxWalkKmPerDay": 8,
+      "maxContinuousWalkMin": 30,
+      "maxTransitMinPerDay": 240,
+      "minNightsPerBase": 1,
+      "durationMultiplier": 1.0,
+      "preferTaxiAboveWalkMin": 20,
+      "lunchWindow": { "start": "12:30", "end": "14:30" },
+      "dinnerWindow": { "start": "19:30", "end": "21:30" },
+      "restBreakEveryMin": 180
+    },
+    "relaxed": {
+      "dayStart": "09:30",
+      "dayEnd": "19:30",
+      "maxMajorItemsPerDay": 3,
+      "bufferPct": 0.25,
+      "freeTimeMin": 90,
+      "maxTransitMinPerDay": 180,
+      "minNightsPerBase": 2,
+      "durationMultiplier": 1.15
+    },
+    "balanced": {
+      "maxMajorItemsPerDay": 4,
+      "bufferPct": 0.15,
+      "freeTimeMin": 45
+    },
+    "packed": {
+      "dayStart": "08:00",
+      "dayEnd": "21:30",
+      "maxMajorItemsPerDay": 6,
+      "bufferPct": 0.1,
+      "freeTimeMin": 0,
+      "maxWalkKmPerDay": 12,
+      "maxTransitMinPerDay": 300
+    },
+    "late_riser": {
+      "dayStart": "10:30",
+      "lunchWindow": { "start": "13:30", "end": "15:00" }
+    },
+    "early_bird": {
+      "dayStart": "07:00",
+      "dayEnd": "19:30",
+      "lunchWindow": { "start": "12:00", "end": "13:30" },
+      "dinnerWindow": { "start": "19:00", "end": "20:30" }
+    },
+    "short_walks": {
+      "maxWalkKmPerDay": 4,
+      "maxContinuousWalkMin": 15,
+      "preferTaxiAboveWalkMin": 10,
+      "restBreakEveryMin": 120
+    },
+    "step_free": {
+      "maxWalkKmPerDay": 3,
+      "maxContinuousWalkMin": 10,
+      "preferTaxiAboveWalkMin": 5,
+      "durationMultiplier": 1.2,
+      "restBreakEveryMin": 90
+    },
+    "elderly": {
+      "dayStart": "09:30",
+      "dayEnd": "19:00",
+      "maxMajorItemsPerDay": 3,
+      "bufferPct": 0.25,
+      "freeTimeMin": 60,
+      "maxWalkKmPerDay": 3,
+      "maxContinuousWalkMin": 15,
+      "maxTransitMinPerDay": 180,
+      "minNightsPerBase": 2,
+      "durationMultiplier": 1.25,
+      "preferTaxiAboveWalkMin": 8,
+      "dinnerWindow": { "start": "19:00", "end": "20:30" },
+      "restBreakEveryMin": 90
+    },
+    "family_kids": {
+      "dayEnd": "20:00",
+      "maxMajorItemsPerDay": 3,
+      "bufferPct": 0.2,
+      "freeTimeMin": 60,
+      "maxWalkKmPerDay": 5,
+      "maxContinuousWalkMin": 20,
+      "maxTransitMinPerDay": 180,
+      "durationMultiplier": 1.1,
+      "preferTaxiAboveWalkMin": 12,
+      "lunchWindow": { "start": "12:30", "end": "14:00" },
+      "dinnerWindow": { "start": "19:00", "end": "20:30" },
+      "restBreakEveryMin": 120
+    },
+    "foodie": {
+      "maxMajorItemsPerDay": 3,
+      "freeTimeMin": 45,
+      "lunchWindow": { "start": "12:30", "end": "15:00" },
+      "dinnerWindow": { "start": "19:30", "end": "22:00" }
+    }
+  }
+}

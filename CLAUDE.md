@@ -33,3 +33,5 @@ Cities: Mumbai, Pune, Lonavala, Mahabaleshwar, Chhatrapati Sambhajinagar (Aurang
 - Small, pure, well-named functions in /lib/planner/*. Each pipeline stage is its own file and returns data plus a "trace" object (inputs, decisions, outputs) for debugging and for a behind-the-scenes view later.
 - Types in /lib/types.ts. Zod schemas alongside.
 - Prefer simple and readable over clever. Comment the "why".
+
+@AGENTS.md
