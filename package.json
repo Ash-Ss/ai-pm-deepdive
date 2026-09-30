@@ -12,10 +12,13 @@
     "demo": "tsx scripts/demo.ts",
     "test:ai": "tsx scripts/test-ai.ts",
     "demo:ai": "tsx scripts/demo-ai.ts",
-    "compare:ai": "tsx scripts/compare-ai.ts"
+    "compare:ai": "tsx scripts/compare-ai.ts",
+    "test:service": "tsx scripts/test-service.ts"
   },
   "dependencies": {
     "@google/genai": "^2.24.0",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^1.49.0",
     "next": "16.3.7",
     "react": "19.2.8",
     "react-dom": "19.2.8",
@@ -23,6 +26,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/leaflet": "^1.9.22",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

@@ -326,3 +326,11 @@ export async function narratePlan(result: PipelineResult, catalogue: Catalogue, 
   plan.summary.source = report.source;
   return report;
 }
+
+/** Template narration for one edited day (swap/remove/regenerate make no narration call). */
+export function templateNarrateDay(day: import("../types").Day, catalogue: Catalogue): void {
+  const city = catalogue.cities.find((c) => c.id === day.cityId)?.name ?? day.cityId;
+  const acts = day.items.filter((i) => i.type === "activity").map((i) => i.title.split(" — ")[0]);
+  day.intro = acts.length ? `Day ${day.dayNumber} in ${city}: ${acts.join(", ")}.` : `Day ${day.dayNumber} in ${city}: an easy day.`;
+  for (const i of day.items) if (i.type === "activity") i.narration = i.whySelected.length ? `Chosen because: ${i.whySelected.join("; ")}.` : null;
+}

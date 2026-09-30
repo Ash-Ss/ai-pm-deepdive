@@ -374,7 +374,7 @@ const PLACE = String.raw`(?:the\s+)?([A-Z][\w'’]*(?:\s+[A-Z][\w'’]*)*|[a-z]+
 
 /** The same vague-phrase table as the prompt, for when AI is off or unavailable. */
 const RULES: Rule[] = [
-  { re: /\b(late start|wake up late|sleep in|late riser)\b/i, make: (m) => ({ ...soft(), type: "day_window", params: { start: "10:30" }, sourceText: m[0] }) },
+  { re: /\b(late start|late mornings?|wake up late|sleep in|late riser)\b/i, make: (m) => ({ ...soft(), type: "day_window", params: { start: "10:30" }, sourceText: m[0] }) },
   { re: /\bnothing in the morning\b/i, make: (m) => ({ ...soft(), type: "day_window", params: { start: "11:00" }, sourceText: m[0] }) },
   { re: /\b(relaxed|take it easy|slow pace)\b/i, make: (m) => ({ ...soft(), type: "pace", params: { pace: "relaxed" }, sourceText: m[0] }) },
   { re: /\b(packed|see everything|as much as possible)\b/i, make: (m) => ({ ...soft(), type: "pace", params: { pace: "packed" }, sourceText: m[0] }) },

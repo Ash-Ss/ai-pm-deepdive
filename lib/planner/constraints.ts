@@ -22,7 +22,11 @@ export function interestTags(constraints: Constraint[]): { like: Map<string, Con
   const like = new Map<string, Constraint>();
   const dislike = new Map<string, Constraint>();
   for (const c of ofType(constraints, "interest_weight")) {
-    (c.params.sentiment === "like" ? like : dislike).set(c.params.tag, c);
+    const map = c.params.sentiment === "like" ? like : dislike;
+    // "markets" should match the catalogue's "market": store the singular too.
+    const tag = c.params.tag.toLowerCase();
+    map.set(tag, c);
+    if (tag.endsWith("s")) map.set(tag.slice(0, -1), c);
   }
   return { like, dislike };
 }

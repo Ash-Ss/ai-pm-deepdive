@@ -50,6 +50,8 @@ export function allocateNights(args: {
   ctx: PlannerContext;
   /** Where the trip starts (arrival city), if known. */
   entryCityId?: string | null;
+  /** Keep an existing split (edits that must not move nights); demand and warnings are still computed. */
+  fixedNights?: Record<string, number>;
 }): StageResult<{
   legs: LegAlloc[];
   demandDays: Record<string, number>;
@@ -126,8 +128,14 @@ export function allocateNights(args: {
     t.decide("relaxed minimum nights", `sum of minimums exceeded ${totalNights} nights`, nights);
   }
 
+  if (args.fixedNights) {
+    order.forEach((c, i) => { nights[i] = args.fixedNights![c] ?? nights[i]; });
+    sum = nights.reduce((a, b) => a + b, 0);
+    t.decide("kept existing nights", "editing a plan: route and nights stay as they were", Object.fromEntries(order.map((c, i) => [c, nights[i]])));
+  }
+
   const cap = (i: number, n = nights[i]) => legCapacity(n, i === 0, i === order.length - 1);
-  while (sum < totalNights) {
+  while (!args.fixedNights && sum < totalNights) {
     const gaps = order.map((c, i) => ({ i, gap: demandDays[c] - cap(i), underMax: nights[i] < bounds[i].max }));
     const pool = gaps.some((g) => g.underMax) ? gaps.filter((g) => g.underMax) : gaps;
     if (!gaps.some((g) => g.underMax)) t.decide("exceeding saturation", "every city is at its saturation cap; adding to the neediest anyway");

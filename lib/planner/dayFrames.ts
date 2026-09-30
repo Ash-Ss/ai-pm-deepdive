@@ -2,7 +2,7 @@
  * Stage 5 — describe each day before anything is placed in it: its window,
  * capacity, energy, closures, crowds and fixed commitments.
  */
-import type { City, Constraint, Event, Levers, StageResult } from "../types";
+import type { City, Constraint, Event, Levers, PresetsFile, StageResult } from "../types";
 import { ofType, travellerProfiles } from "./constraints";
 import type { CandidatePool, DayFrame, LegAlloc } from "./plannerTypes";
 import { fromMin, toMin, weekdayOf } from "./time";
@@ -26,6 +26,8 @@ export function buildDayFrames(args: {
   constraints: Constraint[];
   pool: CandidatePool;
   cities: City[];
+  /** For day-scoped pace ("make day 2 more relaxed"): that preset's item limit applies to that day. */
+  presets?: PresetsFile;
 }): StageResult<DayFrame[]> {
   const { leg, levers, events, constraints, pool, cities } = args;
   const cityOf = (id: string) => cities.find((c) => c.id === id)!;
@@ -94,6 +96,11 @@ export function buildDayFrames(args: {
       notes.push(`Assumed onward ${mode} ~${fromMin(depMin)}: be at the ${mode === "flight" ? "airport" : "station"} ${lead} min before`);
     }
 
+    // Day-scoped pace: only this day follows the other preset's item limit.
+    const dayPace = ofType(constraints, "pace").find((c) => c.scope === `day:${leg.dayNumbers[k]}`);
+    const paceMax = dayPace && args.presets ? args.presets.presets[dayPace.params.pace].maxMajorItemsPerDay : undefined;
+    if (dayPace) notes.push(`Pace for this day: ${dayPace.params.pace} (${dayPace.id})`);
+
     let capacityMin = Math.max(0, endMin - startMin);
     if (isTravel) capacityMin = Math.min(capacityMin, Math.round(span * TRAVEL_DAY_SHARE));
 
@@ -122,7 +129,7 @@ export function buildDayFrames(args: {
       earliestStartMin,
       lightOnly,
       capacityMin,
-      maxMajorItems: Math.max(1, Math.round(levers.maxMajorItemsPerDay * energy)),
+      maxMajorItems: Math.max(1, Math.round((paceMax ?? levers.maxMajorItemsPerDay) * energy)),
       energy,
       transfer,
       departure,

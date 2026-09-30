@@ -8,8 +8,8 @@
  */
 import { type Catalogue, loadCatalogue } from "../catalogue";
 import { isAIEnabled, type LLMMeta } from "../llm";
-import { assignDaysHeuristic } from "../planner/assignDays";
-import { type PipelineResult, runPipeline } from "../planner/pipeline";
+import { type AssignFn, assignDaysHeuristic } from "../planner/assignDays";
+import { type PipelineOptions, type PipelineResult, runPipeline } from "../planner/pipeline";
 import type { Constraint, TripInput } from "../types";
 import { type AIAssignReport, makeAIAssign } from "./assignDays";
 import { type ExtractContext, type ExtractResult, extractConstraintsAI, extractConstraintsRules } from "./extractConstraints";
@@ -29,11 +29,11 @@ export async function extractFromChat(
   context: ExtractContext,
   catalogue: Catalogue = loadCatalogue(),
 ): Promise<ExtractResult & { fallback?: string }> {
-  if (!isAIEnabled()) return extractConstraintsRules(message, current, catalogue);
+  if (!isAIEnabled()) return extractConstraintsRules(message, current, catalogue, context.tripCityIds);
   try {
     return await extractConstraintsAI(message, current, context, catalogue);
   } catch (e) {
-    const r = extractConstraintsRules(message, current, catalogue);
+    const r = extractConstraintsRules(message, current, catalogue, context.tripCityIds);
     return { ...r, fallback: `AI extraction unavailable (${(e as Error).message.slice(0, 120)}); used rules` };
   }
 }
@@ -42,7 +42,7 @@ export async function extractFromChat(
 export async function planTrip(
   input: TripInput,
   chatConstraints: Constraint[],
-  opts: { locked?: Record<number, string[]>; catalogue?: Catalogue } = {},
+  opts: PipelineOptions & { catalogue?: Catalogue; onWriting?: () => void; assignOverride?: AssignFn } = {},
 ): Promise<PipelineResult & { ai: AIRunReport }> {
   const catalogue = opts.catalogue ?? loadCatalogue();
   const aiEnabled = isAIEnabled();
@@ -50,15 +50,17 @@ export async function planTrip(
 
   const preferences = chatConstraints.filter((c) => c.type === "freeform").map((c) => (c.params as { text: string }).text);
   const assignReport: AIAssignReport = { calls: [], notes: [], fallbackDays: [], fullFallback: false };
-  const assignFn = aiEnabled ? makeAIAssign({ locked: opts.locked, preferences, report: assignReport }) : assignDaysHeuristic;
-  const result = await runPipeline(input, chatConstraints, assignFn, catalogue);
-  if (aiEnabled) {
+  // An override (e.g. "keep today's places") skips assignment entirely, AI or not.
+  const assignFn = opts.assignOverride ?? (aiEnabled ? makeAIAssign({ locked: opts.locked, preferences, report: assignReport }) : assignDaysHeuristic);
+  const result = await runPipeline(input, chatConstraints, assignFn, catalogue, opts);
+  if (aiEnabled && !opts.assignOverride) {
     report.assign = assignReport;
     report.calls.push(...assignReport.calls);
     if (assignReport.fullFallback) report.fallbacks.push("day assignment: heuristic (AI unavailable)");
     else if (assignReport.fallbackDays.length) report.fallbacks.push(`day assignment: heuristic for day(s) ${assignReport.fallbackDays.join(", ")}`);
   }
 
+  opts.onWriting?.();
   report.narration = await narratePlan(result, catalogue, aiEnabled);
   if (report.narration.llm) report.calls.push(report.narration.llm);
   if (aiEnabled && !report.narration.llm) {
