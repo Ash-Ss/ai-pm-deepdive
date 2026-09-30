@@ -406,7 +406,10 @@ export type WeightsFile = z.infer<typeof WeightsFile>;
 // ---------------------------------------------------------------------------
 
 export const TripInput = z.object({
-  /** Empty = let the planner choose from the catalogue. */
+  /**
+   * Places the user named: city IDs, or day-trip POI IDs (e.g. "ajanta-caves"),
+   * which the planner turns into their base city + a must-include.
+   */
   cityIds: z.array(Id),
   startDate: IsoDate.nullable(),
   days: z.number().int().min(1).max(21),
@@ -507,8 +510,8 @@ export const Trace = z.object({
 });
 export type Trace = z.infer<typeof Trace>;
 
-/** Convenience shape for stage functions: data plus its trace. */
-export type StageResult<T> = { data: T; trace: Trace };
+/** Every planner stage returns its result plus a trace of how it got there. */
+export type StageResult<T> = { result: T; trace: Trace };
 
 export const Plan = z.object({
   id: z.string(),

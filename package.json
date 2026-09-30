@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "validate:data": "tsx scripts/validate-data.ts",
-    "list:must-see": "tsx scripts/list-must-see.ts"
+    "list:must-see": "tsx scripts/list-must-see.ts",
+    "demo": "tsx scripts/demo.ts"
   },
   "dependencies": {
     "@google/genai": "^2.24.0",
