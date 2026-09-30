@@ -108,6 +108,9 @@ export async function runPipeline(
         warnings.push(`You asked for ${poi.name}, but it can't be included (${why?.split(": ").slice(1).join(": ") ?? "filtered out"}).`);
       }
     }
+    for (const o of pool.mobilityOverrides) {
+      warnings.push(`${o.name} is included because you asked for it, but it has ${o.reason}. Take it slowly, with rests; skip parts if needed.`);
+    }
     // Every must-see we filter out gets explained, with any lighter version.
     for (const m of pool.excludedMustSees) {
       if (ctx.requestedPoiIds.has(m.id)) continue; // already explained above

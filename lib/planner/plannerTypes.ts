@@ -46,6 +46,8 @@ export type CandidatePool = {
   excludedMustSees: ExcludedMustSee[];
   /** Experiences left out, with why (shown in traces; e.g. too much walking). */
   excludedExperiences: { id: string; reason: string; linkedPoiIds: string[] }[];
+  /** Requested places kept despite exceeding stairs/terrain limits ("walks fine, just slower"). */
+  mobilityOverrides: { id: string; name: string; reason: string }[];
 };
 
 export type LegAlloc = {

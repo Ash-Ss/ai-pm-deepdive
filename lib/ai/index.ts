@@ -59,8 +59,7 @@ export async function planTrip(
     else if (assignReport.fallbackDays.length) report.fallbacks.push(`day assignment: heuristic for day(s) ${assignReport.fallbackDays.join(", ")}`);
   }
 
-  const cityName = (id: string) => catalogue.cities.find((c) => c.id === id)?.name ?? id;
-  report.narration = await narratePlan(result, cityName, aiEnabled);
+  report.narration = await narratePlan(result, catalogue, aiEnabled);
   if (report.narration.llm) report.calls.push(report.narration.llm);
   if (aiEnabled && !report.narration.llm) {
     report.fallbacks.push("narration: templates (AI unavailable)");

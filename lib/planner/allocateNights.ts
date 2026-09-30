@@ -85,7 +85,7 @@ export function allocateNights(args: {
         (poi.tier === "worth_it" && [...poi.interestTags, poi.category].some((tag) => liked.has(tag)));
       if (!relevant) continue;
       minutesUnfiltered += poi.durationMin.typical * levers.durationMultiplier + roundTrip(poi);
-      const fail = hardFilterFailure(poi, { dates: tripDates, rules, priceCap, constraints });
+      const fail = hardFilterFailure(poi, { dates: tripDates, rules, priceCap, constraints, requested: ctx.requestedPoiIds });
       if (fail) {
         skipped.push(`${poi.id} (${fail.reason})`); // can't be visited by this group, so it creates no demand
         continue;

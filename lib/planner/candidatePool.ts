@@ -22,12 +22,20 @@ const PRICE_SHARE_OF_DAILY = 0.5;
 // Mobility
 // ---------------------------------------------------------------------------
 
-export type MobilityRules = { maxStairs: (typeof STAIRS)[number]; allowSteep: boolean; flatOnly: boolean; maxWalkM: number; why: string[] };
+export type MobilityRules = {
+  maxStairs: (typeof STAIRS)[number];
+  allowSteep: boolean;
+  flatOnly: boolean;
+  maxWalkM: number;
+  /** "Walks fine, just slower": a place the user explicitly asked for may exceed the stairs/terrain limits (with a warning). */
+  requestedOverride: boolean;
+  why: string[];
+};
 
 export function mobilityRules(levers: Levers, constraints: Constraint[]): MobilityRules {
   // Same on-site walking budget the assigner plans against: the day limit minus headroom for walks between stops.
   const maxWalkM = Math.round(levers.maxWalkKmPerDay * 1000 * (1 - levers.assignerWalkHeadroomPct));
-  const rules: MobilityRules = { maxStairs: "high", allowSteep: true, flatOnly: false, maxWalkM, why: [] };
+  const rules: MobilityRules = { maxStairs: "high", allowSteep: true, flatOnly: false, maxWalkM, requestedOverride: false, why: [] };
   const tighten = (stairs: MobilityRules["maxStairs"], why: string) => {
     if (STAIRS.indexOf(stairs) < STAIRS.indexOf(rules.maxStairs)) rules.maxStairs = stairs;
     rules.why.push(why);
@@ -36,9 +44,17 @@ export function mobilityRules(levers: Levers, constraints: Constraint[]): Mobili
     if (c.params.level === "short_walks") { tighten("medium", `mobility short_walks (${c.id})`); rules.allowSteep = false; }
     if (c.params.level === "step_free") { tighten("none", `mobility step_free (${c.id})`); rules.allowSteep = false; rules.flatOnly = true; }
   }
-  // Elderly defaults to no high stairs/steep paths — unless the user told us they walk fine.
-  const walksFine = ofType(constraints, "mobility").some((c) => c.params.level === "full");
-  if (travellerProfiles(constraints).includes("elderly") && !walksFine) { tighten("medium", "elderly travellers"); rules.allowSteep = false; }
+  // Elderly: no high stairs or steep paths (mixed terrain is fine). "Walks fine, just slower" keeps
+  // those limits but lets a place the user explicitly asked for through, with a warning.
+  const mobility = ofType(constraints, "mobility").map((c) => c.params.level);
+  if (travellerProfiles(constraints).includes("elderly")) {
+    tighten("medium", "elderly travellers");
+    rules.allowSteep = false;
+    if (mobility.includes("full") && !mobility.some((l) => l !== "full")) {
+      rules.requestedOverride = true;
+      rules.why.push("walks fine, just slower: requested places may exceed the stairs limit");
+    }
+  }
   rules.why.push(`max ${rules.maxWalkM}m on-site walking per place = maxWalkKmPerDay × (1 − assignerWalkHeadroomPct ${levers.assignerWalkHeadroomPct})`);
   return rules;
 }
@@ -133,7 +149,7 @@ export function isOpenOn(poi: Poi, date: string, closedByEvent: Set<string> = ne
  */
 export function hardFilterFailure(
   poi: Poi,
-  f: { dates: string[]; rules: MobilityRules; priceCap: number; constraints: Constraint[]; closedByEvent?: Set<string> },
+  f: { dates: string[]; rules: MobilityRules; priceCap: number; constraints: Constraint[]; closedByEvent?: Set<string>; requested?: Set<string> },
 ): { step: "not excluded" | "open on a leg date" | "mobility" | "budget"; reason: string } | null {
   const excluded = excludedReason(poi, f.constraints);
   if (excluded) return { step: "not excluded", reason: excluded };
@@ -141,9 +157,20 @@ export function hardFilterFailure(
     return { step: "open on a leg date", reason: `closed on all of ${[...new Set(f.dates.map(weekdayOf))].join(", ")}` };
   }
   const v = accessibleVersion(poi, f.rules);
-  if (!v.ok) return { step: "mobility", reason: v.reason };
+  if (!v.ok && !mobilityOverride(poi, f.rules, f.requested)) return { step: "mobility", reason: v.reason };
   if (poi.priceINR > f.priceCap) return { step: "budget", reason: `₹${poi.priceINR} > ₹${Math.round(f.priceCap)} per person cap` };
   return null;
+}
+
+/**
+ * "Walks fine, just slower": a place the user asked for by name may exceed the stairs/terrain limits
+ * (never the walking-distance limit). Returns the version to use and why it's an exception.
+ */
+export function mobilityOverride(poi: Poi, rules: MobilityRules, requested?: Set<string>): { variant: PoiVariant | null; reason: string } | null {
+  if (!rules.requestedOverride || !requested?.has(poi.id)) return null;
+  const relaxed = accessibleVersion(poi, { ...rules, maxStairs: "high", allowSteep: true });
+  if (!relaxed.ok) return null;
+  return { variant: relaxed.variant, reason: accessibilityFails(poi.accessibility, rules) ?? "stairs" };
 }
 
 /** For a must-see that fails mobility, say whether a lighter version exists and why it doesn't help. */
@@ -199,7 +226,7 @@ export function buildCandidatePool(args: {
 
   t.decide("mobility rules", rules.why.join("; "), rules);
   const priceCap = priceCapPerPerson(city, ctx.budgetTier, constraints, dates.length, ctx.pax);
-  const filters = { dates, rules, priceCap, constraints, closedByEvent };
+  const filters = { dates, rules, priceCap, constraints, closedByEvent, requested: ctx.requestedPoiIds };
   // Same checks as hardFilterFailure, applied one step at a time so the funnel shows where things drop out.
   for (const label of ["not excluded", "open on a leg date", "mobility", "budget"] as const) {
     pois = step(label, pois, (p) => {
@@ -208,11 +235,18 @@ export function buildCandidatePool(args: {
     });
   }
   const variantOf = new Map<string, PoiVariant | null>();
+  const mobilityOverrides: CandidatePool["mobilityOverrides"] = [];
   for (const p of pois) {
     const v = accessibleVersion(p, rules);
     if (v.ok && v.variant) {
       variantOf.set(p.id, v.variant);
       t.decide(`${p.id} → variant "${v.variant.name}"`, `full visit fails mobility: ${accessibilityFails(p.accessibility, rules)}`);
+    }
+    if (!v.ok) {
+      const o = mobilityOverride(p, rules, ctx.requestedPoiIds)!;
+      variantOf.set(p.id, o.variant);
+      mobilityOverrides.push({ id: p.id, name: p.name, reason: o.reason });
+      t.decide(`kept requested ${p.id} despite ${o.reason}`, "user asked for it by name and said they walk fine");
     }
   }
 
@@ -264,7 +298,7 @@ export function buildCandidatePool(args: {
     .filter((x) => x.operatingDates.length > 0);
 
   for (const x of excludedExperiences) t.decide(`experience ${x.id} left out`, x.reason);
-  return t.finish({ cityId, pois: top, restaurants, experiences, funnel, excludedMustSees, excludedExperiences }, {
+  return t.finish({ cityId, pois: top, restaurants, experiences, funnel, excludedMustSees, excludedExperiences, mobilityOverrides }, {
     funnel: funnel.map((f) => `${f.step}: ${f.remaining}`),
     top10: top.slice(0, 10).map((p) => `${p.id} (${p.score}${p.variant ? `, variant: ${p.variant.name}` : ""})`),
     restaurants: restaurants.length,

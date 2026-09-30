@@ -11,7 +11,8 @@
     "list:must-see": "tsx scripts/list-must-see.ts",
     "demo": "tsx scripts/demo.ts",
     "test:ai": "tsx scripts/test-ai.ts",
-    "demo:ai": "tsx scripts/demo-ai.ts"
+    "demo:ai": "tsx scripts/demo-ai.ts",
+    "compare:ai": "tsx scripts/compare-ai.ts"
   },
   "dependencies": {
     "@google/genai": "^2.24.0",

@@ -89,3 +89,43 @@ export function resolvePlace(text: string, catalogue: Catalogue, prefer?: "city"
   }
   return best && best.score >= MIN_SCORE ? best : null;
 }
+
+export type MentionResolution =
+  | { status: "resolved"; match: PlaceMatch }
+  | { status: "ambiguous"; options: PlaceMatch[] }
+  | { status: "none" };
+
+/** Scores within this of the best count as "equally good" → ask the user. */
+const AMBIGUITY_MARGIN = 0.05;
+
+/** Every place (best label per place) that matches, best first. */
+export function placeCandidates(text: string, catalogue: Catalogue, prefer?: "city" | "poi"): PlaceMatch[] {
+  const q = normalise(text);
+  if (!q) return [];
+  const best = new Map<string, PlaceMatch>();
+  const consider = (kind: "city" | "poi", id: string, name: string, labels: string[]) => {
+    for (const label of labels) {
+      let score = similarity(q, normalise(label));
+      if (prefer && kind === prefer) score += 0.01;
+      const key = `${kind}:${id}`;
+      if (score >= MIN_SCORE && score > (best.get(key)?.score ?? 0)) best.set(key, { kind, id, name, score, matched: label });
+    }
+  };
+  for (const c of catalogue.cities) consider("city", c.id, c.name, [c.name, c.id, ...(ALIASES[c.id] ?? [])]);
+  for (const p of catalogue.pois) consider("poi", p.id, p.name, [p.name, p.name.replace(/\(.*?\)/g, ""), p.id.replace(/-/g, " "), ...(ALIASES[p.id] ?? [])]);
+  return [...best.values()].sort((a, b) => b.score - a.score);
+}
+
+/**
+ * Resolve a mention, or say it's ambiguous ("the fort" → Lohagad, Sinhagad, Pratapgad…)
+ * or unknown ("Goa"). An exact name/alias match beats partial matches.
+ */
+export function resolveMention(text: string, catalogue: Catalogue, prefer?: "city" | "poi"): MentionResolution {
+  const all = placeCandidates(text, catalogue, prefer);
+  if (all.length === 0) return { status: "none" };
+  const [top, second] = all;
+  const exact = top.score >= 1 && (!second || second.score < 1);
+  if (!second || exact || second.score < top.score - AMBIGUITY_MARGIN) return { status: "resolved", match: top };
+  // All equally good options; the caller orders them (e.g. trip cities first) and shows up to 3.
+  return { status: "ambiguous", options: all.filter((m) => m.score >= top.score - AMBIGUITY_MARGIN) };
+}

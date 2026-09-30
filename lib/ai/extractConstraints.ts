@@ -13,7 +13,7 @@ import { z } from "zod";
 import type { Catalogue } from "../catalogue";
 import { callLLM, type LLMMeta } from "../llm";
 import { Constraint, ConstraintScope, IsoDate, Pace, TimeHHMM, TravellerProfile } from "../types";
-import { resolvePlace } from "./resolvePlaces";
+import { resolveMention } from "./resolvePlaces";
 
 // ---------------------------------------------------------------------------
 // Output contract
@@ -22,7 +22,9 @@ import { resolvePlace } from "./resolvePlaces";
 export const Intent = z.enum(["add_constraints", "edit_plan", "regenerate", "question", "out_of_scope"]);
 export type Intent = z.infer<typeof Intent>;
 
-export const MOBILITY_QUESTION = {
+export const MOBILITY_QUESTION: ClarifyingQuestion = {
+  id: "mobility",
+  kind: "mobility",
   text: "How much walking is comfortable for your parents?",
   options: ["Walks fine, just slower", "Short walks only", "Needs step-free access"],
 };
@@ -32,10 +34,24 @@ export type ConstraintOp =
   | { op: "update"; constraint: Constraint }
   | { op: "remove"; id: string };
 
+export type ClarifyingQuestion = {
+  /** "mobility", "place-<n>" or "ai-<n>"; the client sends it back with the chosen option. */
+  id: string;
+  kind: "mobility" | "place" | "freeform";
+  text: string;
+  options: string[];
+  /** Place questions: what to create once the user picks one of the options. */
+  pending?: { draft: DraftConstraint; candidates: { id: string; kind: "city" | "poi"; name: string }[] };
+};
+
 export type ExtractResult = {
   intent: Intent;
   ops: ConstraintOp[];
-  clarifyingQuestion?: { text: string; options: string[] };
+  /** First of clarifyingQuestions, for callers that show one at a time. */
+  clarifyingQuestion?: ClarifyingQuestion;
+  clarifyingQuestions: ClarifyingQuestion[];
+  /** User-visible: things we couldn't act on (e.g. a place we don't cover). */
+  warnings: string[];
   /** What code changed or couldn't resolve (shown in the behind-the-scenes view). */
   notes: string[];
   source: "ai" | "rules";
@@ -138,18 +154,33 @@ function buildPrompt(message: string, current: Constraint[], context: ExtractCon
   ].join("\n\n");
 }
 
-export type ExtractContext = { summary: string; cityIds: string[]; today: string };
+export type ExtractContext = {
+  summary: string;
+  cityIds: string[];
+  today: string;
+  /** Cities in the current trip: listed first when a place mention is ambiguous. */
+  tripCityIds?: string[];
+};
 
 // ---------------------------------------------------------------------------
 // Draft → real constraints (shared by AI and rules)
 // ---------------------------------------------------------------------------
 
+type ResolveState = {
+  catalogue: Catalogue;
+  notes: string[];
+  warnings: string[];
+  questions: ClarifyingQuestion[];
+  tripCityIds: string[];
+};
+
 export function resolveDraftOps(
   drafts: ExtractOutput["ops"],
   current: Constraint[],
   catalogue: Catalogue,
-): { ops: ConstraintOp[]; notes: string[]; mobilityUnknown: boolean } {
-  const notes: string[] = [];
+  tripCityIds: string[] = [],
+): { ops: ConstraintOp[]; notes: string[]; warnings: string[]; questions: ClarifyingQuestion[]; mobilityUnknown: boolean } {
+  const st: ResolveState = { catalogue, notes: [], warnings: [], questions: [], tripCityIds };
   const ops: ConstraintOp[] = [];
   let mobilityUnknown = false;
   const existingIds = new Set(current.map((c) => c.id));
@@ -164,74 +195,111 @@ export function resolveDraftOps(
   for (const d of drafts) {
     if (d.op === "remove") {
       if (d.targetId && current.some((c) => c.id === d.targetId)) ops.push({ op: "remove", id: d.targetId });
-      else notes.push(`Ignored remove of unknown constraint "${d.targetId}"`);
+      else st.notes.push(`Ignored remove of unknown constraint "${d.targetId}"`);
       continue;
     }
     if (!d.constraint) {
-      notes.push(`Ignored ${d.op} without a constraint`);
+      st.notes.push(`Ignored ${d.op} without a constraint`);
       continue;
     }
     if (d.op === "update" && !(d.targetId && current.some((c) => c.id === d.targetId))) {
-      notes.push(`Update targeted unknown constraint "${d.targetId}"; treating it as new`);
+      st.notes.push(`Update targeted unknown constraint "${d.targetId}"; treating it as new`);
     }
     const draft = d.constraint;
     if (draft.type === "mobility" && draft.params.level === "unknown") {
       mobilityUnknown = true;
       continue;
     }
-    const resolved = resolveDraft(draft, catalogue, notes);
-    if (!resolved) continue;
+    const resolved = resolveDraft(draft, st);
+    if (!resolved) continue; // became a clarifying question
     const id = d.op === "update" && d.targetId && current.some((c) => c.id === d.targetId) ? d.targetId : newId();
-    const candidate = { ...resolved, id, source: "chat" as const };
-    // Accessibility is never optional: a wheelchair means hard step-free.
-    if (candidate.type === "mobility" && candidate.params && (candidate.params as { level?: string }).level === "step_free") candidate.strength = "hard";
-    const parsed = Constraint.safeParse(candidate);
-    if (!parsed.success) {
-      notes.push(`Kept "${draft.sourceText}" as freeform (didn't validate: ${parsed.error.issues[0]?.message})`);
-      ops.push({ op: "add", constraint: freeform(newId(), draft.sourceText, draft) });
-      continue;
-    }
-    ops.push(d.op === "update" && id === d.targetId ? { op: "update", constraint: parsed.data } : { op: "add", constraint: parsed.data });
+    const op = finalise(resolved, id, draft, st, d.op === "update" && id === d.targetId, newId);
+    ops.push(op);
   }
-  return { ops, notes, mobilityUnknown };
+  return { ops, notes: st.notes, warnings: st.warnings, questions: st.questions, mobilityUnknown };
+}
+
+/** Validate strictly; anything that doesn't validate is kept as a visible freeform note, never dropped. */
+function finalise(resolved: Omit<Constraint, "id" | "source">, id: string, draft: DraftConstraint, st: ResolveState, isUpdate: boolean, newId: () => string): ConstraintOp {
+  const candidate = { ...resolved, id, source: "chat" as const };
+  // Accessibility is never optional: a wheelchair means hard step-free.
+  if (candidate.type === "mobility" && (candidate.params as { level?: string }).level === "step_free") candidate.strength = "hard";
+  const parsed = Constraint.safeParse(candidate);
+  if (!parsed.success) {
+    st.notes.push(`Kept "${draft.sourceText}" as freeform (didn't validate: ${parsed.error.issues[0]?.message})`);
+    return { op: "add", constraint: freeform(newId(), draft.sourceText, draft) };
+  }
+  return isUpdate ? { op: "update", constraint: parsed.data } : { op: "add", constraint: parsed.data };
 }
 
 function freeform(id: string, text: string, d: { strength: "hard" | "soft"; weightLevel: "low" | "medium" | "high"; sourceText: string; confidence: number }): Constraint {
   return { id, type: "freeform", params: { text }, strength: d.strength, weightLevel: d.weightLevel, scope: "trip", source: "chat", sourceText: d.sourceText, confidence: d.confidence };
 }
 
-/** Swap place text for catalogue IDs; convert city↔POI when the text resolves to the other kind. */
-function resolveDraft(draft: DraftConstraint, catalogue: Catalogue, notes: string[]): Omit<Constraint, "id" | "source"> | null {
-  const base = { strength: draft.strength, weightLevel: draft.weightLevel, scope: resolveScope(draft.scope, catalogue, notes), sourceText: draft.sourceText, confidence: draft.confidence };
-  const unresolved = (text: string, what: string) => {
-    notes.push(`Couldn't find "${text}" in the catalogue (${what}); kept as a note`);
+const coveredCities = (c: Catalogue) => c.cities.map((x) => x.name).join(", ");
+
+/**
+ * Swap place text for catalogue IDs; convert city↔POI when the text resolves to the other kind.
+ * Ambiguous → a clarifying question (returns null); unknown → a warning plus a freeform note.
+ */
+function resolveDraft(draft: DraftConstraint, st: ResolveState): Omit<Constraint, "id" | "source"> | null {
+  const { catalogue } = st;
+  const base = { strength: draft.strength, weightLevel: draft.weightLevel, scope: resolveScope(draft.scope, st), sourceText: draft.sourceText, confidence: draft.confidence };
+  const unknown = (text: string, what: string) => {
+    st.warnings.push(`I couldn't find "${text}" among the places this planner covers (${coveredCities(catalogue)} and their sights), so I noted it but can't plan for it.`);
     return { ...base, type: "freeform" as const, params: { text: `${what}: ${text}` } };
   };
+  const ask = (text: string, options: { id: string; kind: "city" | "poi"; name: string }[]) => {
+    // Places in this trip's cities first: "the fort" on a Sambhajinagar trip is probably Daulatabad.
+    const inTrip = (o: { id: string; kind: string }) =>
+      o.kind === "city" ? st.tripCityIds.includes(o.id) : st.tripCityIds.includes(catalogue.pois.find((p) => p.id === o.id)?.cityId ?? "");
+    const sorted = [...options].sort((a, b) => Number(inTrip(b)) - Number(inTrip(a))).slice(0, 3);
+    st.questions.push({
+      id: `place-${st.questions.length + 1}`,
+      kind: "place",
+      text: `Which "${text}" did you mean?`,
+      options: sorted.map((o) => o.name),
+      pending: { draft, candidates: sorted },
+    });
+    st.notes.push(`"${text}" matches several places; asked which one`);
+    return null;
+  };
+  const one = (text: string, prefer: "city" | "poi") => {
+    const r = resolveMention(text, catalogue, prefer);
+    if (r.status === "resolved") st.notes.push(`"${text}" → ${r.match.kind} ${r.match.id}`);
+    return r;
+  };
+
   switch (draft.type) {
     case "city_include":
     case "city_exclude":
     case "poi_include":
     case "poi_exclude": {
       const include = draft.type.endsWith("include");
-      const m = resolvePlace(draft.params.text, catalogue, draft.type.startsWith("city") ? "city" : "poi");
-      if (!m) return unresolved(draft.params.text, include ? "wants to include" : "wants to skip");
-      notes.push(`"${draft.params.text}" → ${m.kind} ${m.id}`);
-      if (m.kind === "city") return { ...base, type: include ? "city_include" : "city_exclude", params: { cityId: m.id } };
-      return { ...base, type: include ? "poi_include" : "poi_exclude", params: { poiId: m.id } };
+      const r = one(draft.params.text, draft.type.startsWith("city") ? "city" : "poi");
+      if (r.status === "none") return unknown(draft.params.text, include ? "wants to include" : "wants to skip");
+      if (r.status === "ambiguous") return ask(draft.params.text, r.options);
+      return placeConstraint(base, include, r.match);
     }
     case "city_order": {
-      const ids = draft.params.texts.map((t) => resolvePlace(t, catalogue, "city")).filter((m) => m?.kind === "city").map((m) => m!.id);
-      if (ids.length < 2) return unresolved(draft.params.texts.join(" → "), "city order");
+      const ids: string[] = [];
+      for (const t of draft.params.texts) {
+        const r = one(t, "city");
+        if (r.status === "resolved" && r.match.kind === "city") ids.push(r.match.id);
+        else return unknown(draft.params.texts.join(" → "), "city order");
+      }
       return { ...base, type: "city_order", params: { cityIds: ids } };
     }
     case "nights_in_city": {
-      const m = resolvePlace(draft.params.text, catalogue, "city");
-      if (m?.kind !== "city") return unresolved(draft.params.text, "nights in");
-      return { ...base, type: "nights_in_city", params: { cityId: m.id, min: draft.params.min, max: draft.params.max } };
+      const r = one(draft.params.text, "city");
+      if (r.status !== "resolved" || r.match.kind !== "city") return unknown(draft.params.text, "nights in");
+      return { ...base, type: "nights_in_city", params: { cityId: r.match.id, min: draft.params.min, max: draft.params.max } };
     }
     case "date_anchor": {
-      const m = draft.params.text ? resolvePlace(draft.params.text, catalogue) : null;
-      if (draft.params.text && !m) notes.push(`Date anchor place "${draft.params.text}" not found; keeping the date only`);
+      const r = draft.params.text ? one(draft.params.text, "poi") : null;
+      if (r?.status === "none") st.warnings.push(`I couldn't find "${draft.params.text}"; I kept the date ${draft.params.date} only.`);
+      if (r?.status === "ambiguous") return ask(draft.params.text!, r.options);
+      const m = r?.status === "resolved" ? r.match : null;
       return {
         ...base, type: "date_anchor",
         params: { date: draft.params.date, ...(m?.kind === "city" ? { cityId: m.id } : {}), ...(m?.kind === "poi" ? { poiId: m.id } : {}), note: draft.params.note ?? draft.params.text },
@@ -244,12 +312,16 @@ function resolveDraft(draft: DraftConstraint, catalogue: Catalogue, notes: strin
   }
 }
 
-function resolveScope(scope: string, catalogue: Catalogue, notes: string[]): string {
-  if (ConstraintScope.safeParse(scope).success && (!scope.startsWith("city:") || catalogue.cities.some((c) => `city:${c.id}` === scope))) return scope;
-  const cityText = scope.replace(/^city:/, "");
-  const m = scope.startsWith("city:") ? resolvePlace(cityText, catalogue, "city") : null;
-  if (m?.kind === "city") return `city:${m.id}`;
-  notes.push(`Unrecognised scope "${scope}"; using whole trip`);
+function placeConstraint(base: Omit<Constraint, "id" | "source" | "type" | "params">, include: boolean, m: { kind: "city" | "poi"; id: string }): Omit<Constraint, "id" | "source"> {
+  if (m.kind === "city") return { ...base, type: include ? "city_include" : "city_exclude", params: { cityId: m.id } } as Omit<Constraint, "id" | "source">;
+  return { ...base, type: include ? "poi_include" : "poi_exclude", params: { poiId: m.id } } as Omit<Constraint, "id" | "source">;
+}
+
+function resolveScope(scope: string, st: ResolveState): string {
+  if (ConstraintScope.safeParse(scope).success && (!scope.startsWith("city:") || st.catalogue.cities.some((c) => `city:${c.id}` === scope))) return scope;
+  const r = scope.startsWith("city:") ? resolveMention(scope.replace(/^city:/, ""), st.catalogue, "city") : null;
+  if (r?.status === "resolved" && r.match.kind === "city") return `city:${r.match.id}`;
+  st.notes.push(`Unrecognised scope "${scope}"; using whole trip`);
   return "trip";
 }
 
@@ -260,6 +332,23 @@ function needsMobilityQuestion(current: Constraint[], ops: ConstraintOp[], mobil
   const hasMobility = all.some((c) => c.type === "mobility");
   const addedElderly = ops.some((o) => o.op !== "remove" && o.constraint.type === "traveller_profile" && o.constraint.params.profile === "elderly");
   return !hasMobility && elderly && (mobilityUnknown || addedElderly);
+}
+
+function assemble(
+  intent: Intent,
+  r: ReturnType<typeof resolveDraftOps>,
+  current: Constraint[],
+  aiQuestion: { text: string; options: string[] } | undefined,
+  source: "ai" | "rules",
+): ExtractResult {
+  const questions = [...r.questions];
+  if (needsMobilityQuestion(current, r.ops, r.mobilityUnknown)) {
+    questions.push(MOBILITY_QUESTION);
+    r.notes.push("Asked the standard mobility question for elderly travellers");
+  } else if (aiQuestion && aiQuestion.text !== MOBILITY_QUESTION.text) {
+    questions.push({ id: "ai-1", kind: "freeform", text: aiQuestion.text, options: aiQuestion.options });
+  }
+  return { intent, ops: r.ops, clarifyingQuestion: questions[0], clarifyingQuestions: questions, warnings: r.warnings, notes: r.notes, source };
 }
 
 // ---------------------------------------------------------------------------
@@ -274,18 +363,14 @@ export async function extractConstraintsAI(message: string, current: Constraint[
     schema: ExtractOutput,
     temperature: 0.1,
   });
-  const { ops, notes, mobilityUnknown } = resolveDraftOps(data.ops, current, catalogue);
-  let clarifyingQuestion = data.clarifyingQuestion;
-  if (needsMobilityQuestion(current, ops, mobilityUnknown)) {
-    if (clarifyingQuestion?.text !== MOBILITY_QUESTION.text) notes.push("Asked the standard mobility question for elderly travellers");
-    clarifyingQuestion = MOBILITY_QUESTION;
-  }
-  return { intent: data.intent, ops, clarifyingQuestion, notes, source: "ai", llm: meta };
+  const r = resolveDraftOps(data.ops, current, catalogue, context.tripCityIds);
+  return { ...assemble(data.intent, r, current, data.clarifyingQuestion, "ai"), llm: meta };
 }
 
 type Rule = { re: RegExp; make: (m: RegExpMatchArray) => DraftConstraint | DraftConstraint[] };
 const soft = (weightLevel: "low" | "medium" | "high" = "medium") => ({ strength: "soft" as const, weightLevel, scope: "trip", confidence: 0.7 });
 const hard = { strength: "hard" as const, weightLevel: "high" as const, scope: "trip", confidence: 0.8 };
+const PLACE = String.raw`(?:the\s+)?([A-Z][\w'’]*(?:\s+[A-Z][\w'’]*)*|[a-z]+\s+(?:fort|caves?|lake|temple|beach|market|museum))`;
 
 /** The same vague-phrase table as the prompt, for when AI is off or unavailable. */
 const RULES: Rule[] = [
@@ -298,38 +383,59 @@ const RULES: Rule[] = [
   { re: /\b(wheelchair|step[- ]free)\b/i, make: (m) => ({ ...hard, type: "mobility", params: { level: "step_free" }, sourceText: m[0] }) },
   { re: /\bjain\b/i, make: (m) => ({ ...hard, type: "dietary", params: { diet: "jain" }, sourceText: m[0] }) },
   { re: /\b(pure )?veg(etarian)?\b(?! options)/i, make: (m) => ({ ...hard, type: "dietary", params: { diet: "veg" }, sourceText: m[0] }) },
-  { re: /\b([Ss]kip|[Aa]void|[Nn]o|[Nn]ot interested in|[Ee]xclude)\s+(?:the\s+)?([A-Z][\w'’]*(?:\s+[A-Z][\w'’]*)*)/g, make: (m) => ({ ...soft("high"), type: "poi_exclude", params: { text: m[2] }, sourceText: m[0] }) },
-  { re: /\b([Mm]ust see|[Mm]ust visit|[Ii]nclude|[Aa]dd|[Ww]ant to see|[Vv]isit)\s+(?:the\s+)?([A-Z][\w'’]*(?:\s+[A-Z][\w'’]*)*)/g, make: (m) => ({ ...hard, type: "poi_include", params: { text: m[2] }, sourceText: m[0] }) },
+  { re: new RegExp(String.raw`\b(?:[Ss]kip|[Aa]void|[Nn]o|[Nn]ot interested in|[Ee]xclude|[Rr]emove|[Dd]rop)\s+${PLACE}`, "g"), make: (m) => ({ ...soft("high"), type: "poi_exclude", params: { text: m[1] }, sourceText: m[0] }) },
+  { re: new RegExp(String.raw`\b(?:[Mm]ust see|[Mm]ust visit|[Ii]nclude|[Aa]dd|[Ww]ant to see|[Vv]isit)\s+${PLACE}`, "g"), make: (m) => ({ ...hard, type: "poi_include", params: { text: m[1] }, sourceText: m[0] }) },
 ];
 
-export function extractConstraintsRules(message: string, current: Constraint[], catalogue: Catalogue): ExtractResult {
+export function extractConstraintsRules(message: string, current: Constraint[], catalogue: Catalogue, tripCityIds: string[] = []): ExtractResult {
   const drafts: ExtractOutput["ops"] = [];
   for (const rule of RULES) {
-    const matches = rule.re.global ? [...message.matchAll(rule.re)] : [message.match(rule.re)].filter(Boolean) as RegExpMatchArray[];
+    const matches = rule.re.global ? [...message.matchAll(rule.re)] : ([message.match(rule.re)].filter(Boolean) as RegExpMatchArray[]);
     for (const m of matches) {
       const made = rule.make(m);
       for (const c of Array.isArray(made) ? made : [made]) drafts.push({ op: "add", constraint: c });
     }
   }
-  const { ops, notes, mobilityUnknown } = resolveDraftOps(drafts, current, catalogue);
-  const clarifyingQuestion = needsMobilityQuestion(current, ops, mobilityUnknown) ? MOBILITY_QUESTION : undefined;
-  const intent: Intent = ops.length ? "add_constraints" : /\?\s*$/.test(message) ? "question" : "add_constraints";
-  if (!ops.length) notes.push("No rule matched; with AI off, only common phrases are understood");
-  return { intent, ops, clarifyingQuestion, notes, source: "rules" };
+  const r = resolveDraftOps(drafts, current, catalogue, tripCityIds);
+  const intent: Intent = r.ops.length || r.questions.length ? "add_constraints" : /\?\s*$/.test(message) ? "question" : "add_constraints";
+  if (!r.ops.length && !r.questions.length) r.notes.push("No rule matched; with AI off, only common phrases are understood");
+  return assemble(intent, r, current, undefined, "rules");
 }
 
-/** Map an answer to MOBILITY_QUESTION to a constraint op. */
-export function mobilityAnswerToOp(answer: string, current: Constraint[]): ConstraintOp | null {
-  const level = answer === MOBILITY_QUESTION.options[1] ? "short_walks" : answer === MOBILITY_QUESTION.options[2] ? "step_free" : answer === MOBILITY_QUESTION.options[0] ? "full" : null;
-  if (!level) return null;
-  const id = `chat-${current.filter((c) => c.id.startsWith("chat-")).length + 1}`;
-  return {
-    op: "add",
-    constraint: {
-      id, type: "mobility", params: { level }, strength: level === "full" ? "soft" : "hard", weightLevel: "high",
-      scope: "trip", source: "chat", sourceText: answer, confidence: 1,
-    },
-  };
+/** Turn the user's pick for a clarifying question into a constraint op (null = not answerable this way). */
+export function answerQuestion(q: ClarifyingQuestion, option: string, current: Constraint[]): ConstraintOp | null {
+  const id = nextChatId(current);
+  if (q.kind === "mobility") {
+    const level = option === MOBILITY_QUESTION.options[1] ? "short_walks" : option === MOBILITY_QUESTION.options[2] ? "step_free" : option === MOBILITY_QUESTION.options[0] ? "full" : null;
+    if (!level) return null;
+    return {
+      op: "add",
+      constraint: { id, type: "mobility", params: { level }, strength: level === "full" ? "soft" : "hard", weightLevel: "high", scope: "trip", source: "chat", sourceText: option, confidence: 1 },
+    };
+  }
+  if (q.kind === "place" && q.pending) {
+    const pick = q.pending.candidates.find((c) => c.name === option);
+    if (!pick) return null;
+    const d = q.pending.draft;
+    const base = { strength: d.strength, weightLevel: d.weightLevel, scope: d.scope.startsWith("day:") || d.scope === "trip" ? d.scope : "trip", sourceText: `${d.sourceText} → ${option}`, confidence: 1 };
+    const include = !d.type.endsWith("exclude");
+    const made = d.type === "date_anchor"
+      ? { ...base, type: "date_anchor" as const, params: { date: d.params.date, ...(pick.kind === "poi" ? { poiId: pick.id } : { cityId: pick.id }) } }
+      : placeConstraint(base, include, pick);
+    const parsed = Constraint.safeParse({ ...made, id, source: "chat" });
+    return parsed.success ? { op: "add", constraint: parsed.data } : null;
+  }
+  return null; // freeform questions are answered as a normal chat message
+}
+
+/** Back-compat helper used by scripts: answer the mobility question by its option text. */
+export const mobilityAnswerToOp = (answer: string, current: Constraint[]) => answerQuestion(MOBILITY_QUESTION, answer, current);
+
+function nextChatId(current: Constraint[]): string {
+  let n = current.filter((c) => c.id.startsWith("chat-")).length;
+  let id: string;
+  do id = `chat-${++n}`; while (current.some((c) => c.id === id));
+  return id;
 }
 
 export function applyOps(current: Constraint[], ops: ConstraintOp[]): Constraint[] {

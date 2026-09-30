@@ -5,9 +5,9 @@
  */
 import { loadCatalogue } from "../lib/catalogue";
 import { ASSIGN_SYSTEM } from "../lib/ai/assignDays";
-import { EXTRACT_SYSTEM, extractConstraintsAI, extractConstraintsRules, MOBILITY_QUESTION } from "../lib/ai/extractConstraints";
+import { answerQuestion, EXTRACT_SYSTEM, extractConstraintsAI, extractConstraintsRules, MOBILITY_QUESTION } from "../lib/ai/extractConstraints";
 import { planTrip } from "../lib/ai/index";
-import { droppedNumbers, groundingIssues, NARRATE_SYSTEM } from "../lib/ai/narrate";
+import { droppedNumbers, groundingIssues, NARRATE_SYSTEM, renderTokens } from "../lib/ai/narrate";
 import { callLLM, setLLMTransport, type TransportRequest } from "../lib/llm";
 import { weekdayOf } from "../lib/planner/time";
 import type { TripInput } from "../lib/types";
@@ -110,6 +110,17 @@ async function main() {
     check("rules: elderly parents → traveller_profile elderly + question", added.some((c) => c.type === "traveller_profile") && !!r.clarifyingQuestion);
     check("rules: skip Elephanta → poi_exclude", added.some((c) => c.type === "poi_exclude" && c.params.poiId === "elephanta-caves"));
   }
+  {
+    const r = extractConstraintsRules("Please add the fort. Skip Goa.", [], catalogue, ["mumbai", "sambhajinagar"]);
+    const q = r.clarifyingQuestions.find((x) => x.kind === "place");
+    check("ambiguous 'the fort' → place question with ≤ 3 options", !!q && q.options.length > 1 && q.options.length <= 3, q?.options.join(" | "));
+    check("trip-city option listed first", q?.options[0] === "Daulatabad Fort", q?.options[0]);
+    check("unknown 'Goa' → user-visible warning", r.warnings.some((w) => w.includes("Goa")));
+    const op = q ? answerQuestion(q, q.options[0], []) : null;
+    check("answering the place question → poi_include daulatabad-fort", op?.op === "add" && op.constraint.type === "poi_include" && op.constraint.params.poiId === "daulatabad-fort");
+    const m = answerQuestion(MOBILITY_QUESTION, "Walks fine, just slower", []);
+    check("'walks fine' → mobility full", m?.op === "add" && m.constraint.type === "mobility" && m.constraint.params.level === "full");
+  }
 
   // ---- 3. AI day assignment: bad output → retry → per-day heuristic fallback
   console.log("\n# assignDays (AI) + narration, USE_AI=true with fake Gemini");
@@ -135,9 +146,13 @@ async function main() {
       ],
     };
     const narration = {
-      tripSummary: "A relaxed trip through Mumbai and Chhatrapati Sambhajinagar (Aurangabad), paced for parents who prefer short walks.",
-      routeReason: "Mumbai first, then a 7 hour hop inland.", // invented number
-      days: [{ dayNumber: 1, intro: "Settle in and stroll to the Gateway of India." }, { dayNumber: 2, intro: "A quick detour to Lonar Crater." }], // invented place
+      tripSummary: "A relaxed trip through {{city:mumbai}} and {{city:sambhajinagar}}, paced for parents who prefer short walks.",
+      routeReason: "{{city:mumbai}} first, then a 7 hour hop inland.", // invented number
+      days: [
+        { dayNumber: 1, intro: "Settle in and stroll to {{poi:gateway-of-india}}." },
+        { dayNumber: 2, intro: "A quick detour to {{poi:lonar-crater}}." }, // token for a place not in the plan
+        { dayNumber: 3, intro: "Visit Bibi Ka Maqbara in the afternoon." }, // name typed out instead of a token
+      ],
       items: [],
       tradeoffs: [],
     };
@@ -152,7 +167,9 @@ async function main() {
     check("Ellora never on Tuesday", !where("ellora-caves").includes("tuesday"), `Ellora: ${where("ellora-caves").join(",") || "none"}`);
     check("AI themes used for AI days", days[0].title === "Harbour evening");
     check("0 hard violations", r.validation.hard.length === 0, r.validation.hard.map((h) => h.detail).join("; "));
-    check("grounded summary kept", r.plan.summary?.trip === narration.tripSummary);
+    check("grounded summary kept, tokens rendered to names", r.plan.summary?.trip === "A relaxed trip through Mumbai and Chhatrapati Sambhajinagar (Aurangabad), paced for parents who prefer short walks.", r.plan.summary?.trip);
+    check("token rendered in day 1 intro", days[0].intro === "Settle in and stroll to Gateway of India.", days[0].intro);
+    check("typed-out name (no token) replaced by template", days[2].intro !== narration.days[2].intro && r.ai.narration!.replaced.some((x) => x.where === "day 3 intro"));
     check("ungrounded route reason replaced by template", r.plan.summary?.route !== narration.routeReason && r.ai.narration!.replaced.some((x) => x.where === "routeReason"));
     check("invented place in day intro replaced", days[1].intro !== narration.days[1].intro);
     check("≤ 4 LLM calls for the plan", r.ai.calls.length <= 4, `${r.ai.calls.length} calls`);
@@ -180,12 +197,17 @@ async function main() {
 
   // ---- 6. grounding unit checks
   console.log("\n# grounding");
-  const facts = JSON.stringify({ a: "Starts at 08:30, Ajanta Caves, ₹4,700, 2 hours", b: "Bibi Ka Maqbara" });
-  check("time 8:30 matches 08:30", groundingIssues("Leave at 8:30 for Ajanta Caves.", facts).length === 0);
-  check("₹4,700 matches", groundingIssues("A car costs about ₹4,700.", facts).length === 0);
-  check("invented number caught", groundingIssues("It takes 6 hours.", facts).length === 1);
-  check("invented place caught", groundingIssues("Then visit Lonar Crater.", facts).length === 1);
-  check("sentence-start word ignored", groundingIssues("Enjoy Bibi Ka Maqbara at sunset.", facts).length === 0);
+  const entities = new Map([["{{poi:ajanta-caves}}", { token: "{{poi:ajanta-caves}}", kind: "poi" as const, id: "ajanta-caves", name: "Ajanta Caves" }]]);
+  const g = { factNumbers: new Set(["08:30", "4700", "4,700", "2"]), entities, allowedCaps: new Set(["leave", "a", "it", "then", "enjoy", "mumbai"]) };
+  check("time 8:30 matches 08:30", groundingIssues("Leave at 8:30 for {{poi:ajanta-caves}}.", g).length === 0);
+  check("₹4,700 matches", groundingIssues("A car costs about ₹4,700.", g).length === 0);
+  check("invented number caught", groundingIssues("It takes 6 hours.", g).length === 1);
+  check("unknown token caught", groundingIssues("Then visit {{poi:lonar-crater}}.", g).some((i) => i.includes("not in this plan")));
+  check("typed-out name caught", groundingIssues("Then visit Lonar Crater.", g).length === 2);
+  check("common sentence starter allowed", groundingIssues("Enjoy {{poi:ajanta-caves}} at sunset.", g).length === 0);
+  check("city names from data allowed", groundingIssues("Then Mumbai.", g).length === 0);
+  check("malformed token caught", groundingIssues("Enjoy {{poi:ajanta-caves}.", g).length > 0);
+  check("render replaces tokens", renderTokens("Enjoy {{poi:ajanta-caves}}.", entities) === "Enjoy Ajanta Caves.");
   check("rewrite that drops a time is caught", droppedNumbers("Starts at 08:30 instead of 10:30", "We start a little earlier today").length === 2);
   check("numbers inside names may be dropped", droppedNumbers('Doing "Ajanta – highlights (Caves 1, 2, 16)"', "We focus on the highlights").length === 0);
   check("rewrite that keeps times passes", droppedNumbers("Starts at 08:30 instead of 10:30", "An earlier 8:30 start (not 10:30) keeps lunch on time").length === 0);

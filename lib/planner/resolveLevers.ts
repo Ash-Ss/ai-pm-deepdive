@@ -10,6 +10,8 @@ import { isTripScope } from "./constraints";
 import { fromMin, toMin } from "./time";
 import { startTrace } from "./trace";
 
+const WALKS_FINE_DURATION_MULTIPLIER = 1.2;
+
 export type LeverSource = { lever: LeverName; value: unknown; setBy: string; candidates?: string[] };
 export type ResolvedLevers = { levers: Levers; provenance: LeverSource[]; appliedPresets: { preset: PresetName; reason: string }[] };
 
@@ -102,6 +104,10 @@ export function resolveLevers(
     }
     if (c.type === "max_transit_per_day") setExplicit("maxTransitMinPerDay", c.params.minutes, c);
     if (c.type === "max_walk_km_per_day") setExplicit("maxWalkKmPerDay", c.params.km, c);
+    // "Walks fine, just slower": still slower than default, but not the full elderly 1.25×.
+    if (c.type === "mobility" && c.params.level === "full" && levers.durationMultiplier > WALKS_FINE_DURATION_MULTIPLIER) {
+      setExplicit("durationMultiplier", WALKS_FINE_DURATION_MULTIPLIER, c);
+    }
   }
 
   // Guard against an impossible window (e.g. late_riser + an explicit early end).

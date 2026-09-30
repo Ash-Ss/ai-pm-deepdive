@@ -1,23 +1,60 @@
 /**
  * Narration: one LLM call turns a code-built fact sheet into friendly text.
  *
- * Grounding check (code): every number in a generated text must appear in the
- * fact sheet, and every capitalised name must exist in the fact sheet. A text
- * that fails is replaced by a template built from the same facts, so the plan
- * never shows an invented time, price or place.
+ * The LLM never writes place names. It refers to entities only by tokens —
+ * {{poi:ID}}, {{rest:ID}}, {{city:ID}}, {{exp:ID}} — and code:
+ *   1. checks every token names an entity that is in this plan,
+ *   2. checks what's left: every number must appear in the fact sheet, and every
+ *      capitalised word must be on an allowlist (common words, weekdays, months,
+ *      city names from the data) — so a name typed out directly fails,
+ *   3. renders tokens to names.
+ * A text that fails any check is replaced by a template built from the same facts.
  */
 import { z } from "zod";
+import type { Catalogue } from "../catalogue";
 import { callLLM, type LLMMeta } from "../llm";
 import type { PipelineResult } from "../planner/pipeline";
 
 // ---------------------------------------------------------------------------
-// Fact sheet
+// Entities and tokens
+// ---------------------------------------------------------------------------
+
+export type EntityKind = "poi" | "rest" | "city" | "exp";
+export type Entity = { token: string; kind: EntityKind; id: string; name: string };
+const TOKEN_RE = /\{\{(poi|rest|city|exp):([a-z0-9][a-z0-9_-]*)\}\}/g;
+const tokenOf = (kind: EntityKind, id: string) => `{{${kind}:${id}}}`;
+
+/** Every entity the plan mentions, keyed by token. */
+export function planEntities(result: PipelineResult, catalogue: Catalogue): Map<string, Entity> {
+  const out = new Map<string, Entity>();
+  const add = (kind: EntityKind, id: string, name: string | undefined) => {
+    if (name) out.set(tokenOf(kind, id), { token: tokenOf(kind, id), kind, id, name });
+  };
+  for (const leg of result.plan.legs) {
+    add("city", leg.cityId, catalogue.cities.find((c) => c.id === leg.cityId)?.name);
+    for (const day of leg.days) {
+      for (const i of day.items) {
+        if (!i.refId) continue;
+        if (i.type === "activity") {
+          add("poi", i.refId, catalogue.pois.find((p) => p.id === i.refId)?.name);
+          add("exp", i.refId, catalogue.experiences.find((x) => x.id === i.refId)?.name);
+        }
+        if (i.type === "meal") add("rest", i.refId, catalogue.restaurants.find((r) => r.id === i.refId)?.name);
+      }
+    }
+  }
+  return out;
+}
+
+// ---------------------------------------------------------------------------
+// Fact sheet (entities appear as tokens; names are listed once in `entities`)
 // ---------------------------------------------------------------------------
 
 export type FactSheet = {
+  entities: { token: string; name: string }[];
   travellers: string;
   totalDays: number;
-  route: { order: string[]; hops: string[]; transitHours: number; alternativesConsidered: string[] };
+  route: { order: string[]; hops: string[]; transitHours: number };
   legs: { city: string; nights: number; baseArea: string }[];
   days: {
     dayNumber: number;
@@ -28,7 +65,7 @@ export type FactSheet = {
     items: {
       itemId: string;
       type: string;
-      title: string;
+      entity: string | null;
       start: string;
       end: string;
       minutes: number;
@@ -40,41 +77,47 @@ export type FactSheet = {
 };
 
 const hm = (min: number) => `${Math.floor(min / 60)}h${min % 60 ? ` ${min % 60}m` : ""}`;
+const toMinutes = (hhmm: string) => Number(hhmm.slice(0, 2)) * 60 + Number(hhmm.slice(3));
 
-export function buildFactSheet(result: PipelineResult, cityName: (id: string) => string): FactSheet {
+export function buildFactSheet(result: PipelineResult, entities: Map<string, Entity>): FactSheet {
   const { plan, debug } = result;
   const t = plan.input.travellers;
-  const pools = debug.pools;
   const best = debug.route.best;
+  const city = (id: string) => tokenOf("city", id);
+  const entityFor = (type: string, refId: string | null) => {
+    if (!refId) return null;
+    const kinds: EntityKind[] = type === "meal" ? ["rest"] : type === "activity" ? ["poi", "exp"] : [];
+    return kinds.map((k) => tokenOf(k, refId)).find((tok) => entities.has(tok)) ?? null;
+  };
   return {
+    entities: [...entities.values()].map((e) => ({ token: e.token, name: e.name })),
     travellers: `${t.adults} adults${t.seniors ? `, ${t.seniors} seniors` : ""}${t.children ? `, ${t.children} children` : ""}; ${plan.input.presets.join(", ") || "no presets"}`,
     totalDays: plan.input.days,
     route: {
-      order: best.order.map(cityName),
-      hops: best.hops.map((h) => `${cityName(h.from)} to ${cityName(h.to)} by ${h.edge.mode}, about ${hm(h.minutes)} door to door`),
+      order: best.order.map(city),
+      hops: best.hops.map((h) => `${city(h.from)} to ${city(h.to)} by ${h.edge.mode}, about ${hm(h.minutes)} door to door`),
       transitHours: best.breakdown.transitHours,
-      alternativesConsidered: debug.route.ranked.slice(1, 3).map((r) => `${r.order.map(cityName).join(" → ")} (score ${r.score})`),
     },
-    legs: plan.legs.map((l) => ({ city: cityName(l.cityId), nights: l.nights, baseArea: debug.hotels.get(l.cityId)!.area.name })),
+    legs: plan.legs.map((l) => ({ city: city(l.cityId), nights: l.nights, baseArea: debug.hotels.get(l.cityId)!.area.name })),
     days: plan.legs.flatMap((l) => l.days).map((d) => ({
       dayNumber: d.dayNumber,
       date: d.date ?? "",
       weekday: new Date(`${d.date}T00:00:00Z`).toLocaleDateString("en-GB", { weekday: "long", timeZone: "UTC" }),
-      city: cityName(d.cityId),
+      city: city(d.cityId),
       theme: d.title ?? "",
       items: d.items
-        .filter((i) => i.type === "activity" || i.tradeoffs.length > 0)
+        .filter((i) => i.type === "activity" || i.type === "meal" || i.tradeoffs.length > 0)
         .map((i) => {
-          const p = i.refId ? pools.get(d.cityId)?.pois.find((x) => x.id === i.refId) : undefined;
+          const p = i.refId ? debug.pools.get(d.cityId)?.pois.find((x) => x.id === i.refId) : undefined;
           const facts: string[] = [];
           if (p) {
-            facts.push(p.poi.shortDescription);
+            facts.push(`category ${p.poi.category}; tags ${p.poi.interestTags.join(", ")}`);
             facts.push(`stairs ${p.accessibility.stairsLevel}, terrain ${p.accessibility.terrain}, about ${p.accessibility.walkingRequiredM} m walking${p.accessibility.seating ? ", seating available" : ""}`);
             if (p.poi.priceINR) facts.push(`entry about ₹${p.poi.priceINR} per person`);
           }
-          const minutes = toMinutes(i.endTime) - toMinutes(i.startTime);
           return {
-            itemId: i.id, type: i.type, title: i.title, start: i.startTime, end: i.endTime, minutes,
+            itemId: i.id, type: i.type, entity: entityFor(i.type, i.refId), start: i.startTime, end: i.endTime,
+            minutes: toMinutes(i.endTime) - toMinutes(i.startTime),
             facts, whySelected: i.whySelected, tradeoffs: i.tradeoffs,
           };
         }),
@@ -82,23 +125,47 @@ export function buildFactSheet(result: PipelineResult, cityName: (id: string) =>
   };
 }
 
-const toMinutes = (hhmm: string) => Number(hhmm.slice(0, 2)) * 60 + Number(hhmm.slice(3));
-
 // ---------------------------------------------------------------------------
 // Grounding
 // ---------------------------------------------------------------------------
 
-/** Words that may be capitalised without being a place from the plan. */
-const GENERIC_CAPS = new Set([
-  "i", "day", "days", "your", "you", "we", "our", "the", "a", "an", "this", "that", "it", "enjoy", "start", "end", "after", "before", "then",
-  "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
-  "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december",
-  "unesco", "india", "indian", "maharashtra", "maratha", "mughal", "buddhist", "hindu", "jain", "shiva", "ganesh", "am", "pm",
-]);
+/**
+ * Capitalised words allowed in narration. Everything else capitalised is
+ * assumed to be a name, and names must come through tokens.
+ */
+const COMMON_CAPS = new Set(`
+a an the and but or so yet for nor as at by in on of to from with without into onto over under after before during since until while
+i you your yours we our ours they their it its this that these those there here he she his her them
+is are was were be been being have has had do does did will would can could should may might must shall
+if when where why how what which who whom whose once then next finally later also still just even only
+today tonight tomorrow morning afternoon evening night day days weekend week
+start begin end finish head take make spend enjoy explore discover visit see stroll walk wander drive fly board catch
+relax rest unwind pause linger settle check arrive leave return continue wrap round ease kick savour taste try sample
+browse shop admire marvel soak keep allow expect note please plan give get let set use choose pick
+lunch dinner breakfast tea coffee chai snack meal
+a highlight highlights perfect ideal great good gentle easy short quick long slow calm quiet lovely beautiful
+first second third last final another other each every both all most many some few more less
+because although though however instead meanwhile afterwards overall together
+monday tuesday wednesday thursday friday saturday sunday
+january february march april may june july august september october november december
+unesco india indian maharashtra maratha mughal buddhist hindu jain shiva ganesh am pm ok
+focus dedicate conclude complete experience learn feel find follow join meet watch listen stay reach climb cross hop ride
+around across along near nearby inside outside beyond between through throughout toward towards within
+full whole half early late slowly gently well plenty time
+cave caves fort forts temple temples museum museums lake lakes market markets garden gardens beach beaches
+palace tomb mausoleum shrine church mosque monument monuments site sites viewpoint point hill hills city town old
+station airport hotel restaurant cafe tour guide car taxi flight train
+`.split(/\s+/).filter(Boolean));
+
+/** "Visiting", "Explores", "Settled" → their base word, so verb forms of allowed words pass. */
+function allowedWord(word: string, allowed: Set<string>): boolean {
+  if (allowed.has(word)) return true;
+  const stems = [word.replace(/ing$/, ""), word.replace(/ing$/, "e"), word.replace(/(ed|es|s|d)$/, ""), word.replace(/ies$/, "y")];
+  return stems.some((s) => s.length > 2 && allowed.has(s));
+}
 
 const NUMBER_RE = /\d+(?:[.,:]\d+)*/g;
-// "of", "ka", "de", "the" can sit inside a name (Gateway of India, Bibi Ka Maqbara); "and"/"&" join two names.
-const CAPS_RE = /[A-Z][\p{L}'’\-]*(?:\s+(?:(?:of|the|ka|de)\s+)*[A-Z][\p{L}'’\-]*)*/gu;
+const CAP_WORD_RE = /\b[A-Z][\p{L}'’]*/gu;
 
 function numberVariants(token: string): string[] {
   const noCommas = token.replace(/,/g, "");
@@ -121,27 +188,39 @@ export function droppedNumbers(original: string, rewritten: string): string[] {
     .filter((n) => !numberVariants(n).some((v) => kept.has(v)));
 }
 
-export function groundingIssues(text: string, factText: string): string[] {
+export type GroundingContext = { factNumbers: Set<string>; entities: Map<string, Entity>; allowedCaps: Set<string> };
+
+export function groundingContext(facts: FactSheet, entities: Map<string, Entity>, catalogue: Catalogue): GroundingContext {
+  // Item ids like "d1-7" and tokens like {{poi:x}} are labels, not facts — keep their digits out.
+  const factText = JSON.stringify(facts, (k, v) => (k === "itemId" || k === "entities" ? undefined : v)).replace(TOKEN_RE, "");
+  const cityWords = catalogue.cities.flatMap((c) => c.name.split(/[\s()]+/)).map((w) => w.toLowerCase()).filter(Boolean);
+  return {
+    factNumbers: new Set((factText.match(NUMBER_RE) ?? []).flatMap(numberVariants)),
+    entities,
+    allowedCaps: new Set([...COMMON_CAPS, ...cityWords]),
+  };
+}
+
+export function groundingIssues(text: string, g: GroundingContext): string[] {
   const issues: string[] = [];
-  const factNumbers = new Set((factText.match(NUMBER_RE) ?? []).flatMap(numberVariants));
-  for (const n of text.match(NUMBER_RE) ?? []) {
-    if (!numberVariants(n).some((v) => factNumbers.has(v))) issues.push(`number "${n}" not in facts`);
+  for (const m of text.matchAll(TOKEN_RE)) {
+    if (!g.entities.has(m[0])) issues.push(`token ${m[0]} is not in this plan`);
   }
-  const lowerFacts = factText.toLowerCase();
-  // A single capitalised word right after a sentence boundary is usually just grammar ("Enjoy…").
-  for (const m of text.matchAll(CAPS_RE)) {
-    const phrase = m[0];
-    const words = phrase.split(/\s+/);
-    const before = text.slice(0, m.index).trimEnd();
-    const sentenceStart = before === "" || /[.!?:;—–-]$/.test(before);
-    if (words.length === 1 && sentenceStart) continue;
-    if (words.every((w) => GENERIC_CAPS.has(w.toLowerCase().replace(/['’]s$/, "")))) continue;
-    const known = (p: string) => lowerFacts.includes(p.replace(/['’]s$/, "").toLowerCase());
-    // At a sentence start the first word may just be grammar ("Enjoy Bibi Ka Maqbara").
-    const ok = known(phrase) || (sentenceStart && words.length > 1 && known(words.slice(1).join(" ")));
-    if (!ok) issues.push(`name "${phrase}" not in plan`);
+  // Stray braces mean a malformed token.
+  const stripped = text.replace(TOKEN_RE, " ");
+  if (/[{}]/.test(stripped)) issues.push("malformed token");
+  for (const n of stripped.match(NUMBER_RE) ?? []) {
+    if (!numberVariants(n).some((v) => g.factNumbers.has(v))) issues.push(`number "${n}" not in facts`);
+  }
+  for (const w of stripped.match(CAP_WORD_RE) ?? []) {
+    const word = w.replace(/['’]s$/, "").toLowerCase();
+    if (!allowedWord(word, g.allowedCaps)) issues.push(`capitalised "${w}" is not a token or common word`);
   }
   return issues;
+}
+
+export function renderTokens(text: string, entities: Map<string, Entity>): string {
+  return text.replace(TOKEN_RE, (tok) => entities.get(tok)?.name ?? tok);
 }
 
 // ---------------------------------------------------------------------------
@@ -158,34 +237,42 @@ export const NarrationOutput = z.object({
 export type NarrationOutput = z.infer<typeof NarrationOutput>;
 
 export const NARRATE_SYSTEM = `You write short, warm, practical narration for a trip itinerary. Return JSON only.
-Use ONLY the facts provided. Do not add any number, time, price, distance or place name that is not in the facts.
+NAMES: never write the name of a place, restaurant, city or tour. Refer to them ONLY with the tokens from "entities",
+copied exactly, e.g. "Start at {{poi:gateway-of-india}}" or "dinner at {{rest:leopold-cafe}}". Do not invent tokens.
+Do not use any other proper nouns (no sub-site, cave or temple names that are not tokens). Use sentence case:
+only the first word of a sentence is capitalised, and start sentences with ordinary words.
+FACTS: use only the facts provided. Do not add any number, time, price or distance that is not in the facts.
 Prefer describing over quantifying if unsure. British/Indian English. No emojis. No exclamation marks.
 - tripSummary: 2–3 sentences about the whole trip and who it's for.
 - routeReason: 1–2 sentences on why the cities are in this order (use the route facts).
 - days[].intro: 1–2 sentences per day.
 - items[].why: for each activity item, why it's worth it for these travellers, at most 30 words.
-- tradeoffs[]: rewrite each tradeoff note (by itemId and its index in that item's tradeoffs list) kindly and clearly, keeping every time and fact.`;
+- tradeoffs[]: rewrite each tradeoff note (by itemId and its index in that item's tradeoffs list) kindly and clearly, keeping every time and price.`;
 
 export type NarrationReport = { llm?: LLMMeta; replaced: { where: string; issues: string[] }[]; source: "ai" | "template" | "mixed" };
 
-function templates(facts: FactSheet) {
+function templates(result: PipelineResult, catalogue: Catalogue) {
+  const cityName = (id: string) => catalogue.cities.find((c) => c.id === id)?.name ?? id;
+  const t = result.plan.input.travellers;
+  const who = `${t.adults} adults${t.seniors ? ` and ${t.seniors} seniors` : ""}${t.children ? ` and ${t.children} children` : ""}`;
+  const best = result.debug.route.best;
+  const order = best.order.map(cityName);
   return {
-    tripSummary: `A ${facts.totalDays}-day trip through ${facts.route.order.join(" and ")} for ${facts.travellers.split(";")[0]}.`,
-    routeReason: facts.route.hops.length
-      ? `Route: ${facts.route.order.join(" → ")}, chosen for the least time in transit (${facts.route.hops.join("; ")}).`
-      : `A single-base trip in ${facts.route.order[0]}.`,
-    dayIntro: (d: FactSheet["days"][number]) => {
-      const acts = d.items.filter((i) => i.type === "activity").map((i) => i.title.split(" — ")[0]);
-      return acts.length ? `Day ${d.dayNumber} in ${d.city}: ${acts.join(", ")}.` : `Day ${d.dayNumber} in ${d.city}: an easy day.`;
-    },
-    itemWhy: (i: FactSheet["days"][number]["items"][number]) => (i.whySelected.length ? `Chosen because: ${i.whySelected.join("; ")}.` : ""),
+    tripSummary: `A ${result.plan.input.days}-day trip through ${order.join(" and ")} for ${who}.`,
+    routeReason: best.hops.length
+      ? `Route: ${order.join(" → ")}, chosen for the least time in transit (${best.hops.map((h) => `${cityName(h.from)} to ${cityName(h.to)} by ${h.edge.mode}, about ${hm(h.minutes)}`).join("; ")}).`
+      : `A single-base trip in ${order[0]}.`,
+    dayIntro: (dayNumber: number, cityId: string, activityTitles: string[]) =>
+      activityTitles.length ? `Day ${dayNumber} in ${cityName(cityId)}: ${activityTitles.join(", ")}.` : `Day ${dayNumber} in ${cityName(cityId)}: an easy day.`,
+    itemWhy: (why: string[]) => (why.length ? `Chosen because: ${why.join("; ")}.` : ""),
   };
 }
 
 /** Narrate a planned trip in place (mutates plan text fields) and report what was replaced. */
-export async function narratePlan(result: PipelineResult, cityName: (id: string) => string, useAI: boolean): Promise<NarrationReport> {
-  const facts = buildFactSheet(result, cityName);
-  const tpl = templates(facts);
+export async function narratePlan(result: PipelineResult, catalogue: Catalogue, useAI: boolean): Promise<NarrationReport> {
+  const entities = planEntities(result, catalogue);
+  const facts = buildFactSheet(result, entities);
+  const tpl = templates(result, catalogue);
   const report: NarrationReport = { replaced: [], source: "template" };
   const plan = result.plan;
 
@@ -200,22 +287,22 @@ export async function narratePlan(result: PipelineResult, cityName: (id: string)
     }
   }
 
-  // Item ids like "d1-7" are labels, not facts — keep their digits out of the allowed numbers.
-  const factText = JSON.stringify(facts, (k, v) => (k === "itemId" ? undefined : v));
+  const g = groundingContext(facts, entities, catalogue);
   let aiUsed = 0;
   let tplUsed = 0;
-  /** Use the AI text if it passes grounding, else the template. */
+  /** Use the (rendered) AI text if it passes every check, else the template. */
   const pick = (where: string, aiText: string | undefined, fallback: string, mustKeepFrom?: string): string => {
     if (aiText === undefined) { tplUsed++; return fallback; }
-    const issues = groundingIssues(aiText, factText);
-    if (mustKeepFrom) issues.push(...droppedNumbers(mustKeepFrom, aiText).map((n) => `dropped "${n}" from the original note`));
+    const issues = groundingIssues(aiText, g);
+    const rendered = renderTokens(aiText, entities);
+    if (mustKeepFrom) issues.push(...droppedNumbers(mustKeepFrom, rendered).map((n) => `dropped "${n}" from the original note`));
     if (issues.length) {
       report.replaced.push({ where, issues });
       tplUsed++;
       return fallback;
     }
     aiUsed++;
-    return aiText;
+    return rendered;
   };
 
   plan.summary = {
@@ -224,12 +311,11 @@ export async function narratePlan(result: PipelineResult, cityName: (id: string)
     source: "template",
   };
   for (const day of plan.legs.flatMap((l) => l.days)) {
-    const f = facts.days.find((x) => x.dayNumber === day.dayNumber)!;
-    day.intro = pick(`day ${day.dayNumber} intro`, ai?.days.find((d) => d.dayNumber === day.dayNumber)?.intro, tpl.dayIntro(f));
+    const acts = day.items.filter((i) => i.type === "activity").map((i) => i.title.split(" — ")[0]);
+    day.intro = pick(`day ${day.dayNumber} intro`, ai?.days.find((d) => d.dayNumber === day.dayNumber)?.intro, tpl.dayIntro(day.dayNumber, day.cityId, acts));
     for (const item of day.items) {
       if (item.type === "activity") {
-        const fi = f.items.find((x) => x.itemId === item.id);
-        const why = pick(`${item.id} why`, ai?.items.find((x) => x.itemId === item.id)?.why, fi ? tpl.itemWhy(fi) : "");
+        const why = pick(`${item.id} why`, ai?.items.find((x) => x.itemId === item.id)?.why, tpl.itemWhy(item.whySelected));
         item.narration = why || null;
       }
       item.tradeoffs = item.tradeoffs.map((orig, idx) =>
@@ -240,4 +326,3 @@ export async function narratePlan(result: PipelineResult, cityName: (id: string)
   plan.summary.source = report.source;
   return report;
 }
-
