@@ -36,7 +36,9 @@ export function mobilityRules(levers: Levers, constraints: Constraint[]): Mobili
     if (c.params.level === "short_walks") { tighten("medium", `mobility short_walks (${c.id})`); rules.allowSteep = false; }
     if (c.params.level === "step_free") { tighten("none", `mobility step_free (${c.id})`); rules.allowSteep = false; rules.flatOnly = true; }
   }
-  if (travellerProfiles(constraints).includes("elderly")) { tighten("medium", "elderly travellers"); rules.allowSteep = false; }
+  // Elderly defaults to no high stairs/steep paths — unless the user told us they walk fine.
+  const walksFine = ofType(constraints, "mobility").some((c) => c.params.level === "full");
+  if (travellerProfiles(constraints).includes("elderly") && !walksFine) { tighten("medium", "elderly travellers"); rules.allowSteep = false; }
   rules.why.push(`max ${rules.maxWalkM}m on-site walking per place = maxWalkKmPerDay × (1 − assignerWalkHeadroomPct ${levers.assignerWalkHeadroomPct})`);
   return rules;
 }

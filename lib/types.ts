@@ -489,6 +489,8 @@ export const Day = z.object({
   /** Base city for the night. */
   cityId: Id,
   title: z.string().optional(),
+  /** Short narrated introduction (AI, grounding-checked, or template). */
+  intro: z.string().optional(),
   items: z.array(Item),
   totals: z.object({
     walkKm: z.number().nonnegative(),
@@ -540,5 +542,7 @@ export const Plan = z.object({
   legs: z.array(Leg),
   warnings: z.array(z.string()),
   traces: z.array(Trace),
+  /** Narration for the whole trip; `source` says whether text is AI-written or a template. */
+  summary: z.object({ trip: z.string(), route: z.string(), source: z.enum(["ai", "template", "mixed"]) }).optional(),
 });
 export type Plan = z.infer<typeof Plan>;

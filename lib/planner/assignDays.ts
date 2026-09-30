@@ -25,6 +25,10 @@ export type AssignedDay = {
   reasons?: Record<string, string[]>;
   /** Items to do as their lighter variant (e.g. to stay within the day's walking budget). */
   variantIds?: string[];
+  /** Short day theme, e.g. "Colonial Fort & museums". */
+  theme?: string;
+  /** Who produced this day when AI and heuristic are mixed. */
+  source?: "planner" | "ai";
 };
 export type AssignOutput = { days: AssignedDay[]; source: "planner" | "ai"; notes?: string[] };
 export type AssignFn = (input: AssignInput) => AssignOutput | Promise<AssignOutput>;
@@ -73,7 +77,7 @@ export function sanitizeAssignment(input: AssignInput, output: AssignOutput): St
         kept.push(id);
       }
       const variantIds = (proposed?.variantIds ?? []).filter((id) => kept.includes(id) && leg.pool.pois.find((p) => p.id === id)?.poi.variants?.length);
-      days.push({ dayNumber: frame.dayNumber, itemIds: kept, reasons: proposed?.reasons, variantIds });
+      days.push({ dayNumber: frame.dayNumber, itemIds: kept, reasons: proposed?.reasons, variantIds, theme: proposed?.theme, source: proposed?.source });
     }
   }
   const unknownDays = output.days.filter((d) => !days.some((k) => k.dayNumber === d.dayNumber));

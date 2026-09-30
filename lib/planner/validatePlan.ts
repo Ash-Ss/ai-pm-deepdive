@@ -185,6 +185,8 @@ export type DayState = {
   variantIds: Set<string>;
   reasons: Record<string, string[]>;
   tradeoffs: Record<string, string[]>;
+  source?: "planner" | "ai";
+  theme?: string;
 };
 export type RepairAction = { pass: number; dayNumber: number; strategy: "walk_to_taxi" | "reorder" | "variant" | "move" | "drop"; refId?: string; detail: string; accepted: boolean };
 

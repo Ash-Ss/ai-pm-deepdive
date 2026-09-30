@@ -9,7 +9,9 @@
     "lint": "eslint",
     "validate:data": "tsx scripts/validate-data.ts",
     "list:must-see": "tsx scripts/list-must-see.ts",
-    "demo": "tsx scripts/demo.ts"
+    "demo": "tsx scripts/demo.ts",
+    "test:ai": "tsx scripts/test-ai.ts",
+    "demo:ai": "tsx scripts/demo-ai.ts"
   },
   "dependencies": {
     "@google/genai": "^2.24.0",

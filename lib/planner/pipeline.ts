@@ -111,6 +111,7 @@ export async function runPipeline(
     // Every must-see we filter out gets explained, with any lighter version.
     for (const m of pool.excludedMustSees) {
       if (ctx.requestedPoiIds.has(m.id)) continue; // already explained above
+      if (m.reason === "excluded by user") continue; // they asked for it; no need to tell them
       warnings.push(`Skipped must-see ${m.name}: ${m.reason}.${m.variantNote ? ` ${m.variantNote}` : ""}`);
     }
     const hotel = take(chooseBaseArea(city, pool, walkingLimited));
@@ -130,6 +131,7 @@ export async function runPipeline(
       return {
         frame, itemIds: a?.itemIds ?? [], forceTaxi: false, minimizeWalking: false,
         variantIds: new Set<string>(a?.variantIds ?? []), reasons: a?.reasons ?? {}, tradeoffs: {},
+        source: a?.source ?? assigned.source, theme: a?.theme,
       };
     }),
   );
@@ -147,7 +149,7 @@ export async function runPipeline(
     const r = scheduleDayBest({
       frame: s.frame, itemIds: s.itemIds, pool: pools.get(s.frame.cityId)!, levers, hotel: hotels.get(s.frame.cityId)!, ctx,
       forceTaxi: s.forceTaxi, minimizeWalking: s.minimizeWalking, variantIds: s.variantIds, reasons: s.reasons, tradeoffs: s.tradeoffs,
-      restaurantUse: restaurantUseExcept(s.frame.dayNumber), source: assigned.source,
+      restaurantUse: restaurantUseExcept(s.frame.dayNumber), source: s.source,
     });
     latest.set(s.frame.dayNumber, r.result);
     return r;
@@ -234,7 +236,7 @@ export async function runPipeline(
         dayNumber: d.frame.dayNumber,
         date: d.frame.date,
         cityId: d.frame.cityId,
-        title: dayTitle(d.items, d.frame),
+        title: states.find((s) => s.frame.dayNumber === d.frame.dayNumber)?.theme ?? dayTitle(d.items, d.frame),
         items: d.items,
         totals: d.totals,
       })),
