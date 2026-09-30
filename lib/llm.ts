@@ -8,6 +8,9 @@
  * - 1 retry on invalid output, with the validation error fed back.
  * - Exponential backoff on 429 / 5xx.
  * - Dev cache (LLM_CACHE=true): hash(model + system + prompt + schema) → /.cache/llm.
+ * - Demo mode (DEMO_CACHE=true): if the live call fails (rate limit, no key, network),
+ *   serve a recorded answer from /data/demo-cache. Keys ignore ISO dates so recordings of
+ *   "next Monday" scenarios stay valid week to week. Record with DEMO_RECORD=true.
  * - Logs name, timing and token counts only — never the prompt or the key.
  */
 import { createHash } from "crypto";
@@ -25,7 +28,7 @@ export type TransportResponse = { text: string; usage?: LLMUsage };
 /** Anything that can answer a request; swapped out in tests. */
 export type Transport = (req: TransportRequest) => Promise<TransportResponse>;
 
-export type LLMMeta = { name: string; model: string; ms: number; attempts: number; cached: boolean; usage: LLMUsage };
+export type LLMMeta = { name: string; model: string; ms: number; attempts: number; cached: boolean; usage: LLMUsage; demo?: boolean };
 export type LLMResult<T> = { data: T; meta: LLMMeta };
 
 export class LLMError extends Error {
@@ -38,7 +41,8 @@ export const llmModel = () => process.env.GEMINI_MODEL || DEFAULT_MODEL;
 
 /** AI features are on only when asked for AND a key exists, so a missing key degrades gracefully. */
 export function isAIEnabled(): boolean {
-  return process.env.USE_AI === "true" && !!process.env.GEMINI_API_KEY;
+  // Demo mode can stand in for a missing key: recorded answers are served when live calls fail.
+  return process.env.USE_AI === "true" && (!!process.env.GEMINI_API_KEY || process.env.DEMO_CACHE === "true");
 }
 
 // ---------------------------------------------------------------------------
@@ -148,14 +152,61 @@ async function send(req: TransportRequest): Promise<TransportResponse> {
   }
 }
 
-export async function callLLM<T>(args: {
+type CallArgs<T> = {
   /** Short label for logs and the cache file, e.g. "extractConstraints". */
   name: string;
   system: string;
   prompt: string;
   schema: z.ZodType<T>;
   temperature?: number;
-}): Promise<LLMResult<T>> {
+};
+
+// ---------------------------------------------------------------------------
+// Demo cache
+// ---------------------------------------------------------------------------
+
+const DEMO_DIR = path.join(process.cwd(), "data", "demo-cache");
+
+/** Model- and date-independent key: the same scenario next week (same weekdays) hits the same answer. */
+function demoFile(args: CallArgs<unknown>, jsonSchema: unknown): string {
+  const undated = args.prompt.replace(/\d{4}-\d{2}-\d{2}/g, "<date>");
+  const key = createHash("sha256").update(JSON.stringify([args.name, args.system, undated, jsonSchema])).digest("hex").slice(0, 32);
+  return path.join(DEMO_DIR, `${args.name}-${key}.json`);
+}
+
+function readDemo<T>(args: CallArgs<T>, jsonSchema: unknown): T | null {
+  try {
+    const parsed = args.schema.safeParse(JSON.parse(readFileSync(demoFile(args, jsonSchema), "utf8")));
+    return parsed.success ? parsed.data : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function callLLM<T>(args: CallArgs<T>): Promise<LLMResult<T>> {
+  const jsonSchema = toGeminiSchema(args.schema);
+  try {
+    const r = await callLive(args);
+    if (process.env.DEMO_RECORD === "true" && !r.meta.cached) {
+      mkdirSync(DEMO_DIR, { recursive: true });
+      writeFileSync(demoFile(args, jsonSchema), JSON.stringify(r.data, null, 2) + "\n");
+    }
+    return r;
+  } catch (e) {
+    if (process.env.DEMO_CACHE !== "true") throw e;
+    const started = Date.now();
+    const data = readDemo(args, jsonSchema);
+    if (data === null) throw e;
+    const meta: LLMMeta = {
+      name: args.name, model: "demo-cache", ms: Date.now() - started, attempts: 0, cached: true, demo: true,
+      usage: { promptTokens: 0, outputTokens: 0, totalTokens: 0 },
+    };
+    log(meta, `served from demo cache after: ${(e as Error).message.slice(0, 80)}`);
+    return { data, meta };
+  }
+}
+
+async function callLive<T>(args: CallArgs<T>): Promise<LLMResult<T>> {
   const model = llmModel();
   const jsonSchema = toGeminiSchema(args.schema);
   const temperature = args.temperature ?? 0.2;

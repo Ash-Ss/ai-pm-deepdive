@@ -1,0 +1,149 @@
+{
+  "tripSummary": "This five-day journey offers a relaxed exploration of heritage and culture for two couples. You will enjoy the iconic landmarks of {{city:mumbai}} before heading to {{city:sambhajinagar}} to discover ancient wonders.",
+  "routeReason": "The itinerary begins in {{city:mumbai}} to enjoy coastal history before flying to {{city:sambhajinagar}}, which serves as the perfect base for exploring significant historic caves.",
+  "days": [
+    {
+      "dayNumber": 1,
+      "intro": "Begin your trip with a gentle introduction to the architecture and history of {{city:mumbai}}. Enjoy a relaxed afternoon taking in the city's most famous landmarks."
+    },
+    {
+      "dayNumber": 2,
+      "intro": "Spend your second day immersed in the rich cultural and spiritual heritage of the city. Enjoy leisurely visits to museums and unique local spots."
+    },
+    {
+      "dayNumber": 3,
+      "intro": "After your flight to {{city:sambhajinagar}}, settle into the old city with some light sightseeing. Explore serene gardens and historic monuments at a comfortable pace."
+    },
+    {
+      "dayNumber": 4,
+      "intro": "Dedicate this day to visiting the breathtaking UNESCO-listed cave paintings. This excursion is a highlight of the trip for history enthusiasts."
+    },
+    {
+      "dayNumber": 5,
+      "intro": "Conclude your journey with a visit to magnificent rock-cut architecture and a peaceful temple. It is a fitting end to your cultural exploration."
+    }
+  ],
+  "items": [
+    {
+      "itemId": "d1-3",
+      "why": "This UNESCO site is a masterpiece of Victorian Gothic architecture and provides a stunning, flat-terrain welcome to the city."
+    },
+    {
+      "itemId": "d1-6",
+      "why": "This iconic archway offers beautiful sea views and is a perfect, accessible spot for a relaxed first-day walk."
+    },
+    {
+      "itemId": "d1-10",
+      "why": "A legendary spot offering a classic atmosphere that captures the spirit of the city for your first dinner."
+    },
+    {
+      "itemId": "d2-2",
+      "why": "This museum houses an extensive collection of art and history, with comfortable seating available for a relaxed cultural experience."
+    },
+    {
+      "itemId": "d2-4",
+      "why": "A highly regarded restaurant known for excellent seafood, offering a sophisticated lunch in a refined setting."
+    },
+    {
+      "itemId": "d2-6",
+      "why": "A fascinating glimpse into the city's daily life, this spot is visually striking and easy to navigate on foot."
+    },
+    {
+      "itemId": "d2-8",
+      "why": "This unique spiritual site built over the sea offers a serene atmosphere and remarkable architectural beauty."
+    },
+    {
+      "itemId": "d2-12",
+      "why": "Known for its quirky decor and relaxed vibe, this is a wonderful place to enjoy a final evening meal in the city."
+    },
+    {
+      "itemId": "d3-3",
+      "why": "A flight is the most efficient way to travel, ensuring you remain rested for your explorations in the new city."
+    },
+    {
+      "itemId": "d3-7",
+      "why": "This historic water mill features beautiful gardens and a tranquil setting that is perfect for a gentle afternoon walk."
+    },
+    {
+      "itemId": "d3-10",
+      "why": "Often called the miniature of a famous monument, this site offers stunning Mughal architecture and peaceful grounds."
+    },
+    {
+      "itemId": "d3-14",
+      "why": "Experience the authentic local flavours of the region with a traditional meal in a welcoming setting."
+    },
+    {
+      "itemId": "d4-1",
+      "why": "A private transfer ensures a comfortable journey to the caves, allowing you to relax and enjoy the scenic route."
+    },
+    {
+      "itemId": "d4-2",
+      "why": "These ancient caves contain some of the most significant Buddhist art and paintings in the world."
+    },
+    {
+      "itemId": "d4-3",
+      "why": "A well-timed lunch break provides necessary rest after exploring the historic cave site."
+    },
+    {
+      "itemId": "d4-7",
+      "why": "Enjoy a traditional and hearty meal that reflects the local culinary heritage of the old city."
+    },
+    {
+      "itemId": "d5-1",
+      "why": "A comfortable transfer ensures you reach the historic site refreshed and ready for your final day of discovery."
+    },
+    {
+      "itemId": "d5-2",
+      "why": "Witnessing this incredible monolithic structure is a once-in-a-lifetime experience for any traveller."
+    },
+    {
+      "itemId": "d5-4",
+      "why": "A convenient place to enjoy a meal near the historic site, perfect for reflecting on your visit."
+    },
+    {
+      "itemId": "d5-6",
+      "why": "This ancient temple is a site of great spiritual importance and features beautiful architecture in a peaceful location."
+    },
+    {
+      "itemId": "d5-12",
+      "why": "Ensuring a timely arrival at the airport allows for a stress-free conclusion to your wonderful holiday."
+    }
+  ],
+  "tradeoffs": [
+    {
+      "itemId": "d3-3",
+      "index": 0,
+      "text": "The transfer departs at 13:30, which is later than your usual 10:30 start, but this timing is essential for your flight schedule."
+    },
+    {
+      "itemId": "d4-1",
+      "index": 0,
+      "text": "We depart at 08:30 instead of 10:30 to ensure we have ample time for the long drive and a comfortable visit."
+    },
+    {
+      "itemId": "d4-2",
+      "index": 0,
+      "text": "We focus on the highlights of caves 1, 2, 16, 17, and 26 to keep the walking and stairs manageable for everyone."
+    },
+    {
+      "itemId": "d4-3",
+      "index": 0,
+      "text": "Lunch is scheduled for 14:31 to ensure it aligns with the opening hours of the caves."
+    },
+    {
+      "itemId": "d5-1",
+      "index": 0,
+      "text": "We depart at 09:30 instead of 10:30 so that you can enjoy a full visit before lunch."
+    },
+    {
+      "itemId": "d5-2",
+      "index": 0,
+      "text": "We will visit the Kailasa cave 16 only to ensure the experience remains comfortable and avoids excessive walking."
+    },
+    {
+      "itemId": "d5-12",
+      "index": 0,
+      "text": "Please ensure you arrive at the airport 120 minutes before your departure flight."
+    }
+  ]
+}

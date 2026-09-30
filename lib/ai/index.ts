@@ -66,7 +66,7 @@ export async function planTrip(
   if (aiEnabled && !report.narration.llm) {
     report.fallbacks.push("narration: templates (AI unavailable)");
   } else if (aiEnabled && report.narration.source !== "ai") {
-    report.fallbacks.push(`narration: ${report.narration.replaced.length} text(s) failed grounding and use templates`);
+    report.fallbacks.push(`narration: ${report.narration.replaced.length} text(s) missing or failed grounding; templates used`);
   }
   return { ...result, ai: report };
 }

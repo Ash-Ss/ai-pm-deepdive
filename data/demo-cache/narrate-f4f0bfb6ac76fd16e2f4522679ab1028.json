@@ -1,0 +1,60 @@
+{
+  "tripSummary": "This four-day journey through Maharashtra offers a perfect blend of heritage, nature, and local flavours for a couple. You will experience the rich history of the old city, the scenic beauty of hill stations, and the charm of mountain viewpoints.",
+  "routeReason": "The route moves logically from the cultural heart of {{city:pune}} to the nearby hills of {{city:lonavala}}, before heading south to the serene environment of {{city:mahabaleshwar}}.",
+  "days": [
+    {
+      "dayNumber": 1,
+      "intro": "Begin your journey by immersing yourselves in the rich traditions and flavours of the old city. It is a wonderful way to connect with the local heritage together."
+    },
+    {
+      "dayNumber": 2,
+      "intro": "Enjoy a change of pace as you head to the hills to explore ancient rock-cut architecture and dramatic cliffside views. The fresh air and elevated scenery provide a refreshing escape."
+    },
+    {
+      "dayNumber": 3,
+      "intro": "Continue your adventure in the strawberry capital, where you can enjoy relaxing lakeside moments and indulge in local produce. It is a peaceful day dedicated to the natural beauty of the region."
+    },
+    {
+      "dayNumber": 4,
+      "intro": "Conclude your trip with a visit to a breathtaking viewpoint that offers panoramic vistas. It is the perfect final memory before you depart."
+    }
+  ],
+  "items": [
+    {
+      "itemId": "d1-6",
+      "why": "This trail covers multiple must-see heritage sites, making it a perfect way for couples to explore local culture and navigate the old city efficiently."
+    },
+    {
+      "itemId": "d2-4",
+      "why": "These are a must-see historical Buddhist site and offer a great opportunity for couples interested in exploring ancient history together."
+    },
+    {
+      "itemId": "d2-8",
+      "why": "This is an iconic viewpoint for photography and is perfect for a sunset visit to capture the shifting colours of the sky."
+    },
+    {
+      "itemId": "d3-6",
+      "why": "This is a must-see experience for food and local produce, making it highly suitable for couples looking to enjoy the local flavours."
+    },
+    {
+      "itemId": "d3-9",
+      "why": "This is a must-see scenic spot for boating and offers a relaxing evening atmosphere to unwind after your travels."
+    },
+    {
+      "itemId": "d4-2",
+      "why": "This is a must-see viewpoint with stunning vistas and serves as an excellent location for photography."
+    }
+  ],
+  "tradeoffs": [
+    {
+      "itemId": "d2-1",
+      "index": 0,
+      "text": "This transfer leaves at 09:00, assuming your usual start time; alternatively, a train takes 135 minutes."
+    },
+    {
+      "itemId": "d3-1",
+      "index": 0,
+      "text": "This transfer leaves at 09:00, assuming your usual start time."
+    }
+  ]
+}

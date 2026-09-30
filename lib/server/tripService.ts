@@ -53,7 +53,7 @@ export type PlanMeta = {
   places: Record<string, PlaceInfo>;
 };
 
-export type AIInfo = { enabled: boolean; calls: { name: string; ms: number; cached: boolean; tokens: number }[]; fallbacks: string[] };
+export type AIInfo = { enabled: boolean; calls: { name: string; ms: number; cached: boolean; tokens: number; demo?: boolean }[]; fallbacks: string[] };
 
 export type PlanResponse = {
   plan: Plan;
@@ -143,8 +143,11 @@ function buildMeta(plan: Plan, catalogue: Catalogue, route: PipelineResult["debu
 function aiInfo(report?: AIRunReport, extra: AIInfo["calls"] = []): AIInfo {
   return {
     enabled: isAIEnabled(),
-    calls: [...extra, ...(report?.calls ?? []).map((c) => ({ name: c.name, ms: c.ms, cached: c.cached, tokens: c.usage.totalTokens }))],
-    fallbacks: report?.fallbacks ?? [],
+    calls: [...extra, ...(report?.calls ?? []).map((c) => ({ name: c.name, ms: c.ms, cached: c.cached, tokens: c.usage.totalTokens, demo: c.demo }))],
+    fallbacks: [
+      ...(report?.fallbacks ?? []),
+      ...([...extra, ...(report?.calls ?? [])].some((c) => "demo" in c && c.demo) ? ["Gemini unavailable: served recorded demo answers"] : []),
+    ],
   };
 }
 
@@ -180,7 +183,7 @@ export async function createPlan(
     const ex = await extractFromChat(input.chatText, chat, extractContext(input, catalogue), catalogue);
     chat = applyOps(chat, ex.ops);
     questions = ex.clarifyingQuestions;
-    if (ex.llm) extraCalls.push({ name: ex.llm.name, ms: ex.llm.ms, cached: ex.llm.cached, tokens: ex.llm.usage.totalTokens });
+    if (ex.llm) extraCalls.push({ name: ex.llm.name, ms: ex.llm.ms, cached: ex.llm.cached, tokens: ex.llm.usage.totalTokens, demo: ex.llm.demo });
   }
   const r = await planTrip({ ...input, chatText: "" }, chat, { catalogue, onStage: opts.onStage, onWriting: () => opts.onStage?.("writing") });
   return toResponse(r, catalogue, questions, extraCalls);
@@ -315,12 +318,14 @@ export async function regenerateDay(
   let chat = planning(constraints);
   let ops: ConstraintOp[] = [];
   let fallbackNote = "";
+  let extractLLM: import("../llm").LLMMeta | undefined;
   if (opts.instructions?.trim()) {
     const ex = await extractFromChat(opts.instructions, chat, extractContext(plan.input, catalogue), catalogue);
     // Instructions for "regenerate day N" apply to that day only where that makes sense.
     ops = ex.ops.map((o) => (o.op !== "remove" && DAY_SCOPABLE.has(o.constraint.type) ? { ...o, constraint: { ...o.constraint, scope: `day:${dayNumber}` } } : o));
     chat = applyOps(chat, ops);
     if (ex.fallback) fallbackNote = " (AI was unavailable, so your instructions were read with simple rules.)";
+    extractLLM = ex.llm;
   }
   const prep = prepareFor(plan, chat, catalogue);
   const day = allDays(plan).find((d) => d.dayNumber === dayNumber);
@@ -333,16 +338,19 @@ export async function regenerateDay(
   const pool = { ...leg.pool, pois: leg.pool.pois.filter((p) => !otherDays.has(p.id) && (!setAside.has(p.id) || locked.includes(p.id))) };
   const input: AssignInput = { legs: [{ ...leg, frames: [frame], pool }], levers: prep.resolved.levers, constraints: prep.constraints };
 
+  const assignReport = { calls: [] as import("../llm").LLMMeta[], notes: [] as string[], fallbackDays: [] as number[], fullFallback: false };
   const assignFn = isAIEnabled()
-    ? makeAIAssign({ locked: { [dayNumber]: locked }, preferences: opts.instructions ? [opts.instructions] : [], report: { calls: [], notes: [], fallbackDays: [], fullFallback: false } })
+    ? makeAIAssign({ locked: { [dayNumber]: locked }, preferences: opts.instructions ? [opts.instructions] : [], report: assignReport })
     : assignDaysHeuristic;
   const raw = applyLocked(await assignFn(input), { [dayNumber]: locked });
   const assigned = sanitizeAssignment(input, raw).result.days.find((d) => d.dayNumber === dayNumber) ?? { dayNumber, itemIds: locked };
   const res = spliceDay(plan, prep, { ...assigned, source: assigned.source ?? (isAIEnabled() ? "ai" : "planner") }, catalogue);
   const before = activityIds(day);
   const after = allDays(res.plan).find((d) => d.dayNumber === dayNumber)!;
+  const response = dayResponse(res.plan, res.validation, prep, catalogue, chat);
+  response.ai = aiInfo({ aiEnabled: isAIEnabled(), calls: [...(extractLLM ? [extractLLM] : []), ...assignReport.calls], fallbacks: assignReport.fullFallback ? ["day assignment: heuristic (AI unavailable)"] : [] });
   return {
-    ...dayResponse(res.plan, res.validation, prep, catalogue, chat),
+    ...response,
     explanation: `Day ${dayNumber} re-planned: ${describeDayChange(before, after, catalogue) || "same places, re-timed"}.${fallbackNote}`,
     constraintOps: ops,
   };

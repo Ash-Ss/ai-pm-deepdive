@@ -364,7 +364,7 @@ export function earlyStartChips(days: ScheduledDay[]): Constraint[] {
     return {
       id: `auto-early-start-day-${n}`, type: "day_window" as const, params: { start: fromMin(d.startOverride!.toMin) },
       strength: "soft" as const, weightLevel: "medium" as const, scope: `day:${n}`, source: "default" as const, confidence: 1,
-      sourceText: `Day ${n} starts at ${fromMin(d.startOverride!.toMin)} instead of ${fromMin(d.startOverride!.fromMin)} so lunch and return aren't late`,
+      sourceText: `Day ${n} leaves at ${fromMin(d.startOverride!.toMin)} instead of ${fromMin(d.startOverride!.fromMin)} for the long drive, so lunch and return aren't late`,
     };
   });
 }

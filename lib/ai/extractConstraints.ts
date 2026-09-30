@@ -374,7 +374,7 @@ const PLACE = String.raw`(?:the\s+)?([A-Z][\w'’]*(?:\s+[A-Z][\w'’]*)*|[a-z]+
 
 /** The same vague-phrase table as the prompt, for when AI is off or unavailable. */
 const RULES: Rule[] = [
-  { re: /\b(late start|late mornings?|wake up late|sleep in|late riser)\b/i, make: (m) => ({ ...soft(), type: "day_window", params: { start: "10:30" }, sourceText: m[0] }) },
+  { re: /\b(late start|late mornings?|wak(?:e|ing) up late|get(?:ting)? up late|sleep(?:ing)? in|lie[- ]in|late risers?)\b/i, make: (m) => ({ ...soft(), type: "day_window", params: { start: "10:30" }, sourceText: m[0] }) },
   { re: /\bnothing in the morning\b/i, make: (m) => ({ ...soft(), type: "day_window", params: { start: "11:00" }, sourceText: m[0] }) },
   { re: /\b(relaxed|take it easy|slow pace)\b/i, make: (m) => ({ ...soft(), type: "pace", params: { pace: "relaxed" }, sourceText: m[0] }) },
   { re: /\b(packed|see everything|as much as possible)\b/i, make: (m) => ({ ...soft(), type: "pace", params: { pace: "packed" }, sourceText: m[0] }) },
@@ -395,6 +395,12 @@ export function extractConstraintsRules(message: string, current: Constraint[], 
       const made = rule.make(m);
       for (const c of Array.isArray(made) ? made : [made]) drafts.push({ op: "add", constraint: c });
     }
+  }
+  // "make day 2 more relaxed": one day named → day-level preferences apply to that day only.
+  const days = [...new Set([...message.matchAll(/\bday\s*(\d{1,2})\b/gi)].map((m) => Number(m[1])))];
+  if (days.length === 1 && days[0] > 0) {
+    const dayLevel = new Set(["pace", "day_window", "interest_weight", "avoid_tag", "poi_include", "poi_exclude"]);
+    for (const d of drafts) if (d.constraint && dayLevel.has(d.constraint.type)) d.constraint.scope = `day:${days[0]}`;
   }
   const r = resolveDraftOps(drafts, current, catalogue, tripCityIds);
   const intent: Intent = r.ops.length || r.questions.length ? "add_constraints" : /\?\s*$/.test(message) ? "question" : "add_constraints";

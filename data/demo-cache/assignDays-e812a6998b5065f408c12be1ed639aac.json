@@ -1,0 +1,31 @@
+{
+  "days": [
+    {
+      "dayIndex": 2,
+      "theme": "Lonavala scenic viewpoints and snacks",
+      "poiIds": [
+        "tigers-point",
+        "lonavala-market"
+      ],
+      "experienceIds": [],
+      "whySelected": [
+        {
+          "id": "tigers-point",
+          "reasons": [
+            "Must-see viewpoint",
+            "Perfect for couples",
+            "Light activity suitable for travel day"
+          ]
+        },
+        {
+          "id": "lonavala-market",
+          "reasons": [
+            "Worth-it shopping experience",
+            "Iconic local chikki and fudge",
+            "Light activity for evening relaxation"
+          ]
+        }
+      ]
+    }
+  ]
+}

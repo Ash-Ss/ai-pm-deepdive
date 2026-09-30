@@ -1,0 +1,19 @@
+{
+  "intent": "edit_plan",
+  "ops": [
+    {
+      "op": "add",
+      "constraint": {
+        "strength": "soft",
+        "weightLevel": "medium",
+        "scope": "day:2",
+        "sourceText": "make day 2 more relaxed",
+        "confidence": 1,
+        "type": "pace",
+        "params": {
+          "pace": "relaxed"
+        }
+      }
+    }
+  ]
+}

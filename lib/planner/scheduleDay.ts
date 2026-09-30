@@ -32,6 +32,9 @@ const TAXI_INR_PER_MIN = 10;
 const CHECKOUT_MIN = 15;
 const MEAL_INR_PER_PERSON: Record<Tier, number> = { budget: 250, mid: 600, premium: 1500 };
 const EARLY_START_STEP_MIN = 30;
+/** When the "sunset" and "evening" windows begin (they match timeOfDayMismatch below). */
+const SUNSET_FROM = 17 * 60 + 30;
+const EVENING_FROM = 16 * 60;
 /** A hard meal window still tolerates starting this late (nobody minds lunch at 14:31). */
 export const MEAL_GRACE_MIN = 15;
 
@@ -40,6 +43,10 @@ const W = {
   waitingPerMin: 0.5,
   lunchWaitPerMin: 0.25,
   timeOfDayMismatch: 30,
+  // A sunset viewpoint at noon misses the point: worth several hours of waiting to get right.
+  sunsetMismatch: 250,
+  // Waiting for the right light at a sunset/evening spot is free time, not dead time.
+  scenicWaitPerMin: 0.1,
   avoidPerMin: 1,
   crowded: 20,
   lateMealPerMin: 1,
@@ -109,6 +116,11 @@ export type ScheduleArgs = {
   reasons?: Record<string, string[]>;
   tradeoffs?: Record<string, string[]>;
   source?: Item["source"];
+  /**
+   * No sight may start before this (the traveller's normal start), even when the day
+   * leaves earlier for a long drive — an early start moves the departure, not the sightseeing.
+   */
+  activityNotBeforeMin?: number;
 };
 
 export function scheduleDay(args: ScheduleArgs): StageResult<ScheduledDay> {
@@ -200,7 +212,8 @@ export function scheduleDay(args: ScheduleArgs): StageResult<ScheduledDay> {
   const mealBasis = (band: Tier, known: boolean) =>
     `${ctx.pax} × ₹${MEAL_INR_PER_PERSON[band]} (${band} band, planner rate${known ? "" : "; restaurant not in catalogue"})`;
 
-  function earliestStart(s: ActivityStop, arrive: number): number | null {
+  function earliestStart(s: ActivityStop, arrivedAt: number): number | null {
+    const arrive = Math.max(arrivedAt, args.activityNotBeforeMin ?? 0);
     if (s.fixedStarts) return s.fixedStarts.find((st) => st >= arrive) ?? null;
     for (const [o, c] of s.openRanges) {
       const start = Math.max(arrive, o);
@@ -293,16 +306,29 @@ export function scheduleDay(args: ScheduleArgs): StageResult<ScheduledDay> {
 
       const leg = localLeg(pos, s.loc, cityId, levers, { flatTerrain: s.flat, forceTaxi: args.forceTaxi });
       const arrive = time + leg.minutes;
-      const start = earliestStart(s, arrive);
+      let start = earliestStart(s, arrive);
       if (start === null || start + s.durationMin > frame.endMin) {
         dropped.push({ refId: s.refId, reason: start === null ? `closed or no slot on ${frame.weekday} after ${fromMin(arrive)}` : `would end after ${fromMin(frame.endMin)}` });
         pen.skipped += W.skipped;
         continue;
       }
-      go(s.loc, s.flat, time);
-      pen.waiting += (start - arrive) * W.waitingPerMin;
+      // Sunset/evening spots: consider staying put and going later, for the right light.
+      let departAt = time;
+      const preferredFrom = s.bestTimeOfDay === "sunset" ? SUNSET_FROM : s.bestTimeOfDay === "evening" ? EVENING_FROM : null;
+      if (preferredFrom !== null && timeOfDayMismatch(s.bestTimeOfDay, start, start + s.durationMin)) {
+        const later = earliestStart(s, Math.max(arrive, preferredFrom));
+        const nowCost = (start - arrive) * W.waitingPerMin + (s.bestTimeOfDay === "sunset" ? W.sunsetMismatch : W.timeOfDayMismatch);
+        if (later !== null && later + s.durationMin <= frame.endMin && !timeOfDayMismatch(s.bestTimeOfDay, later, later + s.durationMin)
+          && (later - arrive) * W.scenicWaitPerMin < nowCost) {
+          departAt = later - leg.minutes;
+          start = later;
+        }
+      }
+      go(s.loc, s.flat, departAt);
+      if (departAt > time) pen.waiting += (start - arrive) * W.scenicWaitPerMin;
+      else pen.waiting += (start - arrive) * W.waitingPerMin;
       const end = start + s.durationMin;
-      if (timeOfDayMismatch(s.bestTimeOfDay, start, end)) pen.timeOfDay += W.timeOfDayMismatch;
+      if (timeOfDayMismatch(s.bestTimeOfDay, start, end)) pen.timeOfDay += s.bestTimeOfDay === "sunset" ? W.sunsetMismatch : W.timeOfDayMismatch;
       for (const [a, b] of s.avoid) pen.avoidTimes += overlapMin(start, end, a, b) * W.avoidPerMin;
       if (s.crowded) pen.crowd += W.crowded;
       evs.push({
@@ -452,7 +478,7 @@ export function scheduleDay(args: ScheduleArgs): StageResult<ScheduledDay> {
   for (const e of evs) {
     const prev = withGaps.at(-1);
     if (prev && e.start - prev.end >= MIN_GAP_ITEM) {
-      withGaps.push({ type: "free_time", start: prev.end, end: e.start, title: "Buffer / at leisure", refId: null, cost: 0, walkKm: 0, transitMin: 0, tradeoffs: [] });
+      withGaps.push({ type: "free_time", start: prev.end, end: e.start, title: e.start - prev.end >= 60 ? "Free time (at leisure)" : "Buffer / at leisure", refId: null, cost: 0, walkKm: 0, transitMin: 0, tradeoffs: [] });
     }
     withGaps.push(e);
   }
@@ -519,7 +545,11 @@ export function scheduleDayBest(args: ScheduleArgs): StageResult<ScheduledDay> {
 
   let best = base;
   for (let start = frame.startMin - EARLY_START_STEP_MIN; start >= frame.earliestStartMin; start -= EARLY_START_STEP_MIN) {
-    const earlier = scheduleDay({ ...args, frame: { ...frame, startMin: start, capacityMin: frame.capacityMin + (frame.startMin - start) } });
+    const earlier = scheduleDay({
+      ...args,
+      frame: { ...frame, startMin: start, capacityMin: frame.capacityMin + (frame.startMin - start) },
+      activityNotBeforeMin: frame.startMin,
+    });
     if (!hasTimingProblems(earlier.result)) { best = earlier; break; }
     // Nothing fully clean yet: keep the least-bad start (later start wins ties).
     if (timingSeverity(earlier.result) < timingSeverity(best.result)) best = earlier;
@@ -531,7 +561,7 @@ export function scheduleDayBest(args: ScheduleArgs): StageResult<ScheduledDay> {
 
   const from = frame.startMin;
   const to = best.result.frame.startMin;
-  const note = `Starts at ${fromMin(to)} instead of ${fromMin(from)} so lunch and return aren't late`;
+  const note = `Leaves at ${fromMin(to)} instead of ${fromMin(from)} for the long drive, so lunch and return aren't late (sightseeing still starts after ${fromMin(from)})`;
   const first = best.result.items.find((i) => i.type !== "hotel") ?? best.result.items[0];
   if (first) first.tradeoffs.unshift(note);
   best.result.startOverride = { fromMin: from, toMin: to };

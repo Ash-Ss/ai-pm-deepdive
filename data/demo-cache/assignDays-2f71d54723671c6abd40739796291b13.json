@@ -1,0 +1,97 @@
+{
+  "days": [
+    {
+      "dayIndex": 1,
+      "theme": "Old City Heritage & Food",
+      "poiIds": [],
+      "experienceIds": [
+        "pune-heritage-food-trail"
+      ],
+      "whySelected": [
+        {
+          "id": "pune-heritage-food-trail",
+          "reasons": [
+            "Covers multiple must-see heritage sites",
+            "Perfect for couples to explore local culture",
+            "Efficient way to see Old City Peths"
+          ]
+        }
+      ]
+    },
+    {
+      "dayIndex": 2,
+      "theme": "Lonavala Views and Caves",
+      "poiIds": [
+        "bhaja-caves",
+        "tigers-point"
+      ],
+      "experienceIds": [],
+      "whySelected": [
+        {
+          "id": "bhaja-caves",
+          "reasons": [
+            "Must-see historical Buddhist site",
+            "Great for couples interested in history"
+          ]
+        },
+        {
+          "id": "tigers-point",
+          "reasons": [
+            "Iconic viewpoint for photography",
+            "Perfect for a sunset visit"
+          ]
+        }
+      ]
+    },
+    {
+      "dayIndex": 3,
+      "theme": "Mahabaleshwar Nature and Food",
+      "poiIds": [
+        "mapro-garden",
+        "venna-lake"
+      ],
+      "experienceIds": [],
+      "whySelected": [
+        {
+          "id": "mapro-garden",
+          "reasons": [
+            "Must-see experience for food and local produce",
+            "Highly suitable for couples"
+          ]
+        },
+        {
+          "id": "venna-lake",
+          "reasons": [
+            "Must-see scenic spot for boating",
+            "Relaxing evening atmosphere"
+          ]
+        }
+      ]
+    },
+    {
+      "dayIndex": 4,
+      "theme": "Mahabaleshwar Fort and Views",
+      "poiIds": [
+        "pratapgad-fort",
+        "arthurs-seat"
+      ],
+      "experienceIds": [],
+      "whySelected": [
+        {
+          "id": "pratapgad-fort",
+          "reasons": [
+            "Must-see historical Maratha fort",
+            "Offers significant cultural value"
+          ]
+        },
+        {
+          "id": "arthurs-seat",
+          "reasons": [
+            "Must-see viewpoint with stunning vistas",
+            "Excellent for photography"
+          ]
+        }
+      ]
+    }
+  ]
+}

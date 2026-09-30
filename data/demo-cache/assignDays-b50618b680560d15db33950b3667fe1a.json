@@ -1,0 +1,129 @@
+{
+  "days": [
+    {
+      "dayIndex": 1,
+      "theme": "Iconic Mumbai Landmarks",
+      "poiIds": [
+        "gateway-of-india",
+        "csmt"
+      ],
+      "experienceIds": [],
+      "whySelected": [
+        {
+          "id": "gateway-of-india",
+          "reasons": [
+            "Must-see landmark",
+            "Light activity suitable for arrival day"
+          ]
+        },
+        {
+          "id": "csmt",
+          "reasons": [
+            "Must-see UNESCO site",
+            "Light activity suitable for arrival day"
+          ]
+        }
+      ]
+    },
+    {
+      "dayIndex": 2,
+      "theme": "Museums and Culture",
+      "poiIds": [
+        "csmvs-museum",
+        "dhobi-ghat",
+        "haji-ali-dargah"
+      ],
+      "experienceIds": [],
+      "whySelected": [
+        {
+          "id": "csmvs-museum",
+          "reasons": [
+            "Must-see museum",
+            "High tier cultural experience"
+          ]
+        },
+        {
+          "id": "dhobi-ghat",
+          "reasons": [
+            "Must-see local life",
+            "Iconic Mumbai photography spot"
+          ]
+        },
+        {
+          "id": "haji-ali-dargah",
+          "reasons": [
+            "Must-see spiritual site",
+            "Unique architecture over the sea"
+          ]
+        }
+      ]
+    },
+    {
+      "dayIndex": 3,
+      "theme": "Old City Landmarks",
+      "poiIds": [
+        "bibi-ka-maqbara",
+        "panchakki"
+      ],
+      "experienceIds": [],
+      "whySelected": [
+        {
+          "id": "bibi-ka-maqbara",
+          "reasons": [
+            "Must-see Mughal architecture",
+            "Light activity for travel day"
+          ]
+        },
+        {
+          "id": "panchakki",
+          "reasons": [
+            "Must-see historical site",
+            "Light activity for travel day"
+          ]
+        }
+      ]
+    },
+    {
+      "dayIndex": 4,
+      "theme": "Ajanta Caves Exploration",
+      "poiIds": [
+        "ajanta-caves"
+      ],
+      "experienceIds": [],
+      "whySelected": [
+        {
+          "id": "ajanta-caves",
+          "reasons": [
+            "Requested must-see UNESCO site",
+            "Full-day excursion"
+          ]
+        }
+      ]
+    },
+    {
+      "dayIndex": 5,
+      "theme": "Ellora and Grishneshwar",
+      "poiIds": [
+        "ellora-caves",
+        "grishneshwar-temple"
+      ],
+      "experienceIds": [],
+      "whySelected": [
+        {
+          "id": "ellora-caves",
+          "reasons": [
+            "Requested must-see UNESCO site",
+            "Important historical sculpture"
+          ]
+        },
+        {
+          "id": "grishneshwar-temple",
+          "reasons": [
+            "Must-see spiritual site",
+            "Located near Ellora"
+          ]
+        }
+      ]
+    }
+  ]
+}

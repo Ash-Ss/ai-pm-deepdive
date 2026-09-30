@@ -292,7 +292,11 @@ export async function narratePlan(result: PipelineResult, catalogue: Catalogue, 
   let tplUsed = 0;
   /** Use the (rendered) AI text if it passes every check, else the template. */
   const pick = (where: string, aiText: string | undefined, fallback: string, mustKeepFrom?: string): string => {
-    if (aiText === undefined) { tplUsed++; return fallback; }
+    if (aiText === undefined) {
+      if (ai) report.replaced.push({ where, issues: ["no AI text returned for this"] });
+      tplUsed++;
+      return fallback;
+    }
     const issues = groundingIssues(aiText, g);
     const rendered = renderTokens(aiText, entities);
     if (mustKeepFrom) issues.push(...droppedNumbers(mustKeepFrom, rendered).map((n) => `dropped "${n}" from the original note`));

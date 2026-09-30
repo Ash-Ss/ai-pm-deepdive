@@ -13,7 +13,9 @@
     "test:ai": "tsx scripts/test-ai.ts",
     "demo:ai": "tsx scripts/demo-ai.ts",
     "compare:ai": "tsx scripts/compare-ai.ts",
-    "test:service": "tsx scripts/test-service.ts"
+    "test:service": "tsx scripts/test-service.ts",
+    "scenarios": "tsx scripts/scenarios.ts",
+    "test": "npm run -s validate:data && USE_AI=false npm run -s test:ai && USE_AI=false npm run -s test:service && USE_AI=false npm run -s scenarios"
   },
   "dependencies": {
     "@google/genai": "^2.24.0",

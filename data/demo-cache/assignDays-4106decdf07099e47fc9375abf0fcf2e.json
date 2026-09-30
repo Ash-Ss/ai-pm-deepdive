@@ -1,0 +1,148 @@
+{
+  "days": [
+    {
+      "dayIndex": 1,
+      "theme": "Iconic Mumbai Landmarks",
+      "poiIds": [
+        "gateway-of-india",
+        "marine-drive"
+      ],
+      "experienceIds": [],
+      "whySelected": [
+        {
+          "id": "gateway-of-india",
+          "reasons": [
+            "Must-see landmark",
+            "Perfect for elderly visitors",
+            "Light activity"
+          ]
+        },
+        {
+          "id": "marine-drive",
+          "reasons": [
+            "Must-see viewpoint",
+            "Relaxing sunset walk",
+            "Light activity"
+          ]
+        }
+      ]
+    },
+    {
+      "dayIndex": 2,
+      "theme": "History and Culture",
+      "poiIds": [
+        "csmvs-museum",
+        "csmt",
+        "fort-heritage-precinct"
+      ],
+      "experienceIds": [],
+      "whySelected": [
+        {
+          "id": "csmvs-museum",
+          "reasons": [
+            "Must-see museum",
+            "Excellent for elderly",
+            "Rich history and art"
+          ]
+        },
+        {
+          "id": "csmt",
+          "reasons": [
+            "Must-see architecture",
+            "UNESCO site",
+            "Light walking"
+          ]
+        },
+        {
+          "id": "fort-heritage-precinct",
+          "reasons": [
+            "Worth-it heritage walk",
+            "Short loop suitable for elderly",
+            "Historical architecture"
+          ]
+        }
+      ]
+    },
+    {
+      "dayIndex": 3,
+      "theme": "Old City Landmarks",
+      "poiIds": [
+        "bibi-ka-maqbara",
+        "panchakki"
+      ],
+      "experienceIds": [],
+      "whySelected": [
+        {
+          "id": "bibi-ka-maqbara",
+          "reasons": [
+            "Must-see Mughal architecture",
+            "Light walking",
+            "Beautiful gardens"
+          ]
+        },
+        {
+          "id": "panchakki",
+          "reasons": [
+            "Must-see historical site",
+            "Light activity",
+            "Interesting engineering"
+          ]
+        }
+      ]
+    },
+    {
+      "dayIndex": 4,
+      "theme": "Ancient Cave Wonders",
+      "poiIds": [
+        "ellora-caves",
+        "grishneshwar-temple"
+      ],
+      "experienceIds": [],
+      "whySelected": [
+        {
+          "id": "ellora-caves",
+          "reasons": [
+            "Must-see UNESCO site",
+            "Requested visit",
+            "Impressive sculpture"
+          ]
+        },
+        {
+          "id": "grishneshwar-temple",
+          "reasons": [
+            "Must-see spiritual site",
+            "Historical significance",
+            "Architectural beauty"
+          ]
+        }
+      ]
+    },
+    {
+      "dayIndex": 5,
+      "theme": "Local Crafts and History",
+      "poiIds": [
+        "soneri-mahal",
+        "himroo-weaving-centre"
+      ],
+      "experienceIds": [],
+      "whySelected": [
+        {
+          "id": "soneri-mahal",
+          "reasons": [
+            "Worth-it historical museum",
+            "Light activity",
+            "Good for elderly"
+          ]
+        },
+        {
+          "id": "himroo-weaving-centre",
+          "reasons": [
+            "Worth-it cultural experience",
+            "Light shopping",
+            "Traditional crafts"
+          ]
+        }
+      ]
+    }
+  ]
+}

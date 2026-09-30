@@ -1,0 +1,47 @@
+{
+  "intent": "add_constraints",
+  "ops": [
+    {
+      "op": "add",
+      "constraint": {
+        "strength": "soft",
+        "weightLevel": "medium",
+        "scope": "trip",
+        "sourceText": "we like waking up late",
+        "confidence": 1,
+        "type": "day_window",
+        "params": {
+          "start": "10:30"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "constraint": {
+        "strength": "hard",
+        "weightLevel": "high",
+        "scope": "trip",
+        "sourceText": "my parents can only do short walks",
+        "confidence": 1,
+        "type": "mobility",
+        "params": {
+          "level": "short_walks"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "constraint": {
+        "strength": "hard",
+        "weightLevel": "high",
+        "scope": "trip",
+        "sourceText": "my parents",
+        "confidence": 1,
+        "type": "traveller_profile",
+        "params": {
+          "profile": "elderly"
+        }
+      }
+    }
+  ]
+}

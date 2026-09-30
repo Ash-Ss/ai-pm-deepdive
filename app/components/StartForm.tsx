@@ -2,6 +2,7 @@
 
 import { CalendarDays, MapPin, Minus, Plus, Sparkles, Users, Wallet } from "lucide-react";
 import { useState } from "react";
+import { DEMO_SCENARIOS } from "@/lib/demoScenarios";
 import type { PresetName, TripInput } from "@/lib/types";
 
 export const CITIES = [
@@ -27,26 +28,9 @@ const TIERS = [
   { id: "premium", label: "Premium" },
 ] as const;
 
-export function nextMonday(): string {
-  const d = new Date();
-  d.setUTCDate(d.getUTCDate() + (((8 - d.getUTCDay()) % 7) || 7));
-  return d.toISOString().slice(0, 10);
-}
-
+/** Starts as demo scenario A, so the first plan can be served from the demo cache if Gemini is down. */
 export function defaultTripInput(): TripInput {
-  return {
-    cityIds: ["mumbai", "sambhajinagar", "ajanta-caves", "ellora-caves"],
-    startDate: nextMonday(),
-    days: 5,
-    travellers: { adults: 2, children: 0, seniors: 2 },
-    budgetTier: "mid",
-    budgetCapINR: null,
-    presets: ["relaxed"],
-    interests: ["history"],
-    diet: "any",
-    arrivalCityId: "mumbai",
-    chatText: "We like late mornings and short walks.",
-  };
+  return DEMO_SCENARIOS.A.input();
 }
 
 function Stepper({ label, value, min, max, onChange }: { label: string; value: number; min: number; max: number; onChange: (v: number) => void }) {
@@ -108,6 +92,13 @@ export default function StartForm({ initial, onSubmit, busy }: { initial: TripIn
           Pick where and when. The planner works out the route, nights and a day-by-day schedule with real opening hours,
           travel times and rest — and explains every choice.
         </p>
+        <div className="flex flex-wrap items-center gap-2 pt-1 text-sm">
+          <span className="text-slate-500">Try a demo:</span>
+          {(Object.keys(DEMO_SCENARIOS) as (keyof typeof DEMO_SCENARIOS)[]).map((k) => (
+            <button key={k} type="button" onClick={() => setInput(DEMO_SCENARIOS[k].input())}
+              className="rounded-full border border-teal-600 px-3 py-1 font-medium text-teal-800 hover:bg-teal-50">{DEMO_SCENARIOS[k].label}</button>
+          ))}
+        </div>
       </header>
 
       <Section icon={<MapPin size={16} />} title="Destinations">

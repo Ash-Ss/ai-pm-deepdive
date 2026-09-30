@@ -1,0 +1,115 @@
+{
+  "days": [
+    {
+      "dayIndex": 1,
+      "theme": "Old City Heritage & Culture",
+      "poiIds": [
+        "shaniwar-wada",
+        "dagdusheth-ganpati"
+      ],
+      "experienceIds": [
+        "pune-heritage-food-trail"
+      ],
+      "whySelected": [
+        {
+          "id": "shaniwar-wada",
+          "reasons": [
+            "Must-see historical fort",
+            "Iconic Maratha architecture",
+            "Located in the heart of the Old City"
+          ]
+        },
+        {
+          "id": "dagdusheth-ganpati",
+          "reasons": [
+            "Must-see cultural landmark",
+            "Significant spiritual site"
+          ]
+        },
+        {
+          "id": "pune-heritage-food-trail",
+          "reasons": [
+            "Immersive way to explore the Old City",
+            "Covers key heritage sites efficiently"
+          ]
+        }
+      ]
+    },
+    {
+      "dayIndex": 2,
+      "theme": "Lonavala Scenic Views",
+      "poiIds": [
+        "tigers-point",
+        "bhushi-dam"
+      ],
+      "experienceIds": [],
+      "whySelected": [
+        {
+          "id": "tigers-point",
+          "reasons": [
+            "Must-see viewpoint",
+            "Excellent for couples",
+            "Perfect for sunset photography"
+          ]
+        },
+        {
+          "id": "bhushi-dam",
+          "reasons": [
+            "Must-see local attraction",
+            "Great for a light afternoon visit"
+          ]
+        }
+      ]
+    },
+    {
+      "dayIndex": 3,
+      "theme": "Mahabaleshwar Lake & Markets",
+      "poiIds": [
+        "venna-lake",
+        "mahabaleshwar-bazaar"
+      ],
+      "experienceIds": [],
+      "whySelected": [
+        {
+          "id": "venna-lake",
+          "reasons": [
+            "Must-see scenic lake",
+            "Great for boating as a couple"
+          ]
+        },
+        {
+          "id": "mahabaleshwar-bazaar",
+          "reasons": [
+            "Worth-it local market experience",
+            "Famous for strawberries and local goods"
+          ]
+        }
+      ]
+    },
+    {
+      "dayIndex": 4,
+      "theme": "Scenic Points & Nature",
+      "poiIds": [
+        "arthurs-seat",
+        "lingmala-waterfall"
+      ],
+      "experienceIds": [],
+      "whySelected": [
+        {
+          "id": "arthurs-seat",
+          "reasons": [
+            "Must-see panoramic views",
+            "Top-rated for photography"
+          ]
+        },
+        {
+          "id": "lingmala-waterfall",
+          "reasons": [
+            "Must-see natural beauty",
+            "Refreshing morning activity"
+          ]
+        }
+      ]
+    }
+  ]
+}
