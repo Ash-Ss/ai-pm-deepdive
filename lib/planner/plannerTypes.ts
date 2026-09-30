@@ -4,6 +4,7 @@
  */
 import type { Accessibility, Area, Event, Experience, Item, Poi, PoiVariant, Restaurant, Tier, TripInput } from "../types";
 import type { Hop } from "./routeOrder";
+import type { Segment, TransferMode } from "./transfers";
 
 export type PlannerContext = {
   budgetTier: Tier;
@@ -78,8 +79,10 @@ export type DayFrame = {
   maxMajorItems: number;
   /** 1 = full energy; lower after travel. */
   energy: number;
-  /** Intercity transfer that occupies the start of the day. */
-  transfer: { startMin: number; endMin: number; hop: Hop } | null;
+  /** Intercity transfer that occupies the start of the day, split into visible segments. */
+  transfer: { startMin: number; endMin: number; hop: Hop; segments: Segment[] } | null;
+  /** Assumed onward departure on the trip's last day. */
+  departure: { mode: TransferMode; depMin: number; leadMin: number; accessMin: number; cityName: string } | null;
   /** POIs that must be on this day (date_anchor). */
   anchoredPoiIds: string[];
   /** Pool POIs closed on this date (weekly off or closure event). */
@@ -103,4 +106,6 @@ export type ScheduledDay = {
   dayTripTransitAllowanceMin: number;
   /** Set when the day was started earlier than dayStart to make a day trip work. */
   startOverride: { fromMin: number; toMin: number } | null;
+  /** When we reach the airport/station vs the assumed departure (departure day only). */
+  departure: { depMin: number; atGatewayMin: number; leadMin: number } | null;
 };

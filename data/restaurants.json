@@ -797,5 +797,245 @@
       "source": "ai_draft",
       "confidence": 0.6
     }
+  },
+  {
+    "id": "cafe-mondegar",
+    "cityId": "mumbai",
+    "areaId": "colaba-fort",
+    "name": "Cafe Mondegar",
+    "lat": 18.9243,
+    "lng": 72.8317,
+    "cuisine": [
+      "multi-cuisine",
+      "continental",
+      "indian"
+    ],
+    "mealTypes": [
+      "breakfast",
+      "lunch",
+      "dinner",
+      "snack"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 60,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "kyani-and-co",
+    "cityId": "mumbai",
+    "areaId": "colaba-fort",
+    "name": "Kyani & Co.",
+    "lat": 18.9465,
+    "lng": 72.829,
+    "cuisine": [
+      "irani",
+      "bakery",
+      "parsi"
+    ],
+    "mealTypes": [
+      "breakfast",
+      "lunch",
+      "snack"
+    ],
+    "priceBand": "budget",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 40,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "samrat-churchgate",
+    "cityId": "mumbai",
+    "areaId": "colaba-fort",
+    "name": "Samrat (Churchgate)",
+    "lat": 18.933,
+    "lng": 72.8255,
+    "cuisine": [
+      "gujarati",
+      "thali",
+      "north-indian"
+    ],
+    "mealTypes": [
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": true,
+      "nonVeg": false
+    },
+    "avgMealMin": 50,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "trishna-fort",
+    "cityId": "mumbai",
+    "areaId": "colaba-fort",
+    "name": "Trishna",
+    "lat": 18.929,
+    "lng": 72.833,
+    "cuisine": [
+      "seafood",
+      "coastal"
+    ],
+    "mealTypes": [
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "premium",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 75,
+    "seating": "table",
+    "kidFriendly": false,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "veg-thali-gul-mandi",
+    "cityId": "sambhajinagar",
+    "areaId": "old-city",
+    "name": "Veg thali restaurant, Gul Mandi (placeholder)",
+    "lat": 19.895,
+    "lng": 75.3225,
+    "cuisine": [
+      "maharashtrian",
+      "thali"
+    ],
+    "mealTypes": [
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "budget",
+    "dietary": {
+      "veg": true,
+      "jain": true,
+      "nonVeg": false
+    },
+    "avgMealMin": 45,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.3
+    }
+  },
+  {
+    "id": "family-restaurant-old-city",
+    "cityId": "sambhajinagar",
+    "areaId": "old-city",
+    "name": "Family Mughlai & veg restaurant, Old City (placeholder)",
+    "lat": 19.8975,
+    "lng": 75.319,
+    "cuisine": [
+      "mughlai",
+      "north-indian"
+    ],
+    "mealTypes": [
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 60,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.3
+    }
+  },
+  {
+    "id": "south-indian-veg-cidco",
+    "cityId": "sambhajinagar",
+    "areaId": "jalna-road",
+    "name": "South Indian veg restaurant, CIDCO (placeholder)",
+    "lat": 19.878,
+    "lng": 75.365,
+    "cuisine": [
+      "south-indian",
+      "snacks"
+    ],
+    "mealTypes": [
+      "breakfast",
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "budget",
+    "dietary": {
+      "veg": true,
+      "jain": true,
+      "nonVeg": false
+    },
+    "avgMealMin": 40,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.3
+    }
+  },
+  {
+    "id": "multi-cuisine-jalna-road",
+    "cityId": "sambhajinagar",
+    "areaId": "jalna-road",
+    "name": "Family multi-cuisine restaurant, Jalna Road (placeholder)",
+    "lat": 19.876,
+    "lng": 75.355,
+    "cuisine": [
+      "north-indian",
+      "chinese",
+      "multi-cuisine"
+    ],
+    "mealTypes": [
+      "lunch",
+      "dinner"
+    ],
+    "priceBand": "mid",
+    "dietary": {
+      "veg": true,
+      "jain": false,
+      "nonVeg": true
+    },
+    "avgMealMin": 60,
+    "seating": "table",
+    "kidFriendly": true,
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.3
+    }
   }
 ]

@@ -14,12 +14,12 @@ import type { City, Constraint, Levers, StageResult, Tier } from "../types";
 import { interestTags, ofType } from "./constraints";
 import type { CandidatePool, DayFrame, PlannerContext, ScheduledDay } from "./plannerTypes";
 import { MEAL_GRACE_MIN } from "./scheduleDay";
-import { toMin } from "./time";
+import { fromMin, toMin } from "./time";
 import { startTrace } from "./trace";
 
 export type ViolationRule =
   | "closed" | "overlap" | "outside_window" | "walk_km" | "transit" | "duplicate" | "anchor" | "unscheduled"
-  | "late_return" | "meal_window" | "restaurant_repeat";
+  | "late_return" | "meal_window" | "restaurant_repeat" | "departure_buffer";
 export type Violation = { dayNumber: number; rule: ViolationRule; refId?: string; detail: string };
 export type ValidationReport = {
   ok: boolean;
@@ -83,6 +83,14 @@ export function validatePlan(days: ScheduledDay[], v: ValidateCtx): StageResult<
     const overnight = day.items.find((i) => i.type === "hotel" && i.title.startsWith("Overnight"));
     if (overnight && toMin(overnight.startTime) > toMin(levers.returnByLatest)) {
       hard.push({ dayNumber: f.dayNumber, rule: "late_return", detail: `back at hotel ${overnight.startTime}, after ${levers.returnByLatest}` });
+    }
+
+    // Onward departure: at the airport/station at least leadMin before the (assumed) departure.
+    if (day.departure && day.departure.atGatewayMin > day.departure.depMin - day.departure.leadMin) {
+      hard.push({
+        dayNumber: f.dayNumber, rule: "departure_buffer",
+        detail: `reach the airport/station ${fromMin(day.departure.atGatewayMin)}, need to be there by ${fromMin(day.departure.depMin - day.departure.leadMin)}`,
+      });
     }
 
     // Meals: never the same place twice in a day; inside their windows when those are hard.

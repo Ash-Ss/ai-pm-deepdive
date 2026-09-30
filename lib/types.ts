@@ -105,6 +105,8 @@ export const City = z.object({
   bestMonths: z.array(Month),
   /** Per person per day, excluding hotel. */
   avgDailyCostByTier: ByTierINR,
+  /** Minutes from a central hotel to the airport / main station (for transfer segments). */
+  gatewayAccessMin: z.object({ airport: z.number().int().positive().optional(), rail: z.number().int().positive().optional() }),
   areas: z.array(Area).min(1),
 });
 export type City = z.infer<typeof City>;
@@ -361,6 +363,12 @@ export const Levers = z.object({
   durationMultiplier: z.number().positive(),
   /** Walks longer than this become a taxi/auto hop. */
   preferTaxiAboveWalkMin: z.number().int().positive(),
+  /**
+   * Share of maxWalkKmPerDay the assigner (and the per-place mobility filter) keeps free
+   * for walking between stops, so on-site walking is planned against
+   * maxWalkKmPerDay × (1 − headroom) while the validator checks the full limit.
+   */
+  assignerWalkHeadroomPct: z.number().min(0).max(0.9),
   lunchWindow: TimeWindow,
   dinnerWindow: TimeWindow,
   /** When true, meals outside their windows fail validation (elderly/kids need regular meals). */
@@ -468,6 +476,10 @@ export const Item = z.object({
     })
     .optional(),
   costINR: z.number().nonnegative().optional(),
+  /** How the cost estimate was built and where the numbers come from. */
+  costBasis: z.string().optional(),
+  /** Time is an assumption (e.g. flight departure) the user should replace with their booking. */
+  assumed: z.boolean().optional(),
 });
 export type Item = z.infer<typeof Item>;
 

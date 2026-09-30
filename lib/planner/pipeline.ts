@@ -33,6 +33,7 @@ export type PipelineResult = {
     levers: ResolvedLevers;
     route: RouteResult;
     demandDays: Record<string, number>;
+    demandBeforeFilters: Record<string, { days: number; excluded: string[] }>;
     pools: Map<string, CandidatePool>;
     hotels: Map<string, HotelBase>;
     scheduled: ScheduledDay[];
@@ -85,7 +86,7 @@ export async function runPipeline(
   // --- nights
   const alloc = take(allocateNights({
     route: route.best, totalNights: input.days - 1, startDate: input.startDate,
-    pois: catalogue.pois, cities: catalogue.cities, levers, constraints, ctx,
+    pois: catalogue.pois, cities: catalogue.cities, levers, constraints, ctx, entryCityId: input.arrivalCityId,
   }));
   warnings.push(...alloc.warnings);
 
@@ -113,7 +114,7 @@ export async function runPipeline(
       warnings.push(`Skipped must-see ${m.name}: ${m.reason}.${m.variantNote ? ` ${m.variantNote}` : ""}`);
     }
     const hotel = take(chooseBaseArea(city, pool, walkingLimited));
-    const frames = take(buildDayFrames({ leg, levers, events: catalogue.events, constraints, pool }));
+    const frames = take(buildDayFrames({ leg, levers, events: catalogue.events, constraints, pool, cities: catalogue.cities }));
     pools.set(leg.cityId, pool);
     hotels.set(leg.cityId, hotel);
     assignInput.legs.push({ cityId: leg.cityId, hotel, frames, pool });
@@ -126,7 +127,10 @@ export async function runPipeline(
   const states: DayState[] = assignInput.legs.flatMap((leg) =>
     leg.frames.map((frame) => {
       const a = assigned.days.find((d) => d.dayNumber === frame.dayNumber);
-      return { frame, itemIds: a?.itemIds ?? [], forceTaxi: false, minimizeWalking: false, variantIds: new Set<string>(), reasons: a?.reasons ?? {}, tradeoffs: {} };
+      return {
+        frame, itemIds: a?.itemIds ?? [], forceTaxi: false, minimizeWalking: false,
+        variantIds: new Set<string>(a?.variantIds ?? []), reasons: a?.reasons ?? {}, tradeoffs: {},
+      };
     }),
   );
   // Restaurant variety needs to know what other days already use, so remember the latest schedule of each day.
@@ -193,10 +197,13 @@ export async function runPipeline(
       if (!p?.isDayTrip || !p.requested) continue;
       const drive = d.items.filter((i) => i.type === "transfer" && i.transfer?.mode === "auto_taxi").reduce((s, i) => s + (toMin(i.endTime) - toMin(i.startTime)), 0);
       if (drive > levers.maxTransitMinPerDay) {
-        const carCost = d.items.filter((i) => i.type === "transfer").reduce((s, i) => s + (i.costINR ?? 0), 0);
+        const rides = d.items.filter((i) => i.type === "transfer" && i.transfer?.mode === "auto_taxi");
+        const km = Math.round(rides.reduce((s, i) => s + (i.transfer?.distanceKm ?? 0), 0));
+        const carCost = rides.reduce((s, i) => s + (i.costINR ?? 0), 0);
         warnings.push(
           `Day ${d.frame.dayNumber}: ${p.poi.name} means ~${hm(drive)} in a car (your limit is ${hm(levers.maxTransitMinPerDay)}). ` +
-          `Book a private car with driver for the whole day (~₹${Math.round(carCost / 100) * 100}) rather than separate taxis.`,
+          `Book a private car with driver for the whole day: est. ₹${(Math.round(carCost / 100) * 100).toLocaleString("en-IN")} ` +
+          `(~${km} km × ₹20/km planner rate; confirm with the operator).`,
         );
       }
       if (isFarDayTrip(p.poi, hotel) && p.poi.nearbyStay) {
@@ -247,7 +254,7 @@ export async function runPipeline(
     plan,
     traces,
     validation: final,
-    debug: { levers: resolved, route, demandDays: alloc.demandDays, pools, hotels, scheduled: repaired.days },
+    debug: { levers: resolved, route, demandDays: alloc.demandDays, demandBeforeFilters: alloc.demandBeforeFilters, pools, hotels, scheduled: repaired.days },
   };
 }
 

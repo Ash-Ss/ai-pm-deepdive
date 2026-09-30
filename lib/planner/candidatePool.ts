@@ -15,8 +15,6 @@ import { startTrace } from "./trace";
 const POOL_SIZE = 40;
 const STAIRS = ["none", "low", "medium", "high"] as const;
 const TIER_WEIGHT = { must_see: 1, worth_it: 0.6, niche: 0.3 } as const;
-/** A single POI shouldn't use more than this share of the day's walking budget. */
-const WALK_SHARE_PER_POI = 0.75;
 /** A single ticket shouldn't exceed this share of the per-person daily budget. */
 const PRICE_SHARE_OF_DAILY = 0.5;
 
@@ -27,7 +25,9 @@ const PRICE_SHARE_OF_DAILY = 0.5;
 export type MobilityRules = { maxStairs: (typeof STAIRS)[number]; allowSteep: boolean; flatOnly: boolean; maxWalkM: number; why: string[] };
 
 export function mobilityRules(levers: Levers, constraints: Constraint[]): MobilityRules {
-  const rules: MobilityRules = { maxStairs: "high", allowSteep: true, flatOnly: false, maxWalkM: levers.maxWalkKmPerDay * 1000 * WALK_SHARE_PER_POI, why: [] };
+  // Same on-site walking budget the assigner plans against: the day limit minus headroom for walks between stops.
+  const maxWalkM = Math.round(levers.maxWalkKmPerDay * 1000 * (1 - levers.assignerWalkHeadroomPct));
+  const rules: MobilityRules = { maxStairs: "high", allowSteep: true, flatOnly: false, maxWalkM, why: [] };
   const tighten = (stairs: MobilityRules["maxStairs"], why: string) => {
     if (STAIRS.indexOf(stairs) < STAIRS.indexOf(rules.maxStairs)) rules.maxStairs = stairs;
     rules.why.push(why);
@@ -37,7 +37,7 @@ export function mobilityRules(levers: Levers, constraints: Constraint[]): Mobili
     if (c.params.level === "step_free") { tighten("none", `mobility step_free (${c.id})`); rules.allowSteep = false; rules.flatOnly = true; }
   }
   if (travellerProfiles(constraints).includes("elderly")) { tighten("medium", "elderly travellers"); rules.allowSteep = false; }
-  rules.why.push(`max ${Math.round(rules.maxWalkM)}m walking per place (${WALK_SHARE_PER_POI} × maxWalkKmPerDay)`);
+  rules.why.push(`max ${rules.maxWalkM}m on-site walking per place = maxWalkKmPerDay × (1 − assignerWalkHeadroomPct ${levers.assignerWalkHeadroomPct})`);
   return rules;
 }
 

@@ -24,6 +24,10 @@
       "mid": 3500,
       "premium": 8000
     },
+    "gatewayAccessMin": {
+      "airport": 60,
+      "rail": 30
+    },
     "areas": [
       {
         "id": "colaba-fort",
@@ -145,6 +149,10 @@
       "mid": 2800,
       "premium": 6500
     },
+    "gatewayAccessMin": {
+      "airport": 40,
+      "rail": 20
+    },
     "areas": [
       {
         "id": "koregaon-park",
@@ -264,6 +272,9 @@
       "mid": 3000,
       "premium": 7000
     },
+    "gatewayAccessMin": {
+      "rail": 10
+    },
     "areas": [
       {
         "id": "lonavala-town",
@@ -356,6 +367,7 @@
       "mid": 3200,
       "premium": 7500
     },
+    "gatewayAccessMin": {},
     "areas": [
       {
         "id": "mahabaleshwar-market",
@@ -451,6 +463,10 @@
       "budget": 1100,
       "mid": 2600,
       "premium": 6000
+    },
+    "gatewayAccessMin": {
+      "airport": 25,
+      "rail": 15
     },
     "areas": [
       {

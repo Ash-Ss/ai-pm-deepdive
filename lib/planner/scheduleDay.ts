@@ -18,6 +18,7 @@ import { haversineKm, type LatLng, localLeg, round1, taxiMinutes } from "./geo";
 import type { CandidatePool, DayFrame, HotelBase, PlannerContext, ScheduledDay } from "./plannerTypes";
 import { fromMin, overlapMin, toMin } from "./time";
 import { startTrace } from "./trace";
+import { ASSUMED, gatewayWord } from "./transfers";
 
 const MAX_PERMUTE = 7;
 const REST_MIN = 15;
@@ -26,12 +27,13 @@ const MAX_RESTAURANT_KM = 5; // further than this, suggest "somewhere local" ins
 const REPEAT_RESTAURANT_KM = 3; // each earlier visit makes a restaurant count as this much further away
 const MIN_GAP_ITEM = 10; // gaps shorter than this aren't worth showing
 const TAXI_INR_PER_KM = 20;
+/** Airport/station taxi when only minutes are known: ~30 km/h × ₹20/km. */
+const TAXI_INR_PER_MIN = 10;
+const CHECKOUT_MIN = 15;
 const MEAL_INR_PER_PERSON: Record<Tier, number> = { budget: 250, mid: 600, premium: 1500 };
 const EARLY_START_STEP_MIN = 30;
 /** A hard meal window still tolerates starting this late (nobody minds lunch at 14:31). */
 export const MEAL_GRACE_MIN = 15;
-/** Time from leaving the hotel to take-off / departure, used to suggest what to book. */
-const PRE_DEPARTURE_MIN: Record<string, number> = { flight: 120, train: 45, road: 0 };
 
 /** Soft penalty weights (in "minutes of travel" equivalents). */
 const W = {
@@ -61,6 +63,7 @@ type ActivityStop = {
   walkM: number;
   flat: boolean;
   priceINR: number;
+  priceSource: string;
   crowded: boolean;
   variantName: string | null;
 };
@@ -77,9 +80,17 @@ type Ev = {
   walkKm: number;
   transitMin: number;
   tradeoffs: string[];
+  costBasis?: string;
+  assumed?: boolean;
 };
 
-type SimResult = { evs: Ev[]; cost: number; penalties: Record<string, number>; dropped: { refId: string; reason: string }[] };
+type SimResult = {
+  evs: Ev[];
+  cost: number;
+  penalties: Record<string, number>;
+  dropped: { refId: string; reason: string }[];
+  departure: ScheduledDay["departure"];
+};
 
 export type ScheduleArgs = {
   frame: DayFrame;
@@ -137,6 +148,7 @@ export function scheduleDay(args: ScheduleArgs): StageResult<ScheduledDay> {
         walkM: acc.walkingRequiredM,
         flat: acc.terrain === "flat",
         priceINR: p.poi.priceINR,
+        priceSource: `catalogue, ${p.poi.provenance.source} ${p.poi.provenance.confidence}`,
         crowded: frame.crowdedPoiIds.includes(id),
         variantName: variant?.name ?? null,
       });
@@ -161,6 +173,7 @@ export function scheduleDay(args: ScheduleArgs): StageResult<ScheduledDay> {
         walkM: x.experience.accessibility.walkingRequiredM,
         flat: x.experience.accessibility.terrain === "flat",
         priceINR: x.experience.priceINR,
+        priceSource: `experience catalogue, ${x.experience.provenance.source} ${x.experience.provenance.confidence}`,
         crowded: false,
         variantName: null,
       });
@@ -184,6 +197,8 @@ export function scheduleDay(args: ScheduleArgs): StageResult<ScheduledDay> {
     return options[0]?.r ?? null;
   };
   const mealCost = (band: Tier) => MEAL_INR_PER_PERSON[band] * ctx.pax;
+  const mealBasis = (band: Tier, known: boolean) =>
+    `${ctx.pax} × ₹${MEAL_INR_PER_PERSON[band]} (${band} band, planner rate${known ? "" : "; restaurant not in catalogue"})`;
 
   function earliestStart(s: ActivityStop, arrive: number): number | null {
     if (s.fixedStarts) return s.fixedStarts.find((st) => st >= arrive) ?? null;
@@ -226,6 +241,7 @@ export function scheduleDay(args: ScheduleArgs): StageResult<ScheduledDay> {
           title: `${taxi ? "Auto/taxi" : "Walk"} to ${to.name}`, refId: null,
           transfer: { mode: leg.mode, distanceKm: leg.km },
           cost: taxi ? Math.round(leg.km * TAXI_INR_PER_KM) * cars : 0,
+          costBasis: taxi ? `₹${TAXI_INR_PER_KM}/km × ${leg.km} km × ${cars} car(s), planner rate` : undefined,
           walkKm: taxi ? 0 : leg.km, transitMin: taxi ? leg.minutes : 0, tradeoffs: [],
         });
         pen.travel += leg.minutes;
@@ -260,7 +276,7 @@ export function scheduleDay(args: ScheduleArgs): StageResult<ScheduledDay> {
         evs.push({
           type: "meal", start, end: start + dur, refId: r?.id ?? null, tradeoffs,
           title: r ? `Lunch at ${r.name}` : `Lunch near ${pos.name} (local restaurant)`,
-          cost: mealCost(r?.priceBand ?? ctx.budgetTier), walkKm: 0, transitMin: 0,
+          cost: mealCost(r?.priceBand ?? ctx.budgetTier), costBasis: mealBasis(r?.priceBand ?? ctx.budgetTier, !!r), walkKm: 0, transitMin: 0,
         });
         time = start + dur;
         sinceRest = 0;
@@ -292,6 +308,7 @@ export function scheduleDay(args: ScheduleArgs): StageResult<ScheduledDay> {
       evs.push({
         type: "activity", start, end, title: s.title, refId: s.refId,
         cost: s.priceINR * ctx.pax, walkKm: s.walkM / 1000, transitMin: 0,
+        costBasis: s.priceINR ? `${ctx.pax} × ₹${s.priceINR} entry (${s.priceSource})` : `free entry (${s.priceSource})`,
         tradeoffs: s.variantName ? [`Doing "${s.variantName}" rather than the full visit to keep walking/stairs manageable`] : [],
       });
       sinceRest += s.durationMin + (leg.mode === "walk" ? leg.minutes : 0);
@@ -301,7 +318,39 @@ export function scheduleDay(args: ScheduleArgs): StageResult<ScheduledDay> {
     }
 
     // ---- end of day
-    if (frame.isDeparture) {
+    let departure: SimResult["departure"] = null;
+    if (frame.isDeparture && frame.departure) {
+      const dep = frame.departure;
+      const atHotel = go(hotelLoc, true, time);
+      const word = dep.mode === "road" ? "" : gatewayWord(dep.mode);
+      // Leave the hotel just in time to be at the airport/station `leadMin` before departure.
+      const leaveBy = dep.depMin - dep.leadMin - dep.accessMin;
+      const checkout = Math.max(atHotel, leaveBy - CHECKOUT_MIN);
+      if (checkout - atHotel >= MIN_GAP_ITEM) {
+        evs.push({ type: "free_time", start: atHotel, end: checkout, title: "Free time / rest at hotel (late checkout)", refId: null, cost: 0, walkKm: 0, transitMin: 0, tradeoffs: [] });
+      }
+      evs.push({ type: "hotel", start: checkout, end: checkout + CHECKOUT_MIN, title: `Collect bags and check out of ${hotel.area.name}`, refId: hotel.area.id, cost: 0, walkKm: 0, transitMin: 0, tradeoffs: [] });
+      const leave = checkout + CHECKOUT_MIN;
+      let atGateway = leave;
+      if (dep.mode !== "road") {
+        atGateway = leave + dep.accessMin;
+        evs.push({
+          type: "transfer", start: leave, end: atGateway, title: `Taxi to ${dep.cityName} ${word}`, refId: null,
+          transfer: { mode: "auto_taxi", distanceKm: 0 }, cost: dep.accessMin * TAXI_INR_PER_MIN * cars,
+          costBasis: `~${dep.accessMin} min × ₹${TAXI_INR_PER_MIN}/min × ${cars} car(s), planner rate`, walkKm: 0, transitMin: dep.accessMin, tradeoffs: [], assumed: true,
+        });
+        if (atGateway < dep.depMin) {
+          evs.push({ type: "free_time", start: atGateway, end: dep.depMin, title: dep.mode === "flight" ? "Check-in & security" : "At the station", refId: null, cost: 0, walkKm: 0, transitMin: 0, tradeoffs: [], assumed: true });
+        }
+      }
+      if (atGateway > dep.depMin - dep.leadMin) pen.lateReturn += W.hard + (atGateway - (dep.depMin - dep.leadMin));
+      evs.push({
+        type: "transfer", start: dep.depMin, end: dep.depMin, refId: null, cost: 0, walkKm: 0, transitMin: 0, assumed: true,
+        title: dep.mode === "road" ? `Depart ${dep.cityName} by car ~${fromMin(dep.depMin)} ${ASSUMED}` : `${dep.mode === "flight" ? "Flight" : "Train"} departs ${dep.cityName} ${fromMin(dep.depMin)} ${ASSUMED}`,
+        tradeoffs: dep.mode === "road" ? [] : [`Be at the ${word} ${dep.leadMin} min before departure`],
+      });
+      departure = { depMin: dep.depMin, atGatewayMin: atGateway, leadMin: dep.leadMin };
+    } else if (frame.isDeparture) {
       time = go(hotelLoc, true, time);
       evs.push({ type: "transfer", start: time, end: time, title: `Collect bags and depart ${cityId}`, refId: null, cost: 0, walkKm: 0, transitMin: 0, tradeoffs: [] });
     } else {
@@ -330,18 +379,19 @@ export function scheduleDay(args: ScheduleArgs): StageResult<ScheduledDay> {
       evs.push({
         type: "meal", start: dinnerStart, end: dinnerStart + dur, refId: r?.id ?? null, tradeoffs: dinnerTradeoffs,
         title: r ? `Dinner at ${r.name}` : "Dinner near hotel (local restaurant)",
-        cost: mealCost(r?.priceBand ?? ctx.budgetTier), walkKm: 0, transitMin: 0,
+        cost: mealCost(r?.priceBand ?? ctx.budgetTier), costBasis: mealBasis(r?.priceBand ?? ctx.budgetTier, !!r), walkKm: 0, transitMin: 0,
       });
       const back = go(hotelLoc, true, dinnerStart + dur);
       if (back > returnBy) pen.lateReturn += W.hard + (back - returnBy);
       evs.push({
         type: "hotel", start: back, end: back, title: `Overnight at ${hotel.area.name}`, refId: hotel.area.id,
         cost: hotel.area.hotelPriceBand[ctx.budgetTier] * rooms, walkKm: 0, transitMin: 0, tradeoffs: [],
+        costBasis: `${rooms} room(s) × ₹${hotel.area.hotelPriceBand[ctx.budgetTier]} (${hotel.area.name} ${ctx.budgetTier} band, cities.json ai_draft)`,
       });
     }
 
     const cost = Object.values(pen).reduce((a, b) => a + b, 0);
-    return { evs, cost, penalties: pen, dropped };
+    return { evs, cost, penalties: pen, dropped, departure };
   }
 
   // ---- search
@@ -368,20 +418,29 @@ export function scheduleDay(args: ScheduleArgs): StageResult<ScheduledDay> {
   // ---- prefix: arrival / intercity transfer
   const prefix: Ev[] = [];
   if (frame.transfer) {
-    const { hop } = frame.transfer;
-    const mid = (hop.edge.fareBandINR.min + hop.edge.fareBandINR.max) / 2;
-    const notes: string[] = [];
-    const lead = PRE_DEPARTURE_MIN[hop.edge.mode] ?? 0;
-    if (lead) notes.push(`Leave the hotel ~${fromMin(frame.transfer.startMin)} (your usual start): book a ${hop.edge.mode} departing around ${fromMin(frame.transfer.startMin + lead)}`);
-    if (frame.transfer.endMin > frame.endMin) notes.push(`Arrives after your usual day end (${levers.dayEnd}); an earlier departure would help`);
-    if (hop.alternatives.length) notes.push(`Alternatives: ${hop.alternatives.join(", ")}`);
-    prefix.push({
-      type: "transfer", start: frame.transfer.startMin, end: frame.transfer.endMin,
-      title: `${cap(hop.edge.mode)} ${hop.from} → ${hop.to} (door to door)`, refId: null,
-      transfer: { mode: hop.edge.mode, distanceKm: 0 },
-      cost: Math.round(mid * (hop.edge.mode === "road" ? cars : ctx.pax)), walkKm: 0, transitMin: 0,
-      tradeoffs: notes,
-    });
+    const { hop, segments } = frame.transfer;
+    const mid = Math.round((hop.edge.fareBandINR.min + hop.edge.fareBandINR.max) / 2);
+    const perCar = hop.edge.mode === "road";
+    for (const seg of segments) {
+      const notes: string[] = [];
+      let cost = 0;
+      let costBasis: string | undefined;
+      if (seg.kind === "in_vehicle") {
+        notes.push(`Leaves the hotel at your usual start (${levers.dayStart}); times assume that`);
+        if (frame.transfer.endMin > frame.endMin) notes.push(`Arrives after your usual day end (${levers.dayEnd}); an earlier departure would help`);
+        if (hop.alternatives.length) notes.push(`Alternatives: ${hop.alternatives.join(", ")}`);
+        cost = mid * (perCar ? cars : ctx.pax);
+        costBasis = `fare band ₹${hop.edge.fareBandINR.min}–${hop.edge.fareBandINR.max} midpoint × ${perCar ? `${cars} car(s)` : `${ctx.pax} people`} (edges.json, ai_draft)`;
+      } else if (seg.kind === "to_gateway" || seg.kind === "from_gateway") {
+        cost = (seg.end - seg.start) * TAXI_INR_PER_MIN * cars;
+        costBasis = `~${seg.end - seg.start} min × ₹${TAXI_INR_PER_MIN}/min × ${cars} car(s), planner rate`;
+      }
+      prefix.push({
+        type: seg.kind === "at_gateway" ? "free_time" : "transfer", start: seg.start, end: seg.end, title: seg.title, refId: null,
+        transfer: seg.kind === "in_vehicle" ? { mode: hop.edge.mode, distanceKm: 0 } : seg.kind === "at_gateway" ? undefined : { mode: "auto_taxi", distanceKm: 0 },
+        cost, costBasis, walkKm: 0, transitMin: 0, tradeoffs: notes, assumed: true,
+      });
+    }
     prefix.push({ type: "hotel", start: frame.transfer.endMin, end: frame.startMin, title: `Check in at ${hotel.area.name}`, refId: hotel.area.id, cost: 0, walkKm: 0, transitMin: 0, tradeoffs: [] });
   } else if (frame.isArrival) {
     prefix.push({ type: "hotel", start: frame.startMin - 30, end: frame.startMin, title: `Arrive and check in at ${hotel.area.name}`, refId: hotel.area.id, cost: 0, walkKm: 0, transitMin: 0, tradeoffs: [] });
@@ -412,6 +471,8 @@ export function scheduleDay(args: ScheduleArgs): StageResult<ScheduledDay> {
     narration: null,
     ...(e.transfer ? { transfer: e.transfer } : {}),
     costINR: e.cost,
+    ...(e.cost ? { costBasis: e.costBasis } : {}),
+    ...(e.assumed ? { assumed: true } : {}),
   }));
 
   function whyFor(refId: string): string[] {
@@ -435,7 +496,7 @@ export function scheduleDay(args: ScheduleArgs): StageResult<ScheduledDay> {
     costINR: withGaps.reduce((s, e) => s + e.cost, 0),
   };
   return t.finish(
-    { frame, items, dropped: sim.dropped, penalties: roundAll(sim.penalties), totals, dayTripTransitAllowanceMin, startOverride: null },
+    { frame, items, dropped: sim.dropped, penalties: roundAll(sim.penalties), totals, dayTripTransitAllowanceMin, startOverride: null, departure: sim.departure },
     { items: items.length, dropped: sim.dropped.map((d) => d.refId), totals },
   );
 }
@@ -501,5 +562,4 @@ function* permutations<T>(items: T[]): Generator<T[]> {
   }
 }
 
-const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const roundAll = (o: Record<string, number>) => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, Math.round(v)]));

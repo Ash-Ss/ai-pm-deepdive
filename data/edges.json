@@ -16,14 +16,14 @@
     "fromCityId": "mumbai",
     "toCityId": "pune",
     "mode": "train",
-    "doorToDoorMin": 225,
+    "doorToDoorMin": 270,
     "fareBandINR": {
       "min": 150,
       "max": 1200
     },
     "comfort": 3,
     "frequencyPerDay": 12,
-    "notes": "Deccan Queen / Intercity / Vande Bharat from CSMT or Dadar (~3h on board) plus station transfers; per person."
+    "notes": "Deccan Queen / Intercity / Vande Bharat (~3h10 on board). Door to door = 30 min to CSMT/Dadar + 30 min at station + ride + 20 min to hotel; per person."
   },
   {
     "fromCityId": "mumbai",
@@ -42,14 +42,14 @@
     "fromCityId": "mumbai",
     "toCityId": "lonavala",
     "mode": "train",
-    "doorToDoorMin": 180,
+    "doorToDoorMin": 200,
     "fareBandINR": {
       "min": 100,
       "max": 700
     },
     "comfort": 3,
     "frequencyPerDay": 20,
-    "notes": "Any Pune-bound express stops at Lonavala (~2h from CSMT); per person."
+    "notes": "Any Pune-bound express (~2h10 on board). Door to door = 30 min to station + 30 min at station + ride + 10 min; per person."
   },
   {
     "fromCityId": "mumbai",
@@ -68,27 +68,27 @@
     "fromCityId": "mumbai",
     "toCityId": "sambhajinagar",
     "mode": "flight",
-    "doorToDoorMin": 180,
+    "doorToDoorMin": 270,
     "fareBandINR": {
       "min": 3500,
       "max": 9000
     },
     "comfort": 4,
     "frequencyPerDay": 3,
-    "notes": "~1h flight; door-to-door includes airport transfers and check-in; per person."
+    "notes": "~1h flight. Door to door = ~60 min to BOM + 2h at airport before departure + flight + ~25 min to hotel; per person."
   },
   {
     "fromCityId": "mumbai",
     "toCityId": "sambhajinagar",
     "mode": "train",
-    "doorToDoorMin": 420,
+    "doorToDoorMin": 465,
     "fareBandINR": {
       "min": 300,
       "max": 1800
     },
     "comfort": 3,
     "frequencyPerDay": 5,
-    "notes": "Janshatabdi / Devagiri / Tapovan (~6–7h on board incl. stations); per person."
+    "notes": "Janshatabdi / Devagiri / Tapovan (~6.5h on board). Door to door = 30 min to station + 30 min at station + ride + 15 min; per person."
   },
   {
     "fromCityId": "mumbai",
@@ -120,14 +120,14 @@
     "fromCityId": "pune",
     "toCityId": "lonavala",
     "mode": "train",
-    "doorToDoorMin": 105,
+    "doorToDoorMin": 135,
     "fareBandINR": {
       "min": 20,
       "max": 300
     },
     "comfort": 3,
     "frequencyPerDay": 30,
-    "notes": "Pune–Lonavala suburban locals (~1h15) or express trains; per person."
+    "notes": "Pune–Lonavala locals (~1h15) or express trains. Door to door = 20 min to station + 30 min at station + ride + 10 min; per person."
   },
   {
     "fromCityId": "pune",

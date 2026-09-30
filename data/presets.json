@@ -17,7 +17,8 @@
       "dinnerWindow": "intersect",
       "restBreakEveryMin": "min",
       "mealWindowsHard": "max",
-      "returnByLatest": "min"
+      "returnByLatest": "min",
+      "assignerWalkHeadroomPct": "max"
     }
   },
   "presets": {
@@ -33,6 +34,7 @@
       "minNightsPerBase": 1,
       "durationMultiplier": 1.0,
       "preferTaxiAboveWalkMin": 20,
+      "assignerWalkHeadroomPct": 0.2,
       "lunchWindow": {
         "start": "12:30",
         "end": "14:30"

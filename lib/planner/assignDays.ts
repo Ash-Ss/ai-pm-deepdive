@@ -19,7 +19,13 @@ import { startTrace } from "./trace";
 
 export type AssignLeg = { cityId: string; hotel: HotelBase; frames: DayFrame[]; pool: CandidatePool };
 export type AssignInput = { legs: AssignLeg[]; levers: Levers; constraints: Constraint[] };
-export type AssignedDay = { dayNumber: number; itemIds: string[]; reasons?: Record<string, string[]> };
+export type AssignedDay = {
+  dayNumber: number;
+  itemIds: string[];
+  reasons?: Record<string, string[]>;
+  /** Items to do as their lighter variant (e.g. to stay within the day's walking budget). */
+  variantIds?: string[];
+};
 export type AssignOutput = { days: AssignedDay[]; source: "planner" | "ai"; notes?: string[] };
 export type AssignFn = (input: AssignInput) => AssignOutput | Promise<AssignOutput>;
 
@@ -66,7 +72,8 @@ export function sanitizeAssignment(input: AssignInput, output: AssignOutput): St
         seen.add(id);
         kept.push(id);
       }
-      days.push({ dayNumber: frame.dayNumber, itemIds: kept, reasons: proposed?.reasons });
+      const variantIds = (proposed?.variantIds ?? []).filter((id) => kept.includes(id) && leg.pool.pois.find((p) => p.id === id)?.poi.variants?.length);
+      days.push({ dayNumber: frame.dayNumber, itemIds: kept, reasons: proposed?.reasons, variantIds });
     }
   }
   const unknownDays = output.days.filter((d) => !days.some((k) => k.dayNumber === d.dayNumber));
@@ -82,13 +89,33 @@ export function assignDaysHeuristic(input: AssignInput): AssignOutput {
   const days: AssignedDay[] = [];
   const notes: string[] = [];
   const elderly = travellerProfiles(input.constraints).includes("elderly");
+  const lv = input.levers;
+  notes.push(
+    `Walking: planned ≤ ${walkBudgetM(lv) / 1000} km of on-site walking per day — the ${lv.maxWalkKmPerDay} km limit ` +
+    `minus ${Math.round(lv.assignerWalkHeadroomPct * 100)}% headroom for walks between stops (lever assignerWalkHeadroomPct); the validator checks the full ${lv.maxWalkKmPerDay} km`,
+  );
   for (const leg of input.legs) days.push(...assignLeg(leg, input.levers, elderly, notes));
   return { days, source: "planner", notes: [...new Set(notes)] };
 }
 
+/**
+ * Could the visit happen inside its opening hours on this day, arriving no earlier
+ * than the day's (possibly early) start plus travel? Stops the assigner putting
+ * e.g. Sinhagad (closes 18:00) on an arrival afternoon that starts at 14:30.
+ */
+function fitsOpeningHours(p: PoolPoi, f: DayFrame, travelMin: number, minutes: number, earliest: number): boolean {
+  const ranges = p.poi.openingHours[f.weekday as keyof typeof p.poi.openingHours];
+  return ranges.some(([o, c]) => Math.max(toMin(o), earliest + travelMin) + minutes <= Math.min(toMin(c), f.endMin));
+}
+
+/** On-site walking the assigner plans per day (the validator checks the full maxWalkKmPerDay). */
+export const walkBudgetM = (l: Levers) => Math.round(l.maxWalkKmPerDay * 1000 * (1 - l.assignerWalkHeadroomPct));
+
 type DaySlot = {
   frame: DayFrame;
   ids: string[];
+  variantIds: string[];
+  walkM: number;
   reasons: Record<string, string[]>;
   areas: Set<string>;
   exclusive: boolean;
@@ -101,9 +128,12 @@ function assignLeg(leg: AssignLeg, levers: Levers, elderly: boolean, notes: stri
   const lunchStart = toMin(levers.lunchWindow.start);
   const lunchEnd = toMin(levers.lunchWindow.end);
   const hotel = leg.hotel.area;
+  const walkBudget = walkBudgetM(levers);
   const days: DaySlot[] = leg.frames.map((f) => ({
     frame: f,
     ids: [],
+    variantIds: [],
+    walkM: 0,
     reasons: {},
     areas: new Set<string>(),
     exclusive: false,
@@ -112,8 +142,9 @@ function assignLeg(leg: AssignLeg, levers: Levers, elderly: boolean, notes: stri
     extension: f.startMin - f.earliestStartMin,
   }));
 
-  const place = (d: DaySlot, id: string, cost: number, area: string, why: string[], exclusive: boolean) => {
+  const place = (d: DaySlot, id: string, cost: number, area: string, why: string[], exclusive: boolean, walkM = 0) => {
     d.ids.push(id);
+    d.walkM += walkM;
     d.reasons[id] = why;
     d.areas.add(area);
     d.remaining -= cost;
@@ -125,7 +156,7 @@ function assignLeg(leg: AssignLeg, levers: Levers, elderly: boolean, notes: stri
   for (const d of days) {
     for (const id of d.frame.anchoredPoiIds) {
       const p = leg.pool.pois.find((x) => x.id === id)!;
-      place(d, id, p.durationMin, p.poi.areaId, ["date anchor requested by user"], false);
+      place(d, id, p.durationMin, p.poi.areaId, ["date anchor requested by user"], false, p.accessibility.walkingRequiredM);
       placed.add(id);
     }
   }
@@ -184,18 +215,31 @@ function assignLeg(leg: AssignLeg, levers: Levers, elderly: boolean, notes: stri
     // Elderly + a site that really benefits from a guide → try its guided tour first.
     if (elderly && p.poi.tourValue >= GUIDED_TOUR_VALUE && tryGuidedTour(p)) continue;
 
-    const visit = Math.round(p.durationMin * (1 + levers.bufferPct));
+    // Full visit, or its lighter variant when the day's walking budget would otherwise be blown.
+    const lighter = !p.variant && p.poi.variants?.length ? p.poi.variants[0] : null;
+    const versions = [
+      { variant: false, minutes: p.durationMin, walkM: p.accessibility.walkingRequiredM },
+      ...(lighter ? [{
+        variant: true,
+        minutes: Math.round(lighter.durationMin.typical * levers.durationMultiplier),
+        walkM: lighter.accessibility.walkingRequiredM ?? p.accessibility.walkingRequiredM,
+      }] : []),
+    ];
     const options = days
       .filter((d) => !d.frame.closedPoiIds.includes(p.id) && !d.exclusive && d.ids.length < d.frame.maxMajorItems)
       .filter((d) => !exclusive || d.ids.length === 0)
       .filter((d) => !d.frame.lightOnly || isLightItem(p, hotel))
-      .map((d) => {
+      .flatMap((d) => {
         const sameArea = d.areas.has(p.poi.areaId);
         // Only the outbound drive eats sightseeing time; the drive back can run past dayEnd.
         const travel = exclusive ? oneWay : sameArea ? SAME_AREA_HOP_MIN : Math.min(oneWay, NEW_AREA_HOP_CAP_MIN) + SAME_AREA_HOP_MIN;
         // A day trip may start the day early; anything joining it in the same area benefits too.
         const room = d.remaining + (p.isDayTrip || sameArea ? d.extension : 0);
-        return { d, sameArea, cost: visit + travel, room };
+        const earliest = p.isDayTrip || sameArea ? d.frame.earliestStartMin : d.frame.startMin;
+        const outbound = sameArea ? SAME_AREA_HOP_MIN : oneWay;
+        const v = versions.find((x) => d.walkM + x.walkM <= walkBudget && fitsOpeningHours(p, d.frame, outbound, x.minutes, earliest));
+        if (!v) return [];
+        return [{ d, sameArea, cost: Math.round(v.minutes * (1 + levers.bufferPct)) + travel, room, version: v }];
       })
       .filter((o) => o.cost <= o.room);
 
@@ -207,7 +251,7 @@ function assignLeg(leg: AssignLeg, levers: Levers, elderly: boolean, notes: stri
     options.sort((a, b) =>
       Number(light && b.d.frame.lightOnly) - Number(light && a.d.frame.lightOnly) ||
       Number(b.sameArea) - Number(a.sameArea) || b.room - a.room || a.d.frame.dayNumber - b.d.frame.dayNumber);
-    const { d, sameArea, cost } = options[0];
+    const { d, sameArea, cost, version } = options[0];
     if (p.isDayTrip && d.extension > 0) {
       d.remaining += d.extension; // this day will start early; bank the extra time once
       d.extension = 0;
@@ -220,9 +264,13 @@ function assignLeg(leg: AssignLeg, levers: Levers, elderly: boolean, notes: stri
     if (sameArea) why.push(`same area as other stops (${p.poi.areaId})`);
     if (exclusive) why.push(`full-day trip (~${Math.round((oneWay / 60) * 10) / 10}h drive each way)`);
     if (d.frame.lightOnly) why.push("light, near the hotel (travel day)");
-    place(d, p.id, cost, p.poi.areaId, why, exclusive);
+    if (version.variant) {
+      why.push(`shorter version to stay within ${walkBudget / 1000} km walking`);
+      d.variantIds.push(p.id);
+    }
+    place(d, p.id, cost, p.poi.areaId, why, exclusive, version.walkM);
     placed.add(p.id);
   }
 
-  return days.map((d) => ({ dayNumber: d.frame.dayNumber, itemIds: d.ids, reasons: d.reasons }));
+  return days.map((d) => ({ dayNumber: d.frame.dayNumber, itemIds: d.ids, reasons: d.reasons, variantIds: d.variantIds }));
 }

@@ -48,7 +48,15 @@ export function allocateNights(args: {
   levers: Levers;
   constraints: Constraint[];
   ctx: PlannerContext;
-}): StageResult<{ legs: LegAlloc[]; demandDays: Record<string, number>; warnings: string[] }> {
+  /** Where the trip starts (arrival city), if known. */
+  entryCityId?: string | null;
+}): StageResult<{
+  legs: LegAlloc[];
+  demandDays: Record<string, number>;
+  /** Same measure without hard filters, to show what filtering removed. */
+  demandBeforeFilters: Record<string, { days: number; excluded: string[] }>;
+  warnings: string[];
+}> {
   const { route, totalNights, startDate, levers, constraints, ctx } = args;
   const order = route.order;
   const t = startTrace("allocateNights", { order, totalNights, startDate });
@@ -61,18 +69,22 @@ export function allocateNights(args: {
   const liked = interestTags(constraints).like;
   const tripDates = Array.from({ length: totalNights + 1 }, (_, k) => addDays(startDate, k));
   const demandDays: Record<string, number> = {};
+  const demandBeforeFilters: Record<string, { days: number; excluded: string[] }> = {};
   for (const cityId of order) {
     const city = args.cities.find((c) => c.id === cityId)!;
     const priceCap = priceCapPerPerson(city, ctx.budgetTier, constraints, tripDates.length, ctx.pax);
     let minutes = 0;
+    let minutesUnfiltered = 0;
     const counted: string[] = [];
     const skipped: string[] = [];
+    const roundTrip = (poi: Poi) => (poi.isDayTripFrom ? 2 * taxiMinutes(haversineKm(city, poi), cityId).minutes : 0);
     for (const poi of args.pois) {
       if (poi.cityId !== cityId && poi.isDayTripFrom !== cityId) continue;
       const requested = ctx.requestedPoiIds.has(poi.id);
       const relevant = requested || poi.tier === "must_see" ||
         (poi.tier === "worth_it" && [...poi.interestTags, poi.category].some((tag) => liked.has(tag)));
       if (!relevant) continue;
+      minutesUnfiltered += poi.durationMin.typical * levers.durationMultiplier + roundTrip(poi);
       const fail = hardFilterFailure(poi, { dates: tripDates, rules, priceCap, constraints });
       if (fail) {
         skipped.push(`${poi.id} (${fail.reason})`); // can't be visited by this group, so it creates no demand
@@ -82,11 +94,12 @@ export function allocateNights(args: {
       const variant = version.ok ? version.variant : null;
       let m = (variant?.durationMin.typical ?? poi.durationMin.typical) * levers.durationMultiplier;
       // Day trips cost their round trip too — Ajanta is ~5h of driving for ~3h of caves.
-      if (poi.isDayTripFrom) m += 2 * taxiMinutes(haversineKm(city, poi), cityId).minutes;
+      m += roundTrip(poi);
       minutes += m;
       counted.push(poi.id);
     }
     demandDays[cityId] = Math.round((minutes / usable) * 100) / 100;
+    demandBeforeFilters[cityId] = { days: Math.round((minutesUnfiltered / usable) * 100) / 100, excluded: skipped };
     t.decide(`demand ${cityId} = ${demandDays[cityId]} days`, `${Math.round(minutes)} min over ${counted.length} POIs ÷ ${usable} min/day`, { counted, skipped });
   }
 
@@ -130,10 +143,21 @@ export function allocateNights(args: {
   if (totalDemand > totalCap * OVERLOAD_THRESHOLD) {
     const options: string[] = [`add ${Math.ceil(totalDemand - totalCap)} day(s)`];
     if (order.length > 1) {
-      // Dropping the city with the least to see loses the least and frees its nights for the rest.
+      // Dropping the city with the least to see loses the least and frees its nights for the rest —
+      // but you can't drop the city you fly into/out of unless another base can be the gateway.
       const lightest = [...order].sort((a, b) => demandDays[a] - demandDays[b])[0];
-      const name = args.cities.find((c) => c.id === lightest)!.name;
-      options.push(`drop ${name} (frees ${nights[order.indexOf(lightest)]} night(s) for the rest)`);
+      const cityOf = (id: string) => args.cities.find((c) => c.id === id)!;
+      const nightsFreed = nights[order.indexOf(lightest)];
+      const isGateway = lightest === args.entryCityId || lightest === order[0] || lightest === order.at(-1);
+      if (!isGateway) {
+        options.push(`drop ${cityOf(lightest).name} (frees ${nightsFreed} night(s) for the rest)`);
+      } else {
+        const alt = order.filter((c) => c !== lightest).map(cityOf).find((c) => c.gatewayFor.includes("airport") || c.gatewayFor.includes("rail"));
+        if (alt) {
+          const how = alt.gatewayFor.includes("airport") ? "fly directly to" : "take the train directly to";
+          options.push(`skip ${cityOf(lightest).name} and ${how} ${alt.name} (frees ${nightsFreed} night(s))`);
+        }
+      }
     }
     for (const poi of args.pois) {
       const base = args.cities.find((c) => c.id === poi.isDayTripFrom);
@@ -161,7 +185,8 @@ export function allocateNights(args: {
     date = addDays(date, nights[i]);
   });
 
-  return t.finish({ legs, demandDays, warnings }, {
+  return t.finish({ legs, demandDays, demandBeforeFilters, warnings }, {
+    demandBeforeFilters,
     nights: Object.fromEntries(order.map((c, i) => [c, nights[i]])),
     capacityDays: Object.fromEntries(order.map((c, i) => [c, round1(cap(i))])),
     demandDays,

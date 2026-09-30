@@ -604,7 +604,140 @@
     ],
     "tourValue": 0.2,
     "isDayTripFrom": null,
+    "variants": [
+      {
+        "name": "Kala Ghoda – short loop (Jehangir Art Gallery & a café)",
+        "durationMin": {
+          "min": 30,
+          "typical": 45,
+          "max": 60
+        },
+        "accessibility": {
+          "walkingRequiredM": 1000,
+          "terrain": "flat",
+          "stairsLevel": "none"
+        }
+      }
+    ],
     "shortDescription": "Compact heritage precinct of galleries (Jehangir Art Gallery), Rhythm House, David Sassoon Library and cafes.",
+    "provenance": {
+      "source": "ai_draft",
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "fort-heritage-precinct",
+    "cityId": "mumbai",
+    "areaId": "colaba-fort",
+    "name": "Fort Heritage Precinct Walk",
+    "category": "neighbourhood",
+    "lat": 18.9322,
+    "lng": 72.8338,
+    "durationMin": {
+      "min": 60,
+      "typical": 90,
+      "max": 120
+    },
+    "openingHours": {
+      "monday": [
+        [
+          "07:00",
+          "19:00"
+        ]
+      ],
+      "tuesday": [
+        [
+          "07:00",
+          "19:00"
+        ]
+      ],
+      "wednesday": [
+        [
+          "07:00",
+          "19:00"
+        ]
+      ],
+      "thursday": [
+        [
+          "07:00",
+          "19:00"
+        ]
+      ],
+      "friday": [
+        [
+          "07:00",
+          "19:00"
+        ]
+      ],
+      "saturday": [
+        [
+          "07:00",
+          "19:00"
+        ]
+      ],
+      "sunday": [
+        [
+          "07:00",
+          "19:00"
+        ]
+      ]
+    },
+    "weeklyOff": [],
+    "bestTimeOfDay": "morning",
+    "avoidTimes": [
+      {
+        "start": "12:00",
+        "end": "15:30"
+      }
+    ],
+    "interestTags": [
+      "history",
+      "architecture",
+      "heritage-walk",
+      "unesco",
+      "photography"
+    ],
+    "tier": "worth_it",
+    "suitability": {
+      "kids": 0.4,
+      "elderly": 0.5,
+      "couples": 0.8
+    },
+    "accessibility": {
+      "stairsLevel": "none",
+      "terrain": "flat",
+      "walkingRequiredM": 2500,
+      "seating": false
+    },
+    "indoorOutdoor": "outdoor",
+    "priceINR": 0,
+    "bookingRequired": false,
+    "bestMonths": [
+      1,
+      2,
+      3,
+      10,
+      11,
+      12
+    ],
+    "tourValue": 0.6,
+    "isDayTripFrom": null,
+    "variants": [
+      {
+        "name": "Fort precinct – short loop (Flora Fountain, Horniman Circle)",
+        "durationMin": {
+          "min": 30,
+          "typical": 45,
+          "max": 60
+        },
+        "accessibility": {
+          "walkingRequiredM": 1000,
+          "terrain": "flat",
+          "stairsLevel": "none"
+        }
+      }
+    ],
+    "shortDescription": "UNESCO Victorian Gothic & Art Deco ensemble: Flora Fountain, Horniman Circle, Bombay High Court and Rajabai Clock Tower (exteriors), Asiatic Society steps. Flat, pavement walk.",
     "provenance": {
       "source": "ai_draft",
       "confidence": 0.6
@@ -705,6 +838,21 @@
     ],
     "tourValue": 0.2,
     "isDayTripFrom": null,
+    "variants": [
+      {
+        "name": "Colaba Causeway – short stroll (one stretch of stalls)",
+        "durationMin": {
+          "min": 30,
+          "typical": 45,
+          "max": 60
+        },
+        "accessibility": {
+          "walkingRequiredM": 1000,
+          "terrain": "flat",
+          "stairsLevel": "none"
+        }
+      }
+    ],
     "shortDescription": "Street stalls for clothes, jewellery and souvenirs; bargain hard. Leopold Cafe is on this stretch.",
     "provenance": {
       "source": "ai_draft",

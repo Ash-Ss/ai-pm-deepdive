@@ -2,17 +2,20 @@
  * Stage 5 — describe each day before anything is placed in it: its window,
  * capacity, energy, closures, crowds and fixed commitments.
  */
-import type { Constraint, Event, Levers, StageResult } from "../types";
+import type { City, Constraint, Event, Levers, StageResult } from "../types";
 import { ofType, travellerProfiles } from "./constraints";
 import type { CandidatePool, DayFrame, LegAlloc } from "./plannerTypes";
 import { fromMin, toMin, weekdayOf } from "./time";
 import { startTrace } from "./trace";
+import { accessMin, departureMode, GATEWAY_LEAD_MIN, intercitySegments } from "./transfers";
 
 const ARRIVAL_SHARE = 0.5; // arrival day: roughly the second half of the day
 const DEPARTURE_SHARE = 0.5; // departure day: roughly the first half
 const TRAVEL_DAY_SHARE = 0.6; // a travel day keeps ~60% of normal capacity at most
 const CHECK_IN_MIN = 30;
 const LONG_TRANSFER_MIN = 240;
+/** Assumed onward departure = end of sightseeing + this slack (lunch, return) + access + lead, rounded up to :00/:30. */
+const DEPARTURE_SLACK_MIN = 90;
 /** Long day trips may start this early instead of dayStart (a soft, rejectable override). */
 export const EARLIEST_OVERRIDE_START = "08:30";
 
@@ -22,8 +25,10 @@ export function buildDayFrames(args: {
   events: Event[];
   constraints: Constraint[];
   pool: CandidatePool;
+  cities: City[];
 }): StageResult<DayFrame[]> {
-  const { leg, levers, events, constraints, pool } = args;
+  const { leg, levers, events, constraints, pool, cities } = args;
+  const cityOf = (id: string) => cities.find((c) => c.id === id)!;
   const t = startTrace("buildDayFrames", { cityId: leg.cityId, dates: leg.dates });
   const dayStart = toMin(levers.dayStart);
   const dayEnd = toMin(levers.dayEnd);
@@ -51,11 +56,12 @@ export function buildDayFrames(args: {
       notes.push(`Arrival day: sightseeing from ~${fromMin(startMin)}`);
     }
     if (isTravel && leg.inbound) {
-      const end = dayStart + leg.inbound.minutes;
-      transfer = { startMin: dayStart, endMin: end, hop: leg.inbound };
-      startMin = end + CHECK_IN_MIN;
+      // Leave the hotel at the usual start; the departure time this implies is shown as an assumption.
+      const seg = intercitySegments(leg.inbound, dayStart, cityOf(leg.inbound.from), cityOf(leg.inbound.to));
+      transfer = { startMin: dayStart, endMin: seg.arriveHotelMin, hop: leg.inbound, segments: seg.segments };
+      startMin = seg.arriveHotelMin + CHECK_IN_MIN;
       energy = 0.6;
-      notes.push(`Travel day: ${leg.inbound.from} → ${leg.inbound.to} by ${leg.inbound.edge.mode} (${leg.inbound.minutes}min)`);
+      notes.push(`Travel day: ${leg.inbound.from} → ${leg.inbound.to} by ${leg.inbound.edge.mode}, assumed departure ${fromMin(seg.depMin)}`);
     }
     if (isDeparture) {
       endMin = Math.min(endMin, dayStart + Math.round(span * DEPARTURE_SHARE));
@@ -76,6 +82,17 @@ export function buildDayFrames(args: {
     const earliestStartMin = isArrival || isTravel || own ? startMin : Math.min(startMin, toMin(EARLIEST_OVERRIDE_START));
     const lightOnly = lightTravelDays && (isArrival || isTravel);
     if (lightOnly) notes.push("Arrival/travel day: light sights near the hotel only");
+
+    let departure: DayFrame["departure"] = null;
+    if (isDeparture) {
+      const city = cityOf(leg.cityId);
+      const mode = departureMode(city);
+      const access = accessMin(city, mode);
+      const lead = GATEWAY_LEAD_MIN[mode];
+      const depMin = Math.ceil((endMin + DEPARTURE_SLACK_MIN + access + lead) / 30) * 30;
+      departure = { mode, depMin, leadMin: lead, accessMin: access, cityName: city.name };
+      notes.push(`Assumed onward ${mode} ~${fromMin(depMin)}: be at the ${mode === "flight" ? "airport" : "station"} ${lead} min before`);
+    }
 
     let capacityMin = Math.max(0, endMin - startMin);
     if (isTravel) capacityMin = Math.min(capacityMin, Math.round(span * TRAVEL_DAY_SHARE));
@@ -108,6 +125,7 @@ export function buildDayFrames(args: {
       maxMajorItems: Math.max(1, Math.round(levers.maxMajorItemsPerDay * energy)),
       energy,
       transfer,
+      departure,
       anchoredPoiIds,
       closedPoiIds,
       crowdedPoiIds,
